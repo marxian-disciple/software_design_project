@@ -3,3 +3,9 @@ As an seller, I can log in to the website to view my online store.
 As a seller, I can log in to the website to create a new online store.
 As a new user, I can register a new account to become a buyer.
 As a new user, I can register a new account to become a seller.
+
+SIDE NOTE FOR EMIHLE AND MOHAU:
+When implementing the HTML pages, for now we just want pages that do something.
+For example, for the login page, just have a place where users can input information and a button that, when clicked upon, goes to some other empty page (empty for now, of course)
+The same applies to the other pages you'll be creating.
+Actual functionality will be focused on later on. I do not think that our tutors expect a fully functioning login system in one week, because we also have to set up the database.
