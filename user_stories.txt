@@ -1,8 +1,9 @@
-As a buyer, I can log in to the website to view products.
-As an seller, I can log in to the website to view my online store.
-As a seller, I can log in to the website to create a new online store.
-As a new user, I can register a new account to become a buyer.
-As a new user, I can register a new account to become a seller.
+As a buyer, I want to visit the website’s login page so that I can enter my credentials.
+As a buyer, I want to be able to enter my username and password so that I can authenticate myself.
+As a seller, I want to visit the login page so that I can access my seller account.
+As a seller, I want to be able to enter my username and password to authenticate my seller account.
+As a new user, I want to visit the registration page so that I can start the sign-up process.
+As a new user, I want to provide my email address, username, and password on the registration form so that I can create an account as a buyer or a seller.
 
 SIDE NOTE FOR EMIHLE AND MOHAU:
 When implementing the HTML pages, for now we just want pages that do something.
