@@ -1,0 +1,19 @@
+{
+  "name": "software_design_project",
+  "version": "1.0.0",
+  "description": "Hi everyone.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.1.0"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
