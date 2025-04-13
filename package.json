@@ -4,7 +4,8 @@
   "description": "Hi everyone.",
   "main": "index.js",
   "scripts": {
-     "build": "echo 'No build needed'",
+    "build": "echo 'Add your build commands here' && exit 1",
+    "start": "node server.js",
     "test": "jest --coverage"
   },
   "keywords": [],
