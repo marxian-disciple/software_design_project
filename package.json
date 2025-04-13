@@ -4,6 +4,7 @@
   "description": "Hi everyone.",
   "main": "index.js",
   "scripts": {
+    "build": run
     "test": "jest --coverage"
   },
   "keywords": [],
