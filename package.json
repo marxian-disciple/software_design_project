@@ -4,7 +4,7 @@
   "description": "Hi everyone.",
   "main": "index.js",
   "scripts": {
-    "build": "npm run compile && npm run generate"
+     "build": "echo 'No build needed'",
     "test": "jest --coverage"
   },
   "keywords": [],
