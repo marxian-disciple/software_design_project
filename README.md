@@ -7,7 +7,7 @@ In order to use Jira, I'll need to send you guys an invite via email and then yo
 
 So, I have assigned the tasks as following:
 
-Olwethu will focus on the Test Driven Development part of the rubric - he will be responsible for writing UATs for the user stories, and integrating Jest as our code coverage tool.
+Owethu will focus on the Test Driven Development part of the rubric - he will be responsible for writing UATs for the user stories, and integrating Jest as our code coverage tool.
 I will be focusing on the Engineering Requirements part - I'll come up with the user stories for sprint 1 and use GitHub Projects to assign tasks.
 Mohau and Emihle will both focus on the Software Implementation part - Nothing fancy, just basic HTML - no CSS required. Implement HTML pages according to the user stories I came up with, and then add some other important stuff if you have the time to do so.
 And then Kwezi and Ntando will focus on the Continuous Integration part - You guys do not need to focus on creating a repo, as it already exists. You also don't need to focus on "Everybody making commits, issue tracker being used" - I shall deal with this. So the last two things are for you guys.
