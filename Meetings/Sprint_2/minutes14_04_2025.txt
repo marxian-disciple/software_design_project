@@ -1,0 +1,67 @@
+Meeting Title: First Sprint 2 meeting 
+
+Date: April 14, 2025 
+
+Time: 16:20- 
+
+Location: MSL004 
+
+  
+
+Attendees: 
+
+Molemo 
+
+Emihle 
+
+Kwezi 
+
+Ntando 
+
+Owethu 
+
+Mohau 
+
+ 
+
+Agenda Items: 
+
+Conceptualising  
+
+Thinking about the logical elements of the User Interface- taking reference from other marketplace apps (i.e. Takealot and Samsung) 
+
+Sign in page. 
+
+Kwezi designed the sign in page based on the page  implemented by Emihle  
+
+Mockups 
+
+We decided to focus exclusively on doing mockups today, designing only the pages we will be implementing in sprint 2.  
+
+Home Page 
+
+Looking at the elements that we need to have on the first/home page of the application and added the arrows indicating transitions therefrom  
+
+Login/Registration Page 
+
+Emihle redesigned the login and sign-up  page to clarigy transitions on the paper 
+
+Profiles 
+
+Discussed whether users should be able to see they’re products 
+
+Planning 
+
+Random stranger suggested a game plan for designing the websites, suggested websites named coolors, and doing our main page  
+
+ 
+
+ 
+
+Next Meeting: 
+
+Date: April 15, 2025 
+
+Time: TBD 
+
+Location: Virtual 
