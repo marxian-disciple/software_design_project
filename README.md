@@ -9,8 +9,13 @@ Finally, Emihle, Kwezi, Mohau, and Ntando will all work on making the mockups an
 UML diagrams
 
 Emihle - Use Case Diagram
+
 Kwezi - Activity Diagram
+
 Mohau - Sequence Diagram
+
 Molemo - Component Diagram
+
 Ntando - Deployment Diagram
+
 Owethu - State Diagram 
