@@ -6,4 +6,11 @@ Owethu will work on the buyer sign in page - the sign in page will be according 
 
 Finally, Emihle, Kwezi, Mohau, and Ntando will all work on making the mockups and prototypes on Figma for the wireframes we have made.
 
-On the UML diagrams - this will be discussed later, after we have recieved the list from Wendy.
+UML diagrams
+
+Emihle - Use Case Diagram
+Kwezi - Activity Diagram
+Mohau - Sequence Diagram
+Molemo - Component Diagram
+Ntando - Deployment Diagram
+Owethu - State Diagram 
