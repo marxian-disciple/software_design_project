@@ -1,0 +1,46 @@
+Meeting Title: First Sprint 2 meeting 
+
+Date: April 14, 2025 
+
+Time: 17:00-17:30
+
+Location: Virtual
+
+  
+
+Attendees: 
+
+Molemo 
+
+Emihle 
+
+Kwezi 
+
+Ntando 
+
+Owethu 
+
+Mohau 
+
+ 
+
+Agenda Items: 
+
+1. Task assignment
+Assigned different UML diagrams to different members of the  group each group member will be assigned a UML diagram.
+2. Colour Scheme
+Ntando, Kwezi, Emihle and Mohau will discuss the colour scheme
+3. Sign up page
+Owethu asked for input on sign-in page and home page and displayed it to the group(HTML +CSS)
+4. Issues
+Issues will be updated on discord by Molemo 
+
+ 
+
+Next Meeting: 
+
+Date: April 17, 2025 
+
+Time: TBD 
+
+Location: Virtual 
