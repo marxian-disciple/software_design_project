@@ -5,24 +5,27 @@ on:
 
 jobs:
   test:
-    name: Run tests and collect coverage
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
+      - uses: actions/checkout@v4
 
       - name: Set up Node
         uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm test -- --coverage
+      - name: Check Jest install (debug)
+        run: |
+          ls -l node_modules/.bin/jest
+          node_modules/.bin/jest --version
 
-      - name: Upload results to Codecov
+      - name: Run tests with coverage
+        run: node_modules/.bin/jest --coverage
+
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
