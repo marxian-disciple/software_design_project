@@ -19,3 +19,6 @@ Molemo - Component Diagram
 Ntando - Deployment Diagram
 
 Owethu - State Diagram 
+
+
+[![codecov](https://codecov.io/gh/marxian-disciple/software_design_project/graph/badge.svg?token=DKP19EEZGU)](https://codecov.io/gh/marxian-disciple/software_design_project)
