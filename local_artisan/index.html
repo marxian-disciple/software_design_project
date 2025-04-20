@@ -1,59 +1,27 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Signin</title>
-    <style>
-
-
-        form {
-            max-width: 400px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        h2, p {
-            text-align: center;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <h2>Signin</h2>
-    <form>
-        <label>Username</label>
-        <input type="text" id="Username" required>
+    <header class="main-header">
+        <a href="/local_artisan/html/seller_dashboard.html" class="sell-link">Do you want to sell your home made work?</a>
+        
+        <div class="search-container">
+            <input type="search" placeholder="Search..." class="search-bar">
+        </div>
 
-        <label>Password</label>
-        <input type="password" id="Password" required>
+        <a href="/local_artisan/html/signup.html" class="login-icon">
+            <i class="fas fa-user"></i>
+        </a>
+    </header>
 
-        <button type="submit">Sign In</button>
-    </form>
-    <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
-    <p>Forgot your password? <a href="forgotpassword.html">Reset Password</a></p>
+    <main class="content">
+        <!-- Still yet to add stuff here -->
+    </main>
 </body>
 </html>
