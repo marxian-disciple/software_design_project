@@ -18,18 +18,6 @@ document.getElementById("google").addEventListener("click", async () => {
 
     console.log("Signed up with Google:", user);
 
-    // Optionally, send user data to backend (if you need to)
-    await fetch("/signup/google", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        uid: user.uid,
-        email: user.email,
-        name: user.displayName,
-        photoURL: user.photoURL
-      })
-    });
-
     alert(`Welcome, ${user.displayName}!`);
     // Redirect if needed
     
