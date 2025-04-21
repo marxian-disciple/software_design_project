@@ -1,0 +1,7 @@
+User Acceptance Tests (Given-When-Then)
+Given that I am a seller, when I create a product then I should be able to add details to it.
+Given that I am a seller, when I delete a product then it should be removed from my store.
+Given that I am a seller, when I sign in with the correct credentials then I should have access to my store.
+Given that I am a seller, when I've logged in then I must be able to create a new product.
+Given that I am a seller, when I've registered as a seller then I must be able to create my own store.
+Given that I am a seller, when I've created my store then I want to be able to manage it.
