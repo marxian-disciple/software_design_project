@@ -1,0 +1,6 @@
+As a seller, I want the ability to edit product details (e.g., name, description, price) in my product list.
+As a seller, I want the ability to delete a product from my store’s inventory.
+As a seller, I want to visit the login page and sign in with my credentials.
+As a seller, I want to be able to navigate to a “Create New Product” page after logging in.
+As a seller, I want to fill in a store name and description on the “Create New Store” page so that I can customize my store.
+As a seller, I want to submit the form to create my new store so that it is registered and available for management.
