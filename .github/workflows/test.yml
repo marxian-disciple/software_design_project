@@ -21,8 +21,7 @@ jobs:
         run: chmod +x node_modules/.bin/jest
 
       - name: Run tests with coverage
-        run: node_modules/.bin/jest --coverage
-
+        run: npm test
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
