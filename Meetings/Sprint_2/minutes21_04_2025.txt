@@ -1,0 +1,56 @@
+Meeting Title: 2 meeting 
+
+Date: April 21, 2025 
+
+Time: 17:30-18:00 
+
+Location: MSL004 
+
+  
+
+Attendees: 
+
+Molemo 
+
+Emihle 
+
+Kwezi 
+
+Ntando 
+ 
+Mohau
+
+
+Absentees:
+
+Owethu
+ 
+
+Agenda Items: 
+1. We need to have one more meeting for sprint 2
+
+2. Application
+Molemo had said that he was looking into creating an espress application, due to restrictions when using an API. However, the client has said that we should only make use of an API if neccessary. Certain files in the repo that make use of esspress will be deleted. For our purposes firebase should be  sufficient
+
+3. Tasks
+6 user stories and  UAT completed and Molemo's UML diagram, however the UATs have not been completed.
+
+4.Splitting of user stories
+Kwezi suggested that for time optimality, we split user stories to implement and each person recieves one.
+
+5. Prototype
+Ntando asked Mohau to create a prototype for the dashboard by tomorrow
+
+6. Mockupgb 
+Emihle asked for the Mockup to be transferred to a shared Figma account.
+
+
+ 
+
+Next Meeting: 
+
+Date: TBD 
+
+Time: TBD 
+
+Location: Virtual 
