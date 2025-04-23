@@ -3,13 +3,13 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+} from "firebase/auth";
 
 // Initialize Auth and Provider
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-document.getElementById("google").addEventListener("click", async () => {
+document.getElementsByClassName("google-btn")[0].addEventListener("click", async () => {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;

@@ -5,4 +5,3 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("user-name").textContent = name ?? "User";
     document.getElementById("user-photo").src = photo ?? "default.jpg";
   });
-  
