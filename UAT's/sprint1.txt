@@ -1,0 +1,6 @@
+Given the buyer is on the website’s homepage, when the buyer clicks on the "Login" link, then the login page should load successfully.
+Given the buyer is on the login page, when they enter a valid username and password and click "Submit", then the system authenticates the buyer and redirects them to their account dashboard.
+Given the seller is on the website’s homepage, when the seller navigates to the login page via the "Login" link, then the login page should be displayed.
+Given the seller is on the login page, when they enter their seller-specific username and password and click "Submit", then the system authenticates the seller and redirects them to the seller dashboard.
+Given the new user is on the website’s homepage, when the user clicks the "Register" link, then the registration page should load successfully.
+Given the new user is on the registration page, when they provide a valid email address, username, and password, and submit the form, then a new account is created, and a confirmation message is displayed
