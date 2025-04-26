@@ -1,0 +1,26 @@
+.input-group input,
+.input-group textarea {
+    width: 40ch; /* Approximate width for 20 characters */
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.input-group textarea {
+    resize: vertical; /* Only allow vertical resizing */
+    height: 100px;
+}
+
+.add-btn {
+    width: 100%;
+    padding: 1rem;
+    background: #0da13e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
