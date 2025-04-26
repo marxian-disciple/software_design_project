@@ -1,0 +1,189 @@
+/* Reset and layout base */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Make body flex container to push footer down */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: sans-serif;
+}
+
+/* Main Header Styles */
+.main-header {
+  display: flex;
+  flex-direction: column; /* Stack sections vertically */
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  gap: 1rem;
+}
+
+/* Each section inside the header laid out horizontally */
+.main-header section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Sell link */
+.sell-link {
+  color: #1a73e8;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.sell-link:hover {
+  color: #1557b0;
+  text-decoration: underline;
+}
+
+/* Login icon */
+.login-icon {
+  color: #333;
+  font-size: 1.2rem;
+  text-decoration: none;
+  padding: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.login-icon:hover {
+  color: #1a73e8;
+}
+
+/* Logo and Side Images */
+.logo {
+  height: 60px;
+}
+
+/* Search Bar */
+.search-bar {
+  width: 300px;
+  padding: 0.8rem 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  font-size: 1rem;
+  background: #f5f5f5;
+  transition: all 0.3s ease;
+}
+
+.search-bar:focus {
+  outline: none;
+  background: #ffffff;
+  box-shadow: 0 0 5px rgba(26, 115, 232, 0.3);
+}
+
+/* Navigation Links */
+.things ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.things li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.things li a:hover {
+  color: #1a73e8;
+}
+
+/* Main content area (pushes footer down) */
+.content {
+  flex: 1;
+  margin-top: 300px; /* Enough space for fixed header */
+  background: #f8f9fa;
+  padding: 2rem;
+}
+
+/* Footer Styles */
+.main-footer {
+  background-color: #f8f8f8;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.main-footer section {
+  flex: 1 1 200px;
+  margin: 10px;
+}
+
+.main-footer h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.main-footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.main-footer li {
+  margin-bottom: 8px;
+}
+
+.main-footer a {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.main-footer a:hover {
+  text-decoration: underline;
+  color: #1a73e8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-header {
+    flex-direction: column;
+    padding: 1rem;
+    position: static;
+  }
+
+  .main-header section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-bar {
+    width: 100%;
+    max-width: 90vw;
+  }
+
+  .things ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .main-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .main-footer section {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

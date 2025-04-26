@@ -272,3 +272,19 @@ body.dashboard-page {
         font-size: 1.4rem;
     }
 }
+
+.main-footer {
+    margin-top: auto; /* Push footer to the bottom */
+    background-color: #f8f8f8;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    font-family: sans-serif;
+  }
+  
+  /* Style each section */
+  .main-footer section {
+    flex: 1 1 200px; /* Grow, shrink, and base width */
+    margin: 10px;
+  }
