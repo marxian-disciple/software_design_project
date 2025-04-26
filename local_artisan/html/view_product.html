@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="../view_products_styling.css">
+
+</head>
+<body>
+    <header>
+        <h1>Artisan Marketplace</h1>
+        <nav aria-label="Main Navigation">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/cart">Cart</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <article aria-labelledby="product-title">
+            <figure>
+                <img src="path-to-product-image.jpg" alt="Handmade ceramic mug with blue glaze" width="400" height="400">
+                <figcaption>Handmade ceramic mug</figcaption>
+            </figure>
+
+            <section>
+                <h2 id="product-title">Handmade Ceramic Mug</h2>
+                <p><strong>Price:</strong> $25.00</p>
+                <p>This beautifully crafted ceramic mug is perfect for coffee lovers. Handmade by local artisans with eco-friendly materials.</p>
+
+                <form action="/add-to-cart" method="POST">
+                    <input type="hidden" name="product_id" value="12345">
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Artisan Marketplace. All rights reserved.</p>
+    </footer>
+</body>
+</html>
