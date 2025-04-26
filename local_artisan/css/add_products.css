@@ -1,22 +1,27 @@
+body.add-product {
+    background: #93a8ac;
+}
+
 .input-group input,
 .input-group textarea {
-    width: 40ch; /* Approximate width for 20 characters */
+    width: 40ch;
     padding: 0.5rem;
-    border: 1px solid #ccc;
+    border: 1px solid #fad4d8;
     border-radius: 4px;
     box-sizing: border-box;
     font-size: 1rem;
+    background-color: #fad4d8;
 }
 
 .input-group textarea {
-    resize: vertical; /* Only allow vertical resizing */
+    resize: vertical;
     height: 100px;
 }
 
 .add-btn {
     width: 100%;
     padding: 1rem;
-    background: #0da13e;
+    background: #3b5249;
     color: white;
     border: none;
     border-radius: 5px;
