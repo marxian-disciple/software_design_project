@@ -4,36 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Details</title>
-    <link rel="stylesheet" href="../view_products_styling.css">
+    <link rel="stylesheet" href="../css/view_products_styling.css">
 
 </head>
 <body>
     <header>
-        <h1>Artisan Marketplace</h1>
+        <a href="/" style="display: block; text-align: center;">
+            <img src="../images/logo.png" alt="Artify Logo" width="200" height="200">
+        </a>
+    
         <nav aria-label="Main Navigation">
             <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/cart">Cart</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="view_cart.html">Cart</a></li>
             </ul>
         </nav>
     </header>
+    
 
     <main>
         <article aria-labelledby="product-title">
             <figure>
-                <img src="path-to-product-image.jpg" alt="Handmade ceramic mug with blue glaze" width="400" height="400">
-                <figcaption>Handmade ceramic mug</figcaption>
+                <img id="product-image" src="" alt="" width="400" height="400">
             </figure>
 
             <section>
-                <h2 id="product-title">Handmade Ceramic Mug</h2>
-                <p><strong>Price:</strong> $25.00</p>
-                <p>This beautifully crafted ceramic mug is perfect for coffee lovers. Handmade by local artisans with eco-friendly materials.</p>
-
-                <form action="/add-to-cart" method="POST">
-                    <input type="hidden" name="product_id" value="12345">
-                    <button type="submit">Add to Cart</button>
+                <h2 id="product-title">Loading data...</h2>
+                <p id="product-price">Price: $0.00</p>
+                
+                <p id="product-description">Description: Loading...</p>
+                <form>
+                    <button type="button" id="add-to-cart">Add to Cart</button>
                 </form>
+                
             </section>
         </article>
     </main>
@@ -42,4 +45,5 @@
         <p>&copy; 2025 Artisan Marketplace. All rights reserved.</p>
     </footer>
 </body>
+<script src="../scripts/view_product.js"></script>
 </html>
