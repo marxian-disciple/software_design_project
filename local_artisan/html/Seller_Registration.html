@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="Logo.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Artify Application Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #93A8AC;
+      margin: 0;
+      padding: 20px;
+    }
+    main {
+      max-width: 800px;
+      margin: auto;
+      background: #93A8AC;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0);
+    }
+    h2 {
+      text-align: center;
+      color: #231942;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #FAD4D8; 
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background-color: #3B5249;
+      color: #231942;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #123829;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <img src="https://raw.githubusercontent.com/marxian-disciple/software_design_project/refs/heads/main/local_artisan/images/logo.png" alt="Artify Logo" class="logo" />
+    <h2 style="text-align: center;">Seller Registration Form</h2>
+
+    <form action="#" method="POST">
+      <!-- Business Details -->
+      <label for="businessName"><span style="color: #231942;">Business Name <span style="color: red;">*</label>
+      <input type="text" id="businessName" name="businessName" required />
+
+      <label for="registrationNumber"><span style="color: #231942;">Company Registration Number</label>
+      <input type="text" id="registrationNumber" name="registrationNumber" />
+
+      <label for="vatNumber"><span style="color: #231942;">VAT Number (if applicable)</label>
+      <input type="text" id="vatNumber" name="vatNumber" />
+
+      <!-- Contact Details -->
+      <label for="fullName"><span style="color: #231942;">Your Full Name <span style="color: red;">*</label>
+      <input type="text" id="fullName" name="fullName" required />
+
+      <label for="email"><span style="color: #231942;">Email Address <span style="color: red;">*</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="phone"><span style="color: #231942;">Phone Number <span style="color: red;">*</span></label>
+      <input type="tel" id="phone" name="phone" required />
+
+      <!-- Product Details -->
+      <label for="productTypes"><span style="color: #231942;">Types of Products You Sell <span style="color: red;">*</label>
+      <textarea id="productTypes" name="productTypes" rows="4" required></textarea>
+
+      <label for="categories"><span style="color: #231942;">Product Categories <span style="color: red;">*</label>
+      <select id="categories" name="categories[]" multiple required>
+        <option value="electronics">Electronics</option>
+        <option value="fashion">Fashion</option>
+        <option value="books">Books</option>
+        <option value="beauty">Beauty</option>
+        <option value="home">Home & Living</option>
+        <option value="sports">Sports</option>
+      </select>
+
+      <label for="website"><span style="color: #231942;">Business Website (if applicable)</label>
+      <input type="url" id="website" name="website" />
+
+      <!-- Submission -->
+      <button type="submit">Submit Application</button>
+      <h6>By clicking "Submit Application", you agree to our <span style="color: blue;"/> Terms & Conditions.</h6>
+    </form>
+  </main>
+</body>
+</html>
