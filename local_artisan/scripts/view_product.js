@@ -19,7 +19,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const productId = urlParams.get('id');
 
 // Find the product in the list
-const product = products.find(p => p.id === productId);
+const product = products.find(p => p.id === productId); 
 
 if (product) {
     // Populate the page dynamically
@@ -33,19 +33,27 @@ if (product) {
     alert("Product not found!");
 }
 
-// Handle Add to Cart
 const addToCartButton = document.getElementById('add-to-cart');
 
 addToCartButton.addEventListener('click', () => {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-    cart.push({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        quantity: 1
-    });
+    // Check if the product is already in the cart
+    const existingItem = cart.find(item => item.id === product.id);
+
+    if (existingItem) {
+        // If exists, just increase quantity
+        existingItem.quantity += 1;
+    } else {
+        // Else add as new item
+        cart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            quantity: 1
+        });
+    }
 
     localStorage.setItem('cart', JSON.stringify(cart));
 
