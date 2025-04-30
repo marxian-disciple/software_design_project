@@ -9,7 +9,7 @@ const firebaseConfig = {
   authDomain: "software-design-project-574a6.firebaseapp.com",
   databaseURL: "https://software-design-project-574a6-default-rtdb.firebaseio.com",
   projectId: "software-design-project-574a6",
-  storageBucket: "software-design-project-574a6.appspot.com", // fix typo: ".app" → ".appspot.com"
+  storageBucket: "software-design-project-574a6.firebasestorage.app",
   messagingSenderId: "831318427358",
   appId: "1:831318427358:web:82ee155cadb5f61e44644f",
   measurementId: "G-8JCE62JJJJ"
