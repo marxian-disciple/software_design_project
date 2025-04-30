@@ -1,8 +1,8 @@
-// lib/firebaseConfig.js
-import { initializeApp } from "firebase/app";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getAnalytics, isSupported } from "firebase/analytics";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+import { getAnalytics, isSupported } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyClkdKaYMnvNRPWbHLviEv_2Rzo5MLV5Uc",
@@ -18,10 +18,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+const storage = getStorage(app);
 
 // Only initialize analytics if supported (avoids breaking outside browser context)
 isSupported().then((supported) => {
   if (supported) getAnalytics(app);
 });
 
-export default app;
+// Export Firebase instances
+export { db, auth, storage };
