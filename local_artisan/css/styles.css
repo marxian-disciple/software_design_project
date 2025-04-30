@@ -288,3 +288,9 @@ body.dashboard-page {
     flex: 1 1 200px; /* Grow, shrink, and base width */
     margin: 10px;
   }
+
+
+/*Styles for seller registration/login page */
+.sentence {
+    padding-right: 40px;
+}

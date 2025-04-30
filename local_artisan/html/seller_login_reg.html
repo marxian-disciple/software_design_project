@@ -4,9 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    Hello.
-    <a href="seller_dashboard.html"><button>Move on to seller_dashboard</button></a>
+    <h1 class="sentence">First, we're going to need you to sign-up/in.</h1>
+    <section class="login-container">
+        <h2>Login</h2>
+        <form class="login-form">
+            <section class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </section>
+            <section class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </section>
+            <button type="submit" class="login-btn">Log In</button>
+            
+            <section class="social-login">
+                <p>Or continue with</p>
+                <section class="social-buttons">
+                    <button type="button" class="google-btn">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                    <button type="button" class="facebook-btn">
+                        <i class="fab fa-facebook-f"></i> Facebook
+                    </button>
+                </section>
+            </section>
+            
+            <nav class="forgot-password">
+                <a href="#">Forgot Password?</a>
+            </nav>
+        </form>
+    </section>
 </body>
+<script type="module" src="../scripts/seller_login_reg.js"></script>
 </html>

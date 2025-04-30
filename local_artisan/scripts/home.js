@@ -1,7 +1,7 @@
 const content = document.querySelector('.content');
 
 products.forEach(product => {
-    const card = document.createElement('div');
+    const card = document.createElement('section');
     card.classList.add('product-card');
 
     card.innerHTML = `

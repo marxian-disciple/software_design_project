@@ -15,7 +15,7 @@ onAuthStateChanged(auth, (user) => {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const name = document.getElementById('product-name').value;
+            const name = document.getElementById('product_name').value;
             const price = document.getElementById('price').value;
             const weight = document.getElementById('weight').value;
             const quantity = document.getElementById('quantity').value;
@@ -23,9 +23,9 @@ onAuthStateChanged(auth, (user) => {
             const image = document.getElementById('image').files[0];
 
             try {
-                const storageRef = ref(storage, `product-images/${Date.now()}-${image.name}`);
-                await uploadBytes(storageRef, image);
-                const imageUrl = await getDownloadURL(storageRef);
+                //const storageRef = ref(storage, `product-images/${Date.now()}-${image.name}`);
+                //await uploadBytes(storageRef, image);
+                //const imageUrl = await getDownloadURL(storageRef);
 
                 await addDoc(collection(db, 'products'), {
                     userId: user.uid,
@@ -34,7 +34,7 @@ onAuthStateChanged(auth, (user) => {
                     weight,
                     quantity,
                     description,
-                    imageUrl,
+                    //imageUrl,
                     createdAt: new Date()
                 });
 
