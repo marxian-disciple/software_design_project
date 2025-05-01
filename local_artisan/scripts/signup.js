@@ -1,33 +1,37 @@
-import app from "../lib/firebaseConfig.js";
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup
-} from "firebase/auth";
+import { auth, provider } from '../lib/firebaseConfig.js';
+import { signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-// Initialize Auth and Provider
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
+document.addEventListener('DOMContentLoaded', () => {
+    const googleBtn = document.querySelector('.google-btn');
 
-document.getElementsByClassName("google-btn")[0].addEventListener("click", async () => {
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
+    if (googleBtn) {
+        googleBtn.addEventListener('click', async () => {
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                alert(`Welcome, ${user.displayName}!`);
 
-    console.log("Signup.js script loaded");
+                // Update the profile picture in the header (e.g., the login icon)
+                const loginIcon = document.querySelector(".login-icon");
+                if (loginIcon && user.photoURL) {
+                    loginIcon.innerHTML = `
+                        <img src="${user.photoURL}" alt="Profile" style="
+                            width: 40px;
+                            height: 40px;
+                            border-radius: 50%;
+                            object-fit: cover;
+                        ">
+                    `;
+                }
 
-    console.log("Signed up with Google:", user);
-
-    alert(`Welcome, ${user.displayName}!`);
-    // Redirect if needed
-    
-    localStorage.setItem("userName", user.displayName);
-    localStorage.setItem("userPhoto", user.photoURL);
-    
-    // Redirect to seller dashboard
-    window.location.href = "../html/seller_dashboard.html";
-  } catch (error) {
-    console.error("Google Sign-In Error:", error);
-    alert("Failed to sign in with Google.");
-  }
+                // Redirect to home or landing page after successful login
+                window.location.href = 'index.html'; // Or your desired landing page
+            } catch (error) {
+                console.error("Google Sign-In Error:", error);
+                alert("Google Sign-In failed. Please try again.");
+            }
+        });
+    } else {
+        console.warn('Google button not found in the DOM.');
+    }
 });
