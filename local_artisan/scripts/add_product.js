@@ -15,7 +15,7 @@ onAuthStateChanged(auth, (user) => {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const name = document.getElementById('product-name').value;
+            const name = document.getElementById('product_name').value;
             const price = document.getElementById('price').value;
             const weight = document.getElementById('weight').value;
             const quantity = document.getElementById('quantity').value;
