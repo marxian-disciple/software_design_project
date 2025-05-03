@@ -1,4 +1,3 @@
-// index_filter.js
 document.addEventListener('DOMContentLoaded', () => {
     // Cache DOM elements
     const categoryLinks = document.querySelectorAll('[data-filter-category]');

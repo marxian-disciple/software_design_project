@@ -213,16 +213,15 @@ body {
 }
 
 [data-filter-category].active {
-  background: #ffeaa7;
-  color: #d63031;
-  font-weight: 600;
+  background: #ffeaa7 !important;
+  color: #d63031 !important;
 }
 
 /* Individual Product Card */
 .product-card {
   display: block;
   background: white;
-  border-radius: 20px;
+  border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
