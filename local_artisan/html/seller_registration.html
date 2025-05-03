@@ -50,10 +50,26 @@
     button:hover {
       background-color: #123829;
     }
+   #closeBtn {
+     position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #231942;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    z-index: 1000;
+  }
+  #closeBtn:hover {
+    color: #000000;
+}
+
   </style>
 </head>
 <body>
   <main>
+    <span id="closeBtn">&times;</span>
     <img src="https://raw.githubusercontent.com/marxian-disciple/software_design_project/refs/heads/main/local_artisan/images/logo.png" alt="Artify Logo" class="logo" />
     <h2 style="text-align: center;">Seller Registration Form</h2>
 
@@ -76,7 +92,16 @@
       <input type="email" id="email" name="email" required />
 
       <label for="phone"><span style="color: #231942;">Phone Number <span style="color: red;">*</span></label>
-      <input type="tel" id="phone" name="phone" required />
+<input
+  type="tel"
+  id="phone"
+  name="phone"
+  required
+  pattern="^(\+27|0)[6-8][0-9]{8}$"
+  placeholder="e.g. 0812345678 or +27812345678"
+/>
+<small>Format: 0812345678 or +27812345678</small>
+
 
       <!-- Product Details -->
       <label for="productTypes"><span style="color: #231942;">Types of Products You Sell <span style="color: red;">*</label>
@@ -100,5 +125,10 @@
       <h6>By clicking "Submit Application", you agree to our <span style="color: blue;"/> Terms & Conditions.</h6>
     </form>
   </main>
+  <script>
+document.getElementById("closeBtn").addEventListener("click", () => {
+    window.location.href = "index.html"; // Change to your actual destination
+  });
+</script>
 </body>
 </html>

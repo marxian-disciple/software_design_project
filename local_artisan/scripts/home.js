@@ -1,8 +1,9 @@
-const content = document.querySelector('.content');
+const content = document.querySelector('.middle-content');
 
 products.forEach(product => {
     const card = document.createElement('div');
     card.classList.add('product-card');
+    card.dataset.productType = product.type;
 
     card.innerHTML = `
         <img src="${product.image}" alt="${product.name}" class="product-image">
