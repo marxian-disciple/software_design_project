@@ -1,0 +1,7 @@
+As a buyer, I want to be able to click on a product to see more information on it.
+As a buyer, I want to be able to register as a seller.
+As a buyer, I want to be able to see what is in my cart.
+As a buyer, I want to be able to add products in my cart.
+As a buyer, I want to be able to remove products in my cart.
+As a seller, I want to be able to add products to my inventory.
+As a seller, I want to be able to view my inventory.
