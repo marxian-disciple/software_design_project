@@ -150,6 +150,17 @@ body {
   background: #f8f9fa;
   padding: 2rem;
   background: #FAD4D8;
+  display: flex;
+  gap:40px;
+}
+
+.right_side_content{
+  flex:0 0 250px;
+  margin: auto;
+}
+
+.left_side_content{
+  flex:1;
 }
 
 /* Individual Product Card */
