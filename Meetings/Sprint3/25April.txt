@@ -1,0 +1,34 @@
+Meeting Title: First In-person Team Meeting
+Date: April 25, 2025
+Time: 15:45-16:50
+Location: MSL006
+
+Attendees:
+Molemo
+Emihle
+Kwezi
+Ntando
+Owethu
+
+Absentees:
+Mohau
+
+Agenda Items:
+1. Project Update
+Discussion: The team had some retrospective after meeting with client.
+
+Decisions Made: 
+
+The team decided that we will meet on the 26 April on Campus to start working on more html pages.
+The team decided that we should start working together and making sure that everything before we meet the client.
+Emihle suggested she will like to work on the homepage since she was responsible for making the homepage using figma.
+
+
+Action Items:
+
+Molemo decided that he will assign everyone with tasks before 26 April so that when we meet we all know which pages we will start working on.
+
+Next Meeting:
+Date: April 26, 2025
+Time: 12:00
+Location: MSL008
