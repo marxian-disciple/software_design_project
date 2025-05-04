@@ -50,7 +50,7 @@ export function initializeForm() {
           });
 
           alert('Product added successfully!');
-          form.reset();  // Reset the form after submission
+          window.location.href = "../html/seller_dashboard.html"
         } catch (err) {
           console.error(`Error adding product to database: ${err}`);
         }
