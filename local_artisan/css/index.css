@@ -145,7 +145,7 @@ body {
 /* Main content area (pushes footer down) */
 .content {
   flex: 1;
-  margin-top: 300px; /* Reduced fro 300 to 180 for shorter header */
+  margin-top: 250px; /* Reduced fro 300 to 180 for shorter header */
   background: #f8f9fa;
   padding: 2rem;
   background: #FAD4D8;
