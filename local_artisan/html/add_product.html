@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="add-product">
-    <form class="login-form">
+    <form class="add-product">
         <section class="input-group">
             <label for="product_name">Product Name</label>
             <input type="text" id="product_name" name="product_name" required>
@@ -31,12 +31,13 @@
             <textarea id="description" name="description" rows="4" cols="50" placeholder="Additional description"></textarea>
         </section>
         <section class="input-group">
-            <label for="imageUpload">Upload an image of your product:</label>
-            <input type="file" id="image" name="imageUpload" accept="image/*">
+            <label for="image">Upload an image of your product:</label>
+            <input type="file" id="image" name="image" accept="image/*">
         </section>
-        <button type="submit" class="add-btn">Add Product</button>
+        <button type="button" class="add-btn">Add Product</button> <!-- Change to type="button" -->
     </form>
+
+    <script type="module" src="../lib/firebaseConfig.js"></script>
+    <script type="module" src="../scripts/add_product.js"></script>
 </body>
-<script type="module"  src="../lib/firebaseConfig.js"></script>
-<script type="module"  src="../scripts/add_product.js"></script>
 </html>
