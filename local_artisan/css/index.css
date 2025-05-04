@@ -52,13 +52,12 @@ body {
 }
 
 /* Side decorations positioning */
-.side_left, .side_right {
+.side_left{
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
 }
 .side_left { left: 10px; }
-.side_right { right: 10px; }
 
 /* Bottom section (search + nav) */
 .main-header > section:last-child {

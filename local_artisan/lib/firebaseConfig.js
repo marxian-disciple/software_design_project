@@ -1,9 +1,7 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-import { getAuth, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import { getStorage } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
-import { getAnalytics, isSupported } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyClkdKaYMnvNRPWbHLviEv_2Rzo5MLV5Uc",
   authDomain: "software-design-project-574a6.firebaseapp.com",
@@ -15,19 +13,12 @@ const firebaseConfig = {
   measurementId: "G-8JCE62JJJJ"
 };
 
-// Initialize Firebase only once
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Core Firebase services
-const db = getFirestore(app);
+// Initialize Firebase Auth and Google Auth Provider
 const auth = getAuth(app);
-const storage = getStorage(app);
 const provider = new GoogleAuthProvider();
 
-// Optional: Initialize Analytics only if supported
-isSupported().then((supported) => {
-  if (supported) getAnalytics(app);
-});
-
-// Export what your app needs
-export { db, auth, storage, provider };
+// Export only the necessary components
+export { auth, provider };
