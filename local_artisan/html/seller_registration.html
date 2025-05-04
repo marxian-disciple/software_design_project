@@ -5,75 +5,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Artify Application Form</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #93A8AC;
-      margin: 0;
-      padding: 20px;
-    }
-    main {
-      max-width: 800px;
-      margin: auto;
-      background: #93A8AC;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0);
-    }
-    h2 {
-      text-align: center;
-      color: #231942;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background-color: #FAD4D8; 
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 12px 20px;
-      background-color: #3B5249;
-      color: #231942;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #123829;
-    }
-   #closeBtn {
-     position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 30px;
-    font-weight: bold;
-    color: #231942;
-    cursor: pointer;
-    transition: color 0.3s ease;
-    z-index: 1000;
-  }
-  #closeBtn:hover {
-    color: #000000;
-}
-
-  </style>
+  <link rel="stylesheet" href="../css/seller_registration.css">
 </head>
 <body>
   <main>
-    <span id="closeBtn">&times;</span>
     <img src="https://raw.githubusercontent.com/marxian-disciple/software_design_project/refs/heads/main/local_artisan/images/logo.png" alt="Artify Logo" class="logo" />
     <h2 style="text-align: center;">Seller Registration Form</h2>
 
-    <form action="#" method="POST">
+    <form action="#" class="seller-info">
       <!-- Business Details -->
       <label for="businessName"><span style="color: #231942;">Business Name <span style="color: red;">*</label>
       <input type="text" id="businessName" name="businessName" required />
@@ -92,20 +31,7 @@
       <input type="email" id="email" name="email" required />
 
       <label for="phone"><span style="color: #231942;">Phone Number <span style="color: red;">*</span></label>
-<input
-  type="tel"
-  id="phone"
-  name="phone"
-  required
-  pattern="^(\+27|0)[6-8][0-9]{8}$"
-  placeholder="e.g. 0812345678 or +27812345678"
-/>
-<small>Format: 0812345678 or +27812345678</small>
-
-
-      <!-- Product Details -->
-      <label for="productTypes"><span style="color: #231942;">Types of Products You Sell <span style="color: red;">*</label>
-      <textarea id="productTypes" name="productTypes" rows="4" required></textarea>
+      <input type="tel" id="phone" name="phone" required />
 
       <label for="categories"><span style="color: #231942;">Product Categories <span style="color: red;">*</label>
       <select id="categories" name="categories[]" multiple required>
@@ -125,10 +51,6 @@
       <h6>By clicking "Submit Application", you agree to our <span style="color: blue;"/> Terms & Conditions.</h6>
     </form>
   </main>
-  <script>
-document.getElementById("closeBtn").addEventListener("click", () => {
-    window.location.href = "index.html"; // Change to your actual destination
-  });
-</script>
 </body>
+<script type="module" src="../scripts/seller_registration.js"></script>
 </html>
