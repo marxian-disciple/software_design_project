@@ -1,0 +1,7 @@
+UAT's (given-when-then)
+
+Given that I am a seller, when I am logged in then I can visit my store.
+Given that I am a seller, when I add products then they appear on the homepage.
+Given that I am a user, when I want to sell products on the application then I can register to become a seller.
+Given that I am a user, when I register to become a seller then I can choose what type of commodities I can sell.
+Given that I am a seller, when I add a product to my store then I can also upload a picture showing that product.
