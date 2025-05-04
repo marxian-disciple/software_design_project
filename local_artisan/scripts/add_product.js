@@ -1,7 +1,7 @@
-import { auth, db, storage } from '../lib/firebaseConfig';
-import { collection, addDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { onAuthStateChanged } from 'firebase/auth';
+import { ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js';
+import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { auth, db, storage } from '../lib/firebaseConfig.js';
+import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
 let formInitialized = false;
 
@@ -11,8 +11,11 @@ export function initializeForm() {
       alert('User not logged in!');
     } else if (!formInitialized) {
       formInitialized = true;
+      const addButton = document.querySelector('.add-btn');
       const form = document.querySelector('.add-product');
-      form.addEventListener('submit', async (e) => {
+      
+      // Add the event listener to the button
+      addButton.addEventListener('click', async (e) => {
         e.preventDefault();
 
         const name = document.getElementById('product_name').value;
@@ -22,11 +25,19 @@ export function initializeForm() {
         const description = document.getElementById('description').value;
         const image = document.getElementById('image').files[0];
 
+        // Make sure an image is selected
+        if (!image) {
+          alert('Please upload an image.');
+          return;
+        }
+
         try {
+          // Upload the image to Firebase Storage
           const storageRef = ref(storage, `product-images/${Date.now()}-${image.name}`);
           await uploadBytes(storageRef, image);
           const imageUrl = await getDownloadURL(storageRef);
 
+          // Add product data to Firestore
           await addDoc(collection(db, 'products'), {
             userId: user.uid,
             name,
@@ -39,7 +50,7 @@ export function initializeForm() {
           });
 
           alert('Product added successfully!');
-          form.reset();
+          window.location.href = "../html/seller_dashboard.html"
         } catch (err) {
           console.error(`Error adding product to database: ${err}`);
         }
@@ -47,3 +58,6 @@ export function initializeForm() {
     }
   });
 }
+
+// Initialize the form when the document is ready
+document.addEventListener('DOMContentLoaded', initializeForm);

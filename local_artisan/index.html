@@ -90,7 +90,7 @@
   <footer class="main-footer">
     <section>
       <h2>Shop</h2>
-      <ul>
+      <ul class="shop">
         <li><a href="#">Daily Deals</a></li>
         <li><a href="#">Clearance Sales</a></li>
         <li><a href="#">Seasonal Deals</a></li>
@@ -135,9 +135,9 @@
   </footer>
 
   <!-- 🔹 Script section -->
-  <script src="scripts/products.js"></script>
-  <script src="scripts/home.js"></script>
-  <script src="scripts/index_filters.js"></script>
+  <script type="module" src="scripts/products.js"></script>
+  <script type="module" src="scripts/home.js"></script>
+  <script type="module" src="scripts/index_filters.js"></script>
 
   <!-- 🔹 Firebase Profile Display Script -->
   <script type="module">
@@ -158,6 +158,47 @@
       }
     });
   </script>
+
+<script type="module">
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { auth, db } from "./lib/firebaseConfig.js";
+
+  const shop = document.querySelector(".shop");
+  let userFound = false;
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const sellers = collection(db, "sellers");
+      const fetchUserByUid = async (uid) => {
+        try {
+          const snapshot = await getDocs(sellers);
+          snapshot.forEach(doc => {
+            const userData = doc.data(); // Get data of each document
+            // Check if the uid field matches the one you're looking for
+            if (userData.userId === user.uid) {
+            // Only add the item if it doesn't already exist
+            if (!document.querySelector('.shop li a[href="html/seller_dashboard.html"]')) {
+                const li = document.createElement("li");
+                li.innerHTML = `<a href="html/seller_dashboard.html">View My Shop</a>`;
+                shop.insertBefore(li, shop.firstChild);
+              }
+              userFound = true;
+            }
+          });
+
+          if (!userFound) {
+            console.log("User not a seller");
+            console.log(uid);
+          }
+        } catch (error) {
+          console.error("Error fetching user:", error);
+        }
+      };
+      fetchUserByUid(user.uid);
+    }
+  });
+</script>
   
 </body>
 </html>
