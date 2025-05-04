@@ -44,7 +44,17 @@ body {
   justify-content: space-between !important; /* Force left-right alignment */
   padding: 0 2rem;
 }
-
+.logo-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.logo-row .side_right {
+  margin-left: auto;
+}
+.logo-row .middle {
+  margin: 0 auto;
+}
 /* Middle section (logo) */
 .header-middle {
   position: relative;
