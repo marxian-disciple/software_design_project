@@ -6,7 +6,7 @@ let formInitialized = false;
 
 onAuthStateChanged(auth, (user) => {
     if (!user) {
-        //alert('User not logged in!');
+        alert('User not logged in!');
     }
     else if (user && !formInitialized) {
         formInitialized = true; // to make sure event listener attatches only once so that even when onAuthStateChanged changes, we only add the listener once.
