@@ -46,6 +46,7 @@ export function initializeForm() {
             quantity,
             description,
             imageUrl,
+            category: category,
             createdAt: new Date(),
           });
 
