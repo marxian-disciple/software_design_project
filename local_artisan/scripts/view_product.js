@@ -29,7 +29,7 @@ async function loadProduct() {
   if (docSnap.exists()) {
     const product = docSnap.data();
 
-    // Populate UI
+    
     document.getElementById('product-image').src = product.imageUrl || product.image;
     document.getElementById('product-image').alt = product.name;
     document.getElementById('product-title').textContent = product.name;

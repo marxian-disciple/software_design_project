@@ -25,24 +25,26 @@ function renderCart() {
     const itemElement = document.createElement('div');
     itemElement.classList.add('cart-item');
 
+    const itemPrice = parseFloat(item.price);
+    const itemTotal = itemPrice * item.quantity;
+
     itemElement.innerHTML = `
       <img src="${item.image}" alt="${item.name}" class="cart-item-image">
       <div class="cart-item-details">
         <h3>${item.name}</h3>
-        <p>Price: $${item.price.toFixed(2)}</p>
+        <p>Price: $${itemPrice.toFixed(2)}</p>
         <p>Quantity: ${item.quantity}</p>
         <button class="remove-button" data-id="${item.id}">Remove</button>
       </div>
     `;
 
     cartItemsContainer.appendChild(itemElement);
-
-    total += item.price * item.quantity;
+    total += itemTotal;
   });
 
   cartTotalContainer.innerText = total.toFixed(2);
 
-  // Set up remove button listeners
+  
   const removeButtons = document.querySelectorAll('.remove-button');
   removeButtons.forEach(button => {
     button.addEventListener('click', (event) => {
@@ -52,5 +54,5 @@ function renderCart() {
   });
 }
 
-// Call it immediately
+// Initial render
 renderCart();
