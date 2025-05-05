@@ -140,8 +140,13 @@
 </body>
 <script type="module" src="../scripts/seller_registration.js"></script>
 <script>
- document.getElementById("closeBtn").addEventListener("click", () => {
-     window.location.href = "index.html"; 
-   });
- </script>
+  document.getElementById("closeBtn").addEventListener("click", () => {
+    window.location.href = "index.html"; 
+  });
+
+  document.querySelector("form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent default form submission
+    window.location.href = "seller_login_reg.html"; // Redirect to dashboard
+  });
+</script>
 </html>
