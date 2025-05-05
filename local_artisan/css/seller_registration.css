@@ -1,44 +1,58 @@
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #93A8AC;
-    margin: 0;
-    padding: 20px;
-  }
-  main {
-    max-width: 800px;
-    margin: auto;
-    background: #93A8AC;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0);
-  }
-  h2 {
-    text-align: center;
-    color: #231942;
-  }
-  label {
-    display: block;
-    margin-top: 15px;
-    font-weight: bold;
-  }
-  input, select, textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #FAD4D8; 
-  }
+      font-family: Arial, sans-serif;
+      background-color: #93A8AC;
+      margin: 0;
+      padding: 20px;
+    }
+    main {
+      max-width: 800px;
+      margin: auto;
+      background: #93A8AC;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0);
+    }
+    h2 {
+      text-align: center;
+      color: #231942;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #FAD4D8; 
+    }
 
-  button {
-    margin-top: 20px;
-    padding: 12px 20px;
-    background-color: #3B5249;
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background-color: #3B5249;
+      color: #231942;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #123829;
+    }
+   #closeBtn {
+     position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 30px;
+    font-weight: bold;
     color: #231942;
-    border: none;
-    border-radius: 5px;
     cursor: pointer;
+    transition: color 0.3s ease;
+    z-index: 1000;
   }
-  button:hover {
-    background-color: #123829;
-  }
+  #closeBtn:hover {
+    color: #000000;
+}
