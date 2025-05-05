@@ -4,7 +4,7 @@ module.exports = {
   },
   testEnvironment: 'jsdom',
   collectCoverageFrom: [
-    "local_artisan/scripts/*.js", // adjust path as needed
+    "local_artisan/scripts/**/*.js", // adjust path as needed
     "!**/node_modules/**",
     "!**/vendor/**"
   ],
