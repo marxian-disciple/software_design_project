@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Details</title>
     <link rel="stylesheet" href="../css/view_products_styling.css">
-
 </head>
 <body>
     <header>
@@ -15,13 +14,12 @@
     
         <nav aria-label="Main Navigation">
             <ul>
-                <li><a href="index.html">Home</a></li>
+                <li><a href="../index.html">Home</a></li>
                 <li><a href="view_cart.html">Cart</a></li>
             </ul>
         </nav>
     </header>
     
-
     <main>
         <article aria-labelledby="product-title">
             <figure>
@@ -31,12 +29,10 @@
             <section>
                 <h2 id="product-title">Loading data...</h2>
                 <p id="product-price">Price: $0.00</p>
-                
                 <p id="product-description">Description: Loading...</p>
                 <form>
                     <button type="button" id="add-to-cart">Add to Cart</button>
                 </form>
-                
             </section>
         </article>
     </main>
@@ -44,6 +40,10 @@
     <footer>
         <p>&copy; 2025 Artisan Marketplace. All rights reserved.</p>
     </footer>
+
+    <section id="toast" class="toast hidden">Added to cart!</section>
+
+    <script type="module" src="../scripts/view_product.js"></script>
+
 </body>
-<script src="../scripts/view_product.js"></script>
 </html>

@@ -90,6 +90,27 @@ button {
 button:hover {
     background-color: #231942;
 }
+.toast {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #323232;
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease-in-out;
+  }
+  
+  .toast.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
 
 footer {
     background-color: #231942;

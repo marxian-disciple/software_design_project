@@ -3,6 +3,11 @@
 // import { getAnalytics } from "firebase/analytics";
 
 // Use compat-style Firebase setup
+// No need for these when using compat:
+// import { initializeApp } from "firebase/app";
+// import { getAnalytics } from "firebase/analytics";
+
+// Use compat-style Firebase setup
 const firebaseConfig = {
   apiKey: "AIzaSyClkdKaYMnvNRPWbHLviEv_2Rzo5MLV5Uc",
   authDomain: "software-design-project-574a6.firebaseapp.com",

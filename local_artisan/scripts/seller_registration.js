@@ -1,12 +1,12 @@
 import { db, auth } from '../lib/firebaseConfig.js';
-import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 let formInitialized = false;
 
 onAuthStateChanged(auth, (user) => {
     if (!user) {
-        //alert('User not logged in!');
+        alert('User not logged in!');
     }
     else if (user && !formInitialized) {
         formInitialized = true; // to make sure event listener attatches only once so that even when onAuthStateChanged changes, we only add the listener once.

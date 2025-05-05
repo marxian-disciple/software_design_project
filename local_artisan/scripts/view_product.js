@@ -1,61 +1,66 @@
-const products = [
-    {
-        id: "1",
-        name: "Handmade Ceramic Mug",
-        price: 25.00,
-        description: "This beautifully crafted ceramic mug is perfect for coffee lovers. Handmade by local artisans with eco-friendly materials.",
-        image: "../images/ceramic_mug.png"
-    },
-    {
-        id: "2",
-        name: "Wooden Jewelry Box",
-        price: 45.00,
-        description: "A finely crafted jewelry box made from sustainable wood, featuring intricate carvings.",
-        image: "../images/wooden_jewelry_box.png"
-    }
-];
-// Get the product ID from the URL
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyClkdKaYMnvNRPWbHLviEv_2Rzo5MLV5Uc",
+  authDomain: "software-design-project-574a6.firebaseapp.com",
+  projectId: "software-design-project-574a6",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 const urlParams = new URLSearchParams(window.location.search);
 const productId = urlParams.get('id');
 
-// Find the product in the list
-const product = products.find(p => p.id === productId); 
+const showToast = (message) => {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+};
 
-if (product) {
-    // Populate the page dynamically
-    document.getElementById('product-image').src = product.image;
+async function loadProduct() {
+  if (!productId) return;
+
+  const docRef = doc(db, "products", productId);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const product = docSnap.data();
+
+    
+    document.getElementById('product-image').src = product.imageUrl || product.image;
     document.getElementById('product-image').alt = product.name;
     document.getElementById('product-title').textContent = product.name;
     document.getElementById('product-description').textContent = product.description;
-    document.getElementById('product-price').textContent = `$${product.price.toFixed(2)}`;
-} else {
-    // If product not found
-    alert("Product not found!");
+    document.getElementById('product-price').textContent = `$${parseFloat(product.price).toFixed(2)}`;
+
+    // Add to cart logic
+    document.getElementById('add-to-cart').addEventListener('click', () => {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+      const existingItem = cart.find(item => item.id === productId);
+
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({
+          id: productId,
+          name: product.name,
+          price: product.price,
+          image: product.imageUrl || product.image,
+          quantity: 1
+        });
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+      showToast(`${product.name} added to cart!`);
+    });
+
+  } else {
+    alert("Product not found.");
+  }
 }
 
-const addToCartButton = document.getElementById('add-to-cart');
-
-addToCartButton.addEventListener('click', () => {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-    // Check if the product is already in the cart
-    const existingItem = cart.find(item => item.id === product.id);
-
-    if (existingItem) {
-        // If exists, just increase quantity
-        existingItem.quantity += 1;
-    } else {
-        // Else add as new item
-        cart.push({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            image: product.image,
-            quantity: 1
-        });
-    }
-
-    localStorage.setItem('cart', JSON.stringify(cart));
-
-    alert(`${product.name} added to cart!`);
-});
+loadProduct();
