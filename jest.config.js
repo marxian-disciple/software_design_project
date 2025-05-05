@@ -3,6 +3,9 @@ module.exports = {
     '^.+\\.js$': 'babel-jest', // Handle JavaScript files with babel-jest
   },
   testEnvironment: 'jsdom',
+
+  setupFiles: ['<rootDir>/jest.setup.js'], // ✅ Add this line
+
   collectCoverageFrom: [
     "local_artisan/scripts/**/*.js", // adjust path as needed
     "!**/node_modules/**",
