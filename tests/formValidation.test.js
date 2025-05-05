@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-const { isEmailValid, isPhoneValid, areRequiredFieldsFilled } = require('./formValidation');
+const { isEmailValid, isPhoneValid, areRequiredFieldsFilled } = require('../scripts/formValidation');
 
 describe('Validation Functions', () => {
   test('Valid email passes', () => {
