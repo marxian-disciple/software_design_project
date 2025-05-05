@@ -1,73 +1,107 @@
-// index_filter.test.js
-const fs = require('fs');
-const path = require('path');
+// __tests__/productFilter.test.js
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../lib/firebaseConfig';
+import { fetchAndDisplayProducts, displayProducts } from '../scripts/index_filters';
 
-describe('Product Filter', () => {
-  let document;
-  let filterLinks;
-  let productCards;
-  
+jest.mock('firebase/firestore');
+jest.mock('../lib/firebaseConfig.js');
+
+describe('Product Filtering', () => {
+  let mockContainer;
+  let mockCategoryLinks;
+
   beforeEach(() => {
-    // Set up DOM
-    const html = fs.readFileSync(path.resolve(__dirname, '../local_artisan/html/index.html'), 'utf8');
-    document = new (require('jsdom').JSDOM)(html).window.document;
+    // Mock DOM elements
+    mockContainer = {
+      innerHTML: '',
+      appendChild: jest.fn()
+    };
     
-    // Load implementation
-    require('./index_filter.js');
-    
-    // Get elements
-    filterLinks = document.querySelectorAll('[data-filter-category]');
-    productCards = document.querySelectorAll('.product-card');
+    mockCategoryLinks = [
+      { dataset: { filterCategory: 'all' }, classList: { remove: jest.fn(), add: jest.fn() } },
+      { dataset: { filterCategory: 'electronics' }, classList: { remove: jest.fn(), add: jest.fn() } }
+    ];
+
+    document.querySelectorAll = jest.fn().mockReturnValue(mockCategoryLinks);
+    document.querySelector = jest.fn().mockReturnValue(mockContainer);
   });
 
-  test('should initialize with "All Products" active', () => {
-    const allProductsLink = document.querySelector('[data-filter-category="all"]');
-    expect(allProductsLink.classList.contains('active')).toBe(true);
+  describe('fetchAndDisplayProducts', () => {
+    it('should fetch all products when category is "all"', async () => {
+      const mockProducts = [
+        { id: '1', name: 'Product 1', price: 10, imageUrl: 'url1', category: 'electronics' },
+        { id: '2', name: 'Product 2', price: 20, imageUrl: 'url2', category: 'clothing' }
+      ];
+
+      getDocs.mockResolvedValue({
+        docs: mockProducts.map(p => ({
+          id: p.id,
+          data: () => ({ ...p })
+        }))
+      });
+
+      await fetchAndDisplayProducts('all');
+
+      expect(collection).toHaveBeenCalledWith(db, 'products');
+      expect(query).toHaveBeenCalled();
+      expect(displayProducts).toHaveBeenCalledWith(mockProducts);
+    });
+
+    it('should filter products by category', async () => {
+      const mockElectronics = [
+        { id: '1', name: 'Product 1', price: 10, imageUrl: 'url1', category: 'electronics' }
+      ];
+
+      getDocs.mockResolvedValue({
+        docs: mockElectronics.map(p => ({
+          id: p.id,
+          data: () => ({ ...p })
+        }))
+      });
+
+      await fetchAndDisplayProducts('electronics');
+
+      expect(where).toHaveBeenCalledWith('category', '==', 'electronics');
+      expect(displayProducts).toHaveBeenCalledWith(mockElectronics);
+    });
   });
 
-  test('should update active state on click', () => {
-    const ceramicsLink = document.querySelector('[data-filter-category="Ceramics"]');
-    ceramicsLink.click();
-    
-    expect(ceramicsLink.classList.contains('active')).toBe(true);
-    expect(filterLinks[0].classList.contains('active')).toBe(false);
+  describe('displayProducts', () => {
+    it('should render products correctly', () => {
+      const products = [
+        { id: '1', name: 'Product 1', price: 10, imageUrl: 'url1' },
+        { id: '2', name: 'Product 2', price: 20, imageUrl: 'url2' }
+      ];
+
+      displayProducts(products);
+
+      expect(mockContainer.innerHTML).toBe('');
+      expect(mockContainer.appendChild).toHaveBeenCalledTimes(2);
+      expect(mockContainer.appendChild.mock.calls[0][0].innerHTML).toContain('Product 1');
+      expect(mockContainer.appendChild.mock.calls[1][0].innerHTML).toContain('Product 2');
+    });
+
+    it('should handle empty state', () => {
+      displayProducts([]);
+      expect(mockContainer.appendChild).not.toHaveBeenCalled();
+    });
   });
 
-  test('should filter products when category selected', () => {
-    const ceramicsLink = document.querySelector('[data-filter-category="Ceramics"]');
-    ceramicsLink.click();
-    
-    const visibleProducts = Array.from(productCards).filter(card => 
-      card.style.display !== 'none'
-    );
-    
-    expect(visibleProducts.length).toBe(1);
-    expect(visibleProducts[0].dataset.productType).toBe('Ceramics');
-  });
+  describe('Event Handlers', () => {
+    it('should update active class on category click', async () => {
+      const mockEvent = { 
+        preventDefault: jest.fn(),
+        target: mockCategoryLinks[1]
+      };
 
-  test('should show all products when "All" clicked', () => {
-    const allLink = document.querySelector('[data-filter-category="all"]');
-    const ceramicsLink = document.querySelector('[data-filter-category="Ceramics"]');
-    
-    ceramicsLink.click();
-    allLink.click();
-    
-    const hiddenProducts = Array.from(productCards).filter(card => 
-      card.style.display === 'none'
-    );
-    
-    expect(hiddenProducts.length).toBe(0);
-  });
+      // Simulate click event
+      const clickHandler = mockCategoryLinks[1].addEventListener.mock.calls[0][1];
+      await clickHandler(mockEvent);
 
-  test('should handle case-sensitive category names', () => {
-    const ceramicsLink = document.querySelector('[data-filter-category="ceramics"]');
-    ceramicsLink.click();
-    
-    const visibleProducts = Array.from(productCards).filter(card => 
-      card.style.display !== 'none'
-    );
-    
-    // Shouldn't match "Ceramics" with "ceramics"
-    expect(visibleProducts.length).toBe(0);
+      expect(mockEvent.preventDefault).toHaveBeenCalled();
+      expect(mockCategoryLinks[0].classList.remove).toHaveBeenCalled();
+      expect(mockCategoryLinks[1].classList.add).toHaveBeenCalled();
+      expect(fetchAndDisplayProducts).toHaveBeenCalledWith('electronics');
+    });
   });
 });

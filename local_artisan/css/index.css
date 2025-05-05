@@ -48,19 +48,24 @@ body {
   display: flex;
   align-items: center;
   width: 100%;
+  position: relative; /* Establish positioning context */
 }
+
 .logo-row .side_right {
   margin-left: auto;
 }
+
+/* Center the logo absolutely */
 .logo-row .middle {
-  margin: 0 auto;
-}
-/* Middle section (logo) */
-.header-middle {
-  position: relative;
-  width: 100%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1; /* Ensure it's above other elements if needed */
 }
 
+.header-middle {
+  width: 100%;
+}
 /* Side decorations positioning */
 .side_left{
   position: absolute;
