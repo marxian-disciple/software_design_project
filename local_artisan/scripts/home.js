@@ -17,7 +17,7 @@ async function fetchAndDisplayProducts() {
                 <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
                 <h3 class="product-title">${product.name}</h3>
                 <p class="product-price">$${parseFloat(product.price).toFixed(2)}</p>
-                <a href="view_product.html?id=${product.id}" class="view-button">View Product</a>
+                <a href="html/view_product.html?id=${product.id}" class="view-button">View Product</a>
             `;
 
             content.appendChild(card);
