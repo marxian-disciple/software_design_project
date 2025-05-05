@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="Logo.css">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Artify Application Form</title>
+  <link rel="stylesheet" href="../css/Logo.css">
   <link rel="stylesheet" href="../css/seller_registration.css">
   <style>
     body {
@@ -133,14 +133,20 @@
       <input type="url" id="website" name="website" />
 
       <!-- Submission -->
-      <button type="submit">Submit Application</button>
+       <button type="submit">Submit Application</button>
       <h6>By clicking "Submit Application", you agree to our <span style="color: blue;"/> Terms & Conditions.</h6>
     </form>
   </main>
-  <script>
-document.getElementById("closeBtn").addEventListener("click", () => {
-    window.location.href = "index.html"; 
+</body>
+<script type="module" src="../scripts/seller_registration.js"></script>
+<script>
+  document.getElementById("closeBtn").addEventListener("click", () => {
+    window.location.href = "../index.html"; 
+  });
+
+  document.querySelector("form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent default form submission
+    window.location.href = "seller_login_reg.html"; // Redirect to dashboard
   });
 </script>
-</body>
 </html>

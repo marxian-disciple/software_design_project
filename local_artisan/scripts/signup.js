@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, username, password);
                 alert(`Account created for ${userCredential.user.email}`);
-                window.location.href = "index.html";
+                window.location.href = "../index.html";
             } catch (error) {
                 alert(`Signup failed: ${error.message}`);
             }
