@@ -14,12 +14,79 @@
       <a href="html/seller_registration.html" class="sell-link">Do you want to sell your homemade work?</a>
       <section class="user_credentials">
         <!-- 🔹 This gets replaced dynamically if user is logged in -->
-        <a href="html/view_cart.html" class="cart">
+        <a href="#" class="login-icon" onclick="toggleDropdown(event)">
           <i class="fas fa-shopping-cart"></i>
         </a>
-        <a href="html/signup.html" class="login-icon">
-          <i class="fas fa-user"></i>
-        </a>
+        <!-- Login icon logic-->
+        <style>
+          .dropdown {
+            position: relative;
+            display: inline-block;
+          }
+
+          .user-icon {
+              color: #333;
+              font-size: 1.2rem;
+              text-decoration: none;
+              padding: 0.5rem;
+              transition: color 0.3s ease;
+          }
+
+          .user-icon:hover {
+              color: #1a73e8;
+          }
+
+          .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #fff;
+            min-width: 150px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+          }
+
+          .dropdown-content a {
+            display: block;
+            padding: 10px 16px;
+            text-decoration: none;
+            color: #333;
+          }
+
+          .dropdown-content a:hover {
+            background-color: #f0f0f0;
+          }
+        </style>
+
+        <section class="dropdown">
+          <!-- Use # in href to prevent navigation -->
+          <a href="#" class="user-icon" onclick="toggleDropdown(event)">
+            <i class="fas fa-user"></i>
+          </a>
+
+          <section id="dropdown-menu" class="dropdown-content">
+            <a href="html/signup.html">Login</a>
+          </section>
+
+        </section>
+
+        <script>
+          window.toggleDropdown = function(event) {
+            event.preventDefault(); // stop link from navigating
+            const menu = document.getElementById("dropdown-menu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+          };
+
+          // Hide dropdown if clicked outside
+          window.addEventListener("click", function (e) {
+            const menu = document.getElementById("dropdown-menu");
+            const icon = document.querySelector(".user-icon");
+            if (!icon.contains(e.target) && !menu.contains(e.target)) {
+              menu.style.display = "none";
+            }
+          });
+        </script>
+
       </section>
   
     </section>
@@ -79,11 +146,6 @@
     <section class="middle-content">
       <!-- Dynamic content could go here -->
     </section>
-
-    <section class="left_side_content">
-      <p>About us</p>
-      Artify is a curated platform showcasing the work of skilled local artisans, each committed to the beauty and integrity of handmade craft. We aim to bridge the gap between creators and admirers by offering thoughtfully crafted items that reflect individuality, tradition and excellence. Every piece tells a story and every purchase supports a maker's journey. At Artify, we celebrate creativity, sustain craftsmanship, and bring art into modern living.
-    </section>
   </main>
 
   <footer class="main-footer">
@@ -108,7 +170,7 @@
     <section>
       <h2>Company</h2>
       <ul>
-        <li><a href="#">About Us</a></li>
+        <li><a href="./html/footer/about.html">About Us</a></li>
         <li><a href="#">Sell on Artify</a></li>
         <li><a href="#">Deliver for Artify</a></li>
       </ul>
@@ -117,41 +179,47 @@
     <section>
       <h2>Artify Policy</h2>
       <ul>
-        <li><a href="#">Return Policy</a></li>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Terms & Conditions</a></li>
+        <li><a href="./html/footer/return.html">Return Policy</a></li>
+        <li><a href="./html/footer/privacy.html">Privacy Policy</a></li>
+        <li><a href="./html/footer/tc.html">Terms & Conditions</a></li>
       </ul>
     </section>
 
     <section>
       <h2>Help</h2>
       <ul>
-        <li><a href="#">Help Centre</a></li>
-        <li><a href="#">Contact Us</a></li>
-        <li><a href="#">Returns</a></li>
+        <li><a href="./html/footer/help.html">Help Centre</a></li>
+        <li><a href="./html/footer/contact.html">Contact Us</a></li>
+        <li><a href="./html/footer/returns.html">Returns</a></li>
       </ul>
     </section>
   </footer>
 
   <!-- 🔹 Script section -->
-  <script type="module" src="scripts/index_filters.js"></script>
+  <script type="module" src="./scripts/index_filters.js"></script>
 
   <!-- 🔹 Firebase Profile Display Script -->
   <script type="module">
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { auth } from "lib/firebaseConfig.js";
+    import { auth } from "./lib/firebaseConfig.js";
   
-    const loginIcon = document.querySelector(".login-icon");
+    const loginIcon = document.querySelector(".user-icon");
   
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const profileContainer = document.createRange().createContextualFragment(`
-          <a href="#" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-            <img src="${user.photoURL || '../images/default_avatar.png'}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
-            <strong style="color: #333;">${user.displayName || user.email}</strong>
-          </a>
+          <section class="dropdown">
+            <a href="#" class="user-icon" onclick="toggleDropdown(event)" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+              <img src="${user.photoURL || '../images/default_avatar.png'}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+              <strong style="color: #333;">${user.displayName || user.email}</strong>
+            </a>
+            <section id="dropdown-menu" class="dropdown-content">
+              <a href="#">View Profile</a>
+              <a href="#">Log Out</a>
+            </section>
+          </section>
         `);
-        loginIcon.replaceWith(profileContainer);
+        document.querySelector(".user-icon").replaceWith(profileContainer);
       }
     });
   </script>
