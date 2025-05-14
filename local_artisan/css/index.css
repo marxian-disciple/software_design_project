@@ -244,6 +244,8 @@ body {
   align-items: center;
   padding: 1rem;
   text-align: center;
+  max-height: 400px; /* Maximum height */
+
 }
 
 .product-card[hidden],
