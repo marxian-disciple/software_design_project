@@ -28,59 +28,26 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Fetch function
-    const fetchAndDisplayProducts = async (category) => {
+        const fetchAndDisplayProducts = async (category) => {
         try {
-            let products = [];
+            const productsRef = collection(db, 'products');
+            const q = category === 'all' 
+                ? query(productsRef) 
+                : query(productsRef, where('category', '==', category));
 
-            if (category === 'all') {
-                // Existing all-products query remains similar
-                const productsRef = collection(db, 'products');
-                const q = query(productsRef);
-                const querySnapshot = await getDocs(q);
-                products = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-            } else {
-                // New seller-based filtering logic
-                const sellersRef = collection(db, 'sellers');
-                const qSellers = query(sellersRef, where('category', '==', category));
-                const sellerSnapshot = await getDocs(qSellers);
-                
-                const sellerIds = sellerSnapshot.docs.map(doc => doc.data().userId);
-                
-                if (sellerIds.length === 0) {
-                    displayProducts([]);
-                    return;
-                }
-
-                // Firestore 'in' query chunking
-                const CHUNK_SIZE = 10;
-                const chunks = [];
-                for (let i = 0; i < sellerIds.length; i += CHUNK_SIZE) {
-                    chunks.push(sellerIds.slice(i, i + CHUNK_SIZE));
-                }
-
-                const productsRef = collection(db, 'products');
-                const queryPromises = chunks.map(chunk => {
-                    return getDocs(query(productsRef, where('userId', 'in', chunk)));
-                });
-
-                const chunkResults = await Promise.all(queryPromises);
-                products = chunkResults.flatMap(snapshot => 
-                    snapshot.docs.map(doc => ({ 
-                        id: doc.id, 
-                        ...doc.data() 
-                    }))
-                );
-            }
-
+            const querySnapshot = await getDocs(q);
+            const products = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            
             displayProducts(products);
         } catch (error) {
             console.error('Error fetching products:', error);
             productContainer.innerHTML = '<p>Error loading products. Please try again later.</p>';
         }
     };
+
 
 
     // Event handlers for categories
