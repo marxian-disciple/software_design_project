@@ -14,7 +14,7 @@
       <a href="html/seller_registration.html" class="sell-link">Do you want to sell your homemade work?</a>
       <section class="user_credentials">
         <!-- 🔹 This gets replaced dynamically if user is logged in -->
-        <a href="#" class="login-icon" onclick="toggleDropdown(event)">
+        <a href="html/view_cart.html" class="login-icon">
           <i class="fas fa-shopping-cart"></i>
         </a>
         <!-- Login icon logic-->
@@ -219,6 +219,27 @@
             </section>
           </section>
         `);
+
+        admin_snapshot.forEach(doc => {
+          const userData = doc.data(); // Get data of each document
+          // Check if the uid field matches the one you're looking for
+          if (userData.userId === user.uid) {
+            const profileContainer = document.createRange().createContextualFragment(`
+              <section class="dropdown">
+                <a href="#" class="user-icon" onclick="toggleDropdown(event)" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                  <img src="${user.photoURL || '../images/default_avatar.png'}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                  <strong style="color: #333;">${user.displayName || user.email}</strong>
+                </a>
+                <section id="dropdown-menu" class="dropdown-content">
+                  <a href="#">View Profile</a>
+                  <a href="#" class="logout">Log Out</a>
+                  <a href="./html/admin.html" class="admin">Admin Page</a>
+                </section>
+              </section>
+            `);
+          }
+        });
+            
         document.querySelector(".user-icon").replaceWith(profileContainer);
 
         document.querySelector(".logout").addEventListener("click", () => {
@@ -244,9 +265,11 @@
   onAuthStateChanged(auth, (user) => {
     if (user) {
       const sellers = collection(db, "sellers");
+      const admin = collection(db, "admin");
       const fetchUserByUid = async (uid) => {
         try {
           const snapshot = await getDocs(sellers);
+          const admin_snapshot = await getDocs(admin);
           snapshot.forEach(doc => {
             const userData = doc.data(); // Get data of each document
             // Check if the uid field matches the one you're looking for
@@ -262,7 +285,7 @@
           });
 
           if (!userFound) {
-            console.log("User not a seller");
+            console.log("User not a seller or admin");
             console.log(uid);
           }
         } catch (error) {
