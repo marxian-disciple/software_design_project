@@ -160,7 +160,7 @@ body {
 /* Main content area (pushes footer down) */
 .content {
   flex: 1;
-  margin-top: 200px; /* Reduced fro 300 to 180 for shorter header */
+  margin-top: 230px; /* Reduced fro 300 to 180 for shorter header */
   background: #f8f9fa;
   padding: 2rem;
   background: #FAD4D8;
@@ -170,7 +170,7 @@ body {
 
 .right_side_content{
   flex:0 0 250px;
-  margin: auto;
+  margin: 20px;
 }
 /* Navigation Lists */
 .right_side_content nav ul {
