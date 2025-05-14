@@ -29,3 +29,31 @@ body.add-product {
     cursor: pointer;
     transition: background 0.3s ease;
 }
+
+#closeBtn {
+     position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #231942;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    z-index: 1000;
+  }
+  #closeBtn:hover {
+    color: #000000;
+}
+
+select {
+    color: #231942;
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+select option {
+    background-color: #fad4d8;
+    color: #231942;
+    padding: 10px;
+}

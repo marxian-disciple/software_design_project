@@ -22,6 +22,7 @@ export function initializeForm() {
         const price = document.getElementById('price').value;
         const weight = document.getElementById('weight').value;
         const quantity = document.getElementById('quantity').value;
+        const  category = document.getElementById('categories').value;
         const description = document.getElementById('description').value;
         const image = document.getElementById('image').files[0];
 
@@ -44,6 +45,7 @@ export function initializeForm() {
             price,
             weight,
             quantity,
+            category,
             description,
             imageUrl,
             createdAt: new Date(),
@@ -61,3 +63,7 @@ export function initializeForm() {
 
 // Initialize the form when the document is ready
 document.addEventListener('DOMContentLoaded', initializeForm);
+
+document.getElementById("closeBtn").addEventListener("click", () => {
+    window.location.href = "seller_dashboard.html"; 
+  });
