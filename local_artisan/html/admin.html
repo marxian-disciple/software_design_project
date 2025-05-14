@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artify: About Us</title>
-    <link rel="stylesheet" href="./../../css/styles.css" />
-    <link rel="stylesheet" href="../../css/Logo.css">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="./../css/styles.css" />
+    <link rel="stylesheet" href="./../css/admin.css" />
+    <link rel="stylesheet" href="./../css/Logo.css">
 </head>
 <body style="display: block;">
     <span id="closeBtn">&times;</span>
@@ -13,21 +14,28 @@
         <img style="padding-top: 40px;" src="https://raw.githubusercontent.com/marxian-disciple/software_design_project/refs/heads/main/local_artisan/images/logo.png" alt="Artify Logo" class="logo" />
         <h2>Welcome, Admin</h2><br/>
     </section>
-    <section class="seller-applications">
+    <article class="container">
 
-    </section>
+        <section class="user_type">
+            <h3 class="type_heading">Seller Applications</h3>
+        </section>
 
-    <section class="active-sellers">
 
-    </section>
+        <section class="user_type">
+            <h3 class="type_heading">Active Sellers</h3>
+        </section>
 
-    <section class="product-requests">
+
+
+        <section class="user_type">
+            <h3 class="type_heading">Product Requests</h3>
+        </section>
         
-    </section>
+    </article>
 </body>
 <script>
   document.getElementById("closeBtn").addEventListener("click", () => {
-    window.location.href = "../../index.html"; 
+    window.location.href = "./../index.html"; 
   });
 </script>
 </html>
