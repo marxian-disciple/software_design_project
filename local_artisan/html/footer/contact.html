@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artify: Contact Us</title>
     <link rel="stylesheet" href="./../../css/styles.css" />
+    <link rel="stylesheet" href="../../css/Logo.css">
 </head>
 <body style="display: block;">
+    <span id="closeBtn">&times;</span>
     <section style="display: block; text-align: center; width: 100%;">
         <img style="padding-top: 40px;" src="https://raw.githubusercontent.com/marxian-disciple/software_design_project/refs/heads/main/local_artisan/images/logo.png" alt="Artify Logo" class="logo" />
         <h2>Contact Us</h2><br/>
@@ -34,4 +36,9 @@
     </section>  
     
 </body>
+<script>
+  document.getElementById("closeBtn").addEventListener("click", () => {
+    window.location.href = "../../index.html"; 
+  });
+</script>
 </html>
