@@ -7,12 +7,6 @@
     padding: 20px;
 }
 
-.container .user_type:hover {
-    background-color: #FAD4D8;
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  }
-
 .container {
     display: flex;
     justify-content: space-between;
