@@ -39,7 +39,7 @@ export function initializeForm() {
           const imageUrl = await getDownloadURL(storageRef);
 
           // Add product data to Firestore
-          await addDoc(collection(db, 'products'), {
+          await addDoc(collection(db, 'product_requests'), {
             userId: user.uid,
             name,
             price,
@@ -51,10 +51,10 @@ export function initializeForm() {
             createdAt: new Date(),
           });
 
-          alert('Product added successfully!');
+          alert('A request has been sent to an Admin to add your product/s to your shop! Please check your shop later.');
           window.location.href = "../html/seller_dashboard.html"
         } catch (err) {
-          console.error(`Error adding product to database: ${err}`);
+          console.error(`Error adding product request to database: ${err}`);
         }
       });
     }

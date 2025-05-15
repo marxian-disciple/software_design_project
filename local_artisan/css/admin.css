@@ -1,4 +1,4 @@
-.container .user_type {
+.container .user_type .seller_applications .active_sellers .product_requests {
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -10,4 +10,5 @@
 .container {
     display: flex;
     justify-content: space-between;
+    padding: 20px;
 }
