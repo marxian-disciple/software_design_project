@@ -160,7 +160,7 @@ body {
 /* Main content area (pushes footer down) */
 .content {
   flex: 1;
-  margin-top: 230px; /* Reduced fro 300 to 180 for shorter header */
+  margin-top: 210px; /* Reduced fro 300 to 180 for shorter header */
   background: #f8f9fa;
   padding: 2rem;
   background: #FAD4D8;
@@ -244,7 +244,7 @@ body {
   align-items: center;
   padding: 1rem;
   text-align: center;
-  max-height: 400px; /* Maximum height */
+  max-height: 500px; /* Maximum height */
 
 }
 
