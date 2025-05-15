@@ -6,13 +6,13 @@ UML diagrams
 
 Molemo - Use Case Diagram
 
-Kwezi - Activity Diagram
+Emihle - Activity Diagram
 
-Owethu - Sequence Diagram
+Kwezi - Sequence Diagram
 
-Emihle - Component Diagram
+Ntando - Component Diagram
 
-Ntando - Deployment Diagram
+Owethu - Deployment Diagram
 
 Mohau - State Diagram 
 
