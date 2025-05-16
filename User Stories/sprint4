@@ -1,19 +1,15 @@
-Seller User Stories: [Format - Who, What, Why. Currently, it's just Who, What. Pls fix. Thank you very muuuuuuuuuuuuuuuch]
+As a seller, I want to view my store, so that I can check how it appears to customers.
 
-    As a seller, I want to view my store.
+As a seller, I want to see the orders I received, so that I can process and fulfill them efficiently.
 
-    As a seller, I want to see the orders I received.
+As a seller, I want to see my store analytics, so that I can track performance and make data-driven decisions.
 
-    As a seller, I want to see my store analytics.
+As a seller, I want to deregister my store, so that I can exit the platform when I no longer wish to sell.
 
-    As a seller, I want to deregister my store.
+As a seller, I want to see my top-selling product, so that I can focus on inventory and marketing strategies.
 
-    As a seller, I want to see my top-selling product.
+As a buyer, I want to click the checkout button.
 
-Buyer User Stories:
+As a buyer, I want to pay for my cart.
 
-    As a buyer, I want to click the checkout button.
-
-    As a buyer, I want to pay for my cart.
-
-    As a buyer, I want to delete my account.
+As a buyer, I want to delete my account.
