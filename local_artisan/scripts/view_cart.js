@@ -14,6 +14,8 @@ const auth = getAuth(app);
 
 const cartItemsContainer = document.getElementById('cart-items');
 const cartTotalContainer = document.getElementById('cart-total');
+const checkoutButton = document.getElementById('checkout-button');
+const paypalContainer = document.getElementById('paypal-button-container');
 
 function renderCart(cart) {
   cartItemsContainer.innerHTML = '';
@@ -53,7 +55,6 @@ function renderCart(cart) {
 
   cartTotalContainer.innerText = total.toFixed(2);
 
-  // Attach event listeners
   attachEventListeners(cart);
 }
 
@@ -94,7 +95,6 @@ function attachEventListeners(cart) {
         }
         return item;
       });
-
       updatedCart = updatedCart.filter(item => item.quantity > 0);
       await updateCartInDB(updatedCart);
       renderCart(updatedCart);
@@ -109,6 +109,78 @@ async function updateCartInDB(updatedCart) {
     await setDoc(cartRef, { items: updatedCart });
   }
 }
+
+checkoutButton.addEventListener('click', async () => {
+  const user = auth.currentUser;
+  if (!user) {
+    alert('You must be logged in to checkout.');
+    return;
+  }
+
+  const cartRef = doc(db, 'carts', user.uid);
+  const cartSnap = await getDoc(cartRef);
+
+  if (!cartSnap.exists()) {
+    alert("Cart not found.");
+    return;
+  }
+
+  const cartData = cartSnap.data();
+  const items = cartData.items || [];
+
+  if (items.length === 0) {
+    alert("Your cart is empty.");
+    return;
+  }
+
+  const total = items.reduce((acc, item) => {
+    return acc + parseFloat(item.price) * parseInt(item.quantity);
+  }, 0);
+
+  paypalContainer.style.display = 'block';
+  paypalContainer.innerHTML = ''; // clear previous buttons
+
+  paypal.Buttons({
+    createOrder: function(data, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: total.toFixed(2),
+          }
+        }]
+      });
+    },
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(async function(details) {
+        alert('Transaction completed by ' + details.payer.name.given_name);
+
+        const orderRef = doc(db, 'orders', `${user.uid}_${Date.now()}`);
+        await setDoc(orderRef, {
+          buyerId: user.uid,
+          buyerEmail: user.email,
+          items: items,
+          total: total,
+          status: 'completed',
+          createdAt: new Date()
+        });
+
+        await setDoc(doc(db, 'carts', user.uid), { items: [] });
+        renderCart([]);
+
+        paypalContainer.style.display = 'none';
+      });
+    },
+    onCancel: function(data) {
+      alert('Payment cancelled.');
+      paypalContainer.style.display = 'none';
+    },
+    onError: function(err) {
+      console.error('PayPal error:', err);
+      alert('An error occurred during the payment process.');
+      paypalContainer.style.display = 'none';
+    }
+  }).render('#paypal-button-container');
+});
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {

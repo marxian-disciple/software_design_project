@@ -1,47 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>View Cart</title>
+  <style>
+    /* Basic styling */
+    #cart-items {
+      margin-bottom: 20px;
+    }
+    .cart-item {
+      display: flex;
+      margin-bottom: 10px;
+    }
+    .cart-item-image {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      margin-right: 15px;
+    }
+    .cart-item-details {
+      flex: 1;
+    }
+    #paypal-button-container {
+      display: none;
+      margin-top: 20px;
+    }
+  </style>
   <link rel="stylesheet" href="../css/view_products_styling.css">
 </head>
-
 <body>
 
-  <header>
-    <a href="/" class="branding">
-      <img src="../images/logo.png" alt="Artify Logo" width="80" height="80">
-    </a>
-    <nav aria-label="Main Navigation">
-      <ul>
-        <li><a href="../index.html">Home</a></li>
-      </ul>
-    </nav>
-  </header>
+  <h1>Your Cart</h1>
+  <section id="cart-items"></section>
+  <p>Total: $<span id="cart-total">0.00</span></p>
+  <button id="checkout-button">Checkout</button>
 
-  <main>
-    <article>
-      <h2>Your Cart</h2>
+  <section id="paypal-button-container"></section>
 
-      <section id="cart-items">
-        <!-- Cart items will be inserted here dynamically -->
-        <p>Your cart is empty.</p>
-      </section>
+  <!-- Firebase SDKs and PayPal SDK -->
+  <script src="https://www.paypal.com/sdk/js?client-id=AR-njgG9jo_e6BNr2_Za7WcP8234PjMN9FUZy-LlZQ7SaJzD5TBu_Ye1sKBfO-Ha8EiHxCA71JV9kqn_&currency=USD"></script>
 
-      <section id="cart-summary" style="margin-top: 2rem;">
-        <h3>Total: $<span id="cart-total">0.00</span></h3>
-        <button id="checkout-button">Checkout</button>
-      </section>
-    </article>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Artify Marketplace. All rights reserved.</p>
-  </footer>
-
+  <!-- Your external JS module -->
   <script type="module" src="../scripts/view_cart.js"></script>
-
-
 </body>
 </html>
