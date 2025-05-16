@@ -1,18 +1,19 @@
-as a seller, i should be able to view my store
+Seller User Stories:
 
-as a seller, i want to be able to see my store reviews
+    As a seller, I want to view my store.
 
-as a seller, i want to be able to see the orders i got
+    As a seller, I want to see the orders I received.
 
-as a seller, i want to be able to see my store analytics
+    As a seller, I want to see my store analytics.
 
-as a seller, i want to be able to deregister as a seller 
+    As a seller, I want to deregister my store.
 
-as a seller, i want to be able to see my top selling product
+    As a seller, I want to see my top-selling product.
 
-as a buyer, i want to be able to click checkout button to pay for my cart
+Buyer User Stories:
 
-as a buyer, i want to be able to review a product i bought
+    As a buyer, I want to click the checkout button.
 
-as a buyer, i want to be able to delete my account
+    As a buyer, I want to pay for my cart.
 
+    As a buyer, I want to delete my account.
