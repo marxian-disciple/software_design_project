@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delete Product</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background-color: #FADAD8;
+      color: #231942;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 200px;
+      background-color: #231942;
+      color: white;
+      height: 100vh;
+      position: fixed;
+      padding: 20px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      margin: 20px 0;
+    }
+
+    .main {
+      margin-left: 200px;
+      padding: 40px;
+      flex-grow: 1;
+    }
+
+    h1 {
+      color: #3B5249;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    input, button {
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #AA6373;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    button {
+      background-color: #AA6373;
+      color: white;
+      cursor: pointer;
+      margin-top: 20px;
+      border: none;
+    }
+
+    button:hover {
+      background-color: #8b4e5e;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <a href="../index.html">Home</a>
+    <a href="add_product.html">Add Products</a>
+    <a href="#">Analytics</a>
+    <a href="delete_product.html">Delete Product</a>
+    <a href="delete_store.html">Delete Store</a>
+    <a href="#">Logout</a>
+  </div>
+
+  <div class="main">
+    <h1>Delete Product</h1>
+    <input type="text" id="name" placeholder="Enter product name" />
+    <button id="deleteBtn">Delete Product</button>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import {
+      collection,
+      query,
+      where,
+      getDocs,
+      deleteDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { db, auth } from "../lib/firebaseConfig.js";
+
+    document.getElementById("deleteBtn").addEventListener("click", () => {
+      const name = document.getElementById("name").value.trim();
+
+      if (!name) {
+        alert("Please enter a product name.");
+        return;
+      }
+
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          alert("You must be logged in.");
+          return;
+        }
+
+        try {
+          const q = query(collection(db, "products"), where("name", "==", name));
+          const snapshot = await getDocs(q);
+
+          if (snapshot.empty) {
+            alert("No product found with that name.");
+            return;
+          }
+
+          await Promise.all(snapshot.docs.map(doc => deleteDoc(doc.ref)));
+          alert("Product deleted successfully!");
+          document.getElementById("name").value = "";
+          window.location.href = "../html/seller_dashboard.html";
+        } catch (err) {
+          console.error("Error deleting product:", err);
+          alert("Failed to delete product.");
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
+
