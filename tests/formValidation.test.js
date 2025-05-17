@@ -43,3 +43,19 @@ describe('Required Fields Check', () => {
     expect(areRequiredFieldsFilled(formMock)).toBe(false);
   });
 });
+describe('validateAndAlert', () => {
+  test('returns true and shows no alert when all fields are present', () => {
+    const result = validateAndAlert(formMock);
+    expect(result).toBe(true);
+    expect(alert).not.toHaveBeenCalled();
+  });
+
+  test('returns false and shows alert when any field is missing', () => {
+    formMock.businessName.value = '';
+    const result = validateAndAlert(formMock);
+    expect(result).toBe(false);
+    expect(alert).toHaveBeenCalledWith(
+      "Please fill in all required fields: Business Name, Full Name, Email, and Phone Number."
+    );
+  });
+});
