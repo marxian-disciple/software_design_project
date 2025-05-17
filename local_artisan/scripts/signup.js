@@ -1,4 +1,4 @@
-import { getAuth, signInWithPopup, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, provider } from "../lib/firebaseConfig.js"; // Import only auth and provider
 
 document.addEventListener('DOMContentLoaded', () => {

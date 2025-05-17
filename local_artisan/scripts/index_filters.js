@@ -1,4 +1,4 @@
-import { collection, getDocs, query, where } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../lib/firebaseConfig.js';
 
 document.addEventListener('DOMContentLoaded', () => {

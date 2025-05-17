@@ -1,6 +1,6 @@
 import { auth, db, storage } from '../lib/firebaseConfig.js';
-import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-import { collection, getDocs, addDoc, deleteDoc, doc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { onAuthStateChanged } from 'firebase/auth';
+import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
 
 const seller_applications = document.querySelector(".seller_applications");
 const active_sellers = document.querySelector(".active_sellers");
