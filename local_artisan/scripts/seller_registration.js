@@ -7,21 +7,43 @@ let formInitialized = false;
 onAuthStateChanged(auth, (user) => {
     if (!user) {
         alert('User not logged in!');
-    }
-    else if (user && !formInitialized) {
-        formInitialized = true; // to make sure event listener attatches only once so that even when onAuthStateChanged changes, we only add the listener once.
+    } else if (user && !formInitialized) {
+        formInitialized = true; // ensure listener is only attached once
         const form = document.querySelector('.seller-info');
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const businessName = document.getElementById('businessName').value;
-            const registrationNumber = document.getElementById('registrationNumber').value;
-            const vatNumber = document.getElementById('vatNumber').value;
-            const  fullName = document.getElementById('fullName').value;
-            const  email = document.getElementById('email').value;
-            const  phone = document.getElementById('phone').value;
-            const  website = document.getElementById('website').value;
+            // Get form values
+            const businessName = document.getElementById('businessName').value.trim();
+            const registrationNumber = document.getElementById('registrationNumber').value.trim();
+            const vatNumber = document.getElementById('vatNumber').value.trim();
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const website = document.getElementById('website').value.trim();
 
+            // ✅ Required Fields Validation
+            if (!businessName || !fullName || !email || !phone) {
+                alert("Please fill in all required fields: Business Name, Full Name, Email, and Phone Number.");
+                return;
+            }
+
+            // ✅ Email Format Validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("Please enter a valid email address.");
+                return;
+            }
+
+            // ✅ South African Phone Number Format Validation
+            const phoneRegex = /^(\+27|0)[6-8][0-9]{8}$/;
+            if (!phoneRegex.test(phone)) {
+                alert("Please enter a valid South African phone number (e.g. 0812345678 or +27812345678).");
+                return;
+            }
+
+            // Submit to Firestore
             try {
                 await addDoc(collection(db, 'sellers'), {
                     userId: user.uid,
@@ -36,9 +58,10 @@ onAuthStateChanged(auth, (user) => {
                 });
 
                 alert('Seller added successfully!');
-                window.location.href = '../html/seller_dashboard.html'
+                window.location.href = '../html/seller_dashboard.html';
             } catch (err) {
-                console.error(`Error adding product to database: ${err}`);
+                console.error(`Error adding seller to database: ${err}`);
+                alert('Something went wrong while submitting the form. Please try again.');
             }
         });
     }
