@@ -23,7 +23,7 @@ onAuthStateChanged(auth, (user) => {
             const  website = document.getElementById('website').value;
 
             try {
-                await addDoc(collection(db, 'sellers'), {
+                await addDoc(collection(db, 'seller_applications'), {
                     userId: user.uid,
                     businessName,
                     registrationNumber,
