@@ -22,6 +22,7 @@ export function initializeForm() {
         const price = document.getElementById('price').value;
         const weight = document.getElementById('weight').value;
         const quantity = document.getElementById('quantity').value;
+        const  category = document.getElementById('categories').value;
         const description = document.getElementById('description').value;
         const image = document.getElementById('image').files[0];
 
@@ -38,21 +39,22 @@ export function initializeForm() {
           const imageUrl = await getDownloadURL(storageRef);
 
           // Add product data to Firestore
-          await addDoc(collection(db, 'products'), {
+          await addDoc(collection(db, 'product_requests'), {
             userId: user.uid,
             name,
             price,
             weight,
             quantity,
+            category,
             description,
             imageUrl,
             createdAt: new Date(),
           });
 
-          alert('Product added successfully!');
+          alert('A request has been sent to an Admin to add your product/s to your shop! Please check your shop later.');
           window.location.href = "../html/seller_dashboard.html"
         } catch (err) {
-          console.error(`Error adding product to database: ${err}`);
+          console.error(`Error adding product request to database: ${err}`);
         }
       });
     }
@@ -61,3 +63,7 @@ export function initializeForm() {
 
 // Initialize the form when the document is ready
 document.addEventListener('DOMContentLoaded', initializeForm);
+
+document.getElementById("closeBtn").addEventListener("click", () => {
+    window.location.href = "seller_dashboard.html"; 
+  });

@@ -6,6 +6,15 @@
 // No need for these when using compat:
 // import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+
+
+
+// onAuthStateChanged, fetch seller products, etc.
+
 
 // Use compat-style Firebase setup
 const firebaseConfig = {
@@ -19,68 +28,30 @@ const firebaseConfig = {
   measurementId: "G-8JCE62JJJJ"
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-firebase.firestore().enableNetwork();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-const db = firebase.firestore();
-
-// Helper to load a table
-function loadTable(collection, tableSelector, mapRow) {
-  db.collection(collection).get().then(snapshot => {
-    const tbody = document.querySelector(`${tableSelector} tbody`);
-    tbody.innerHTML = ""; // clear existing content
-    snapshot.forEach(doc => {
-      const d = doc.data();
-      tbody.innerHTML += mapRow(d);
-    });
-  }).catch(error => {
-    console.error(`Error loading ${collection}:`, error);
-  });
-}
-
-// Inventory
-loadTable("Inventory", "#inventory-table", d => `
-  <tr>
-    <td>${d.ProductID}</td>
-    <td>${d.Name}</td>
-    <td>$${d.Price}</td>
-    <td>${d.Stock}</td>
-  </tr>
-`);
-
-// Orders
-loadTable("Orders", "#orders-table", d => `
-  <tr>
-    <td>${d.OrderID}</td>
-    <td>${d.Product}</td>
-    <td>${d.Customer}</td>
-    <td>${d.Status}</td>
-    <td>$${d.Amount}</td>
-  </tr>
-`);
-
-// Revenue
-loadTable("Revenue", "#revenue-table", d => `
-  <tr>
-    <td>${d.Month}</td>
-    <td>${d.Sales}</td>
-    <td>$${d.Earnings}</td>
-  </tr>
-`);
-
-// Top-Selling Products
-loadTable("Top-Selling Products", "#top-selling-table", d => `
-  <tr>
-    <td>${d.ProductID}</td>
-    <td>${d.Name}</td>
-    <td>$${d.Price}</td>
-    <td>${d.Stock}</td>
-  </tr>
-`);
+// Replace with actual user ID (or use Firebase Auth's currentUser.uid if authenticated)
+const sellerUserId = firebase.auth().currentUser.uid;
 
 
-document.getElementById("add-products-link").addEventListener("click", (e) => {
-  e.preventDefault(); // Prevent default anchor behavior
-  window.location.href = "../html/add_product.html"; // Navigate to the page
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loadTable("products", "#products-table", (d) => `
+      <tr>
+        <td>${d.name}</td>
+        <td>${d.category}</td>
+        <td>${d.description}</td>
+        <td>$${d.price}</td>
+        <td>${d.quantity}</td>
+        <td>${d.weight}</td>
+        <td><img src="${d.imageUrl}" width="50"/></td>
+      </tr>
+    `, user.uid); // filters products where userId == current user's ID
+  }
 });
+
+
+

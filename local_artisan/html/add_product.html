@@ -3,31 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Add Product</title>
     <link rel="stylesheet" href="../css/add_products.css">
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="add-product">
+    <span id="closeBtn">&times;</span>
     <form class="add-product">
         <section class="input-group">
-            <label for="product_name">Product Name</label>
+            <label for="product_name" style="color: #231942;">Product Name</label>
             <input type="text" id="product_name" name="product_name" required>
         </section>
         <section class="input-group">
-            <label for="price">Price</label>
+            <label for="price" style="color: #231942;">Price</label>
             <input type="number" id="price" name="price" min="0" step="0.01" placeholder="0.00" required>
         </section>
         <section class="input-group">
-            <label for="weight">Weight</label>
+            <label for="weight" style="color: #231942;">Weight</label>
             <input type="number" id="weight" name="weight" min="0" step="0.01" placeholder="0.00" required>
         </section>
         <section class="input-group">
-            <label for="quantity">Quantity</label>
+            <label for="quantity" style="color: #231942;">Quantity</label>
             <input type="number" id="quantity" name="quantity" min="0" placeholder="0" required>
         </section>
         <section class="input-group">
-            <label for="description">Description</label>
+            <label for="categories" style="color: #231942;">Product Categories</label>
+            <select id="categories" name="categories" required>
+                <option value="" disabled selected>Select Option</option>
+                <option value="Stationery & Paper Goods">Stationery & Paper Goods</option>
+                <option value="Art and Decor">Art and Decor</option>
+                <option value="Textiles and Fiber Arts">Textiles and Fiber Arts</option>
+                <option value="Home and Living">Home and Living</option>
+                <option value="Jewelery and Accessories">Jewelery and Accessories</option>
+                <option value="Craft Supplies and Kits">Craft Supplies and Kits</option>
+                <option value="Toys and Kids">Toys and Kids</option>
+                <option value="Woodwork">Woodwork</option>
+                <option value="Ceramics">Ceramics</option>
+                <option value="Metal and Wire">Metal and Wire</option>
+                <option value="Fabric and Textiles">Fabric and Textiles</option>
+                <option value="Leather">Leather</option>
+                <option value="Paper and Stationery">Paper and Stationery</option>
+                <option value="Resin">Resin</option>
+                <option value="Glass">Glass</option>
+                <option value="Natural Material">Natural Material</option>
+                <option value="Other">Other</option>
+            </select>
+        </section>
+        
+        <section class="input-group">
+            <label for="description" style="color: #231942;">Description</label>
             <textarea id="description" name="description" rows="4" cols="50" placeholder="Additional description"></textarea>
         </section>
         <section class="input-group">

@@ -4,6 +4,9 @@ import { db } from '../lib/firebaseConfig.js';
 document.addEventListener('DOMContentLoaded', () => {
     const categoryLinks = document.querySelectorAll('[data-filter-category]');
     const productContainer = document.querySelector('.middle-content');
+    const searchBar = document.querySelector('.search-bar'); // Add this if missing
+
+    let currentCategory = 'all';
 
     // Unified function to handle product display
     const displayProducts = (products) => {
@@ -24,8 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Modified fetch function
-    const fetchAndDisplayProducts = async (category) => {
+    // Fetch function
+        const fetchAndDisplayProducts = async (category) => {
         try {
             const productsRef = collection(db, 'products');
             const q = category === 'all' 
@@ -45,20 +48,81 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+
+
     // Event handlers for categories
     categoryLinks.forEach(link => {
         link.addEventListener('click', async (e) => {
-            e.preventDefault();
-            const filterValue = e.target.dataset.filterCategory;
+        e.preventDefault();
+        currentCategory = e.target.dataset.filterCategory;
+        
+        categoryLinks.forEach(l => l.classList.remove('active'));
+        e.target.classList.add('active');
 
-            // Update active state
-            categoryLinks.forEach(l => l.classList.remove('active'));
-            e.target.classList.add('active');
-
-            await fetchAndDisplayProducts(filterValue);
-        });
+        // Refresh search cache when category changes 👇
+        await initializeSearch();
+        await fetchAndDisplayProducts(currentCategory);
+  });
     });
 
     // Initial load - fetch all products
     fetchAndDisplayProducts('all');
+
+    // Search functionality
+    let allProductsCache = []; // Cache for all products
+
+    // Debounce function to limit search triggers
+    const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => func.apply(this, args), delay);
+    };
+    };
+
+    // Initial fetch of all products for search
+    const initializeSearch = async () => {
+    try {
+        const productsRef = collection(db, 'products');
+        const q = query(productsRef);
+        const querySnapshot = await getDocs(q);
+        allProductsCache = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+        }));
+    } catch (error) {
+        console.error('Error initializing search:', error);
+    }
+    };
+
+    // Search handler
+    const handleSearch = debounce(async (searchTerm) => {
+    try {
+        const term = searchTerm.toLowerCase().trim();
+        
+        if (!term) {
+        // If search is empty, show current category
+        await fetchAndDisplayProducts(currentCategory);
+        return;
+        }
+
+        // Filter cached products
+        const filteredProducts = allProductsCache.filter(product =>
+        product.name.toLowerCase().includes(term)
+        );
+        
+        displayProducts(filteredProducts);
+    } catch (error) {
+        console.error('Search error:', error);
+    }
+    }, 300);
+
+    // Event listener for search input
+    searchBar.addEventListener('input', (e) => {
+    handleSearch(e.target.value);
+    });
+
+    initializeSearch(); 
 });
+
+

@@ -20,7 +20,6 @@ onAuthStateChanged(auth, (user) => {
             const  fullName = document.getElementById('fullName').value;
             const  email = document.getElementById('email').value;
             const  phone = document.getElementById('phone').value;
-            const  category = document.getElementById('categories').value;
             const  website = document.getElementById('website').value;
 
             try {
@@ -32,7 +31,6 @@ onAuthStateChanged(auth, (user) => {
                     fullName,
                     email,
                     phone,
-                    category,
                     website,
                     createdAt: new Date()
                 });

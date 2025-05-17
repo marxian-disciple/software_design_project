@@ -4,17 +4,17 @@ Tasks
 
 UML diagrams
 
-Owethu - Use Case Diagram
+Molemo - Use Case Diagram
 
-Ntando - Activity Diagram
+Emihle - Activity Diagram
 
-Molemo - Sequence Diagram
+Kwezi - Sequence Diagram
 
-Mohau - Component Diagram
+Ntando - Component Diagram
 
-Kwezi - Deployment Diagram
+Owethu - Deployment Diagram
 
-Emihle - State Diagram 
+Mohau - State Diagram 
 
 Our URL 
 https://ambitious-flower-061119410.6.azurestaticapps.net/
