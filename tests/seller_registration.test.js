@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-const { isEmailValid, isPhoneValid, areRequiredFieldsFilled } = require('../local_artisan/scripts/formValidation');
+const { isEmailValid, isPhoneValid, areRequiredFieldsFilled } = require('../local_artisan/scripts/seller_registration');
 
 describe('Validation Functions', () => {
   test('Valid email passes', () => {
