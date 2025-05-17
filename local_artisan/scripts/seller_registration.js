@@ -1,67 +1,41 @@
-import { db, auth } from '../lib/firebaseConfig.js';
-import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+// local_artisan/scripts/seller_registration.js
 
-let formInitialized = false;
+function isEmailValid(email) {
+  // Simple email regex that checks for basic email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
 
-onAuthStateChanged(auth, (user) => {
-    if (!user) {
-        alert('User not logged in!');
-    } else if (user && !formInitialized) {
-        formInitialized = true; // ensure listener is only attached once
-        const form = document.querySelector('.seller-info');
+function isPhoneValid(phone) {
+  // South African phone number regex:
+  // - Optional +27 or 0 followed by 2 digits and 7 more digits
+  // - Or 27 followed by 2 digits and 7 more digits
+  const phoneRegex = /^(\+27\d{9}|0\d{9}|27\d{9})$/;
+  return phoneRegex.test(phone);
+}
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+function areRequiredFieldsFilled(form) {
+  // Check if all required fields have non-empty values
+  return (
+    form.businessName.value.trim() !== '' &&
+    form.fullName.value.trim() !== '' &&
+    form.email.value.trim() !== '' &&
+    form.phone.value.trim() !== ''
+  );
+}
 
-            // Get form values
-            const businessName = document.getElementById('businessName').value.trim();
-            const registrationNumber = document.getElementById('registrationNumber').value.trim();
-            const vatNumber = document.getElementById('vatNumber').value.trim();
-            const fullName = document.getElementById('fullName').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const website = document.getElementById('website').value.trim();
+function validateAndAlert(form) {
+  if (!form.businessName.value || !form.fullName.value || 
+      !form.email.value || !form.phone.value) {
+    alert("Please fill in all required fields: Business Name, Full Name, Email, and Phone Number.");
+    return false;
+  }
+  return true;
+}
 
-            // ✅ Required Fields Validation
-            if (!businessName || !fullName || !email || !phone) {
-                alert("Please fill in all required fields: Business Name, Full Name, Email, and Phone Number.");
-                return;
-            }
-
-            // ✅ Email Format Validation
-            function isEmailValid(email) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return emailRegex.test(email);
-            }
-
-            // ✅ South African Phone Number Format Validation
-            const phoneRegex = /^(\+27|0)[6-8][0-9]{8}$/;
-            if (!phoneRegex.test(phone)) {
-                alert("Please enter a valid South African phone number (e.g. 0812345678 or +27812345678).");
-                return;
-            }
-
-            // Submit to Firestore
-            try {
-                await addDoc(collection(db, 'sellers'), {
-                    userId: user.uid,
-                    businessName,
-                    registrationNumber,
-                    vatNumber,
-                    fullName,
-                    email,
-                    phone,
-                    website,
-                    createdAt: new Date()
-                });
-
-                alert('Seller added successfully!');
-                window.location.href = '../html/seller_dashboard.html';
-            } catch (err) {
-                console.error(`Error adding seller to database: ${err}`);
-                alert('Something went wrong while submitting the form. Please try again.');
-            }
-        });
-    }
-});
+module.exports = {
+  isEmailValid,
+  isPhoneValid,
+  areRequiredFieldsFilled,
+  validateAndAlert
+};
