@@ -30,10 +30,9 @@ onAuthStateChanged(auth, (user) => {
             }
 
             // ✅ Email Format Validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                alert("Please enter a valid email address.");
-                return;
+            function isEmailValid(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
             }
 
             // ✅ South African Phone Number Format Validation
