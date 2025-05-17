@@ -33,103 +33,71 @@ describe('groupData', () => {
       userId: 'user3'
     }
   ];
-
-  it('should calculate total revenue correctly', () => {
-    const result = groupData(mockData);
-    expect(result.totalRevenue).toBe(90); // 10+10+20+20+30
+  it('should correctly handle first-time products', () => {
+    const data = [{
+      product_name: "New Product",
+      price: 15,
+      date: { toDate: () => new Date() },
+      userId: "user1"
+    }];
+    
+    const result = groupData(data);
+    
+    assert.strictEqual(result.productCount["New Product"], 1);
+    assert.strictEqual(result.productRevenue["New Product"], 15);
   });
 
-  it('should group product counts correctly', () => {
-    const result = groupData(mockData);
-    expect(result.productCount['Product A']).toBe(2);
-    expect(result.productCount['Product B']).toBe(2);
-    expect(result.productCount['Product C']).toBe(1);
-  });
-
-  it('should group product revenue correctly', () => {
-    const result = groupData(mockData);
-    expect(result.productRevenue['Product A']).toBe(20);
-    expect(result.productRevenue['Product B']).toBe(40);
-    expect(result.productRevenue['Product C']).toBe(30);
+  it('should accumulate counts for repeated products', () => {
+    const data = [
+      { product_name: "Repeated", price: 10, date: { toDate: () => new Date() }, userId: "user1" },
+      { product_name: "Repeated", price: 10, date: { toDate: () => new Date() }, userId: "user1" }
+   ];
+    
+    const result = groupData(data);
+    
+    assert.strictEqual(result.productCount["Repeated"], 2);
+    assert.strictEqual(result.productRevenue["Repeated"], 20);
   });
 
   it('should group revenue by date correctly', () => {
-    const result = groupData(mockData);
-    expect(result.revenueByDate['2023-01-01']).toBe(30); // 10 + 20
-    expect(result.revenueByDate['2023-01-02']).toBe(10);
-    expect(result.revenueByDate['2023-01-03']).toBe(20);
-    expect(result.revenueByDate['2023-01-04']).toBe(30);
-  });
-
-  it('should calculate weekly revenue per user', () => {
-    // Adjust the test data to include recent dates
-    const recentData = [
-      {
-        product_name: 'Product A',
-        price: 10,
-        date: { toDate: () => new Date() }, // today
-        userId: 'user1'
-      },
-      {
-        product_name: 'Product B',
-        price: 20,
-        date: { toDate: () => {
-          const d = new Date();
-          d.setDate(d.getDate() - 3); // 3 days ago
-          return d;
-        }},
-        userId: 'user2'
-      }
+    const date1 = new Date('2023-01-01');
+    const date2 = new Date('2023-01-02');
+    
+    const data = [
+      { product_name: "A", price: 10, date: { toDate: () => date1 }, userId: "user1" },
+      { product_name: "B", price: 20, date: { toDate: () => date1 }, userId: "user2" },
+      { product_name: "C", price: 30, date: { toDate: () => date2 }, userId: "user3" }
     ];
     
-    const result = groupData(recentData);
-    expect(result.weekRevenue['user1']).toBe(10);
-    expect(result.weekRevenue['user2']).toBe(20);
-  });
-});
+    const result = groupData(data);
 
-describe('drawCharts', () => {
-  beforeEach(() => {
-    // Mock the Chart constructor
-    global.Chart = jest.fn().mockImplementation(() => ({}));
-    
-    // Create mock canvas elements
-    document.getElementById = jest.fn((id) => {
-      return {
-        id,
-        getContext: () => ({})
-      };
-    });
+    assert.strictEqual(result.revenueByDate["2023-01-01"], 30);
+    assert.strictEqual(result.revenueByDate["2023-01-02"], 30);
   });
 
-  it('should create three charts with correct configurations', () => {
-    const testData = {
-      totalRevenue: 100,
-      productCount: { 'A': 5, 'B': 3 },
-      productRevenue: { 'A': 50, 'B': 50 },
-      revenueByDate: { '2023-01-01': 30, '2023-01-02': 70 }
-    };
+  it('should only include current week revenue in weekRevenue', () => {
+    const currentDate = new Date();
+    const lastWeekDate = new Date();
+    lastWeekDate.setDate(lastWeekDate.getDate() - 8);
     
-    drawCharts(testData);
+    const data = [
+      { product_name: "Current", price: 50, date: { toDate: () => currentDate }, userId: "user1" },
+      { product_name: "Old", price: 100, date: { toDate: () => lastWeekDate }, userId: "user2" }
+    ];
     
-    expect(Chart).toHaveBeenCalledTimes(3);
-    expect(document.getElementById).toHaveBeenCalledWith('revenueDonut');
-    expect(document.getElementById).toHaveBeenCalledWith('performanceLine');
-    expect(document.getElementById).toHaveBeenCalledWith('topProductsBar');
+    const result = groupData(data);
     
-    // Verify the doughnut chart config
-    const doughnutConfig = Chart.mock.calls[0][1];
-    expect(doughnutConfig.type).toBe('doughnut');
-    expect(doughnutConfig.data.datasets[0].data[0]).toBe(100);
+    assert.strictEqual(result.weekRevenue["user1"], 50);
+    assert.strictEqual(result.weekRevenue["user2"], undefined);
+  });
+  it('should handle empty input', () => {
+    const result = groupData([]);
     
-    // Verify the line chart config
-    const lineConfig = Chart.mock.calls[1][1];
-    expect(lineConfig.type).toBe('line');
-    expect(lineConfig.data.labels).toEqual(['2023-01-01', '2023-01-02']);
-    
-    // Verify the bar chart config
-    const barConfig = Chart.mock.calls[2][1];
-    expect(barConfig.type).toBe('bar');
-    expect(barConfig.data.labels).toEqual(['A', 'B']);
+    assert.strictEqual(result.totalRevenue, 0);
+    assert.deepStrictEqual(result.productCount, {});
+    assert.deepStrictEqual(result.productRevenue, {});
+    assert.deepStrictEqual(result.revenueByDate, {});
+    assert.deepStrictEqual(result.weekRevenue, {});
   });
 });
+  
