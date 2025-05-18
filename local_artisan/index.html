@@ -288,11 +288,6 @@
               userFound = true;
             }
           });
-
-          if (!userFound) {
-            console.log("User not a seller or admin");
-            console.log(uid);
-          }
         } catch (error) {
           console.error("Error fetching user:", error);
         }
