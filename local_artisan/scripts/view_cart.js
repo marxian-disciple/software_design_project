@@ -14,8 +14,6 @@ const auth = getAuth(app);
 
 const cartItemsContainer = document.getElementById('cart-items');
 const cartTotalContainer = document.getElementById('cart-total');
-const checkoutButton = document.getElementById('checkout-button');
-const paypalContainer = document.getElementById('paypal-button-container');
 
 function renderCart(cart) {
   cartItemsContainer.innerHTML = '';
@@ -40,7 +38,7 @@ function renderCart(cart) {
         <h3>${item.name}</h3>
         <p>Price: $${itemPrice.toFixed(2)}</p>
         <p>
-          Quantity: 
+          Quantity:
           <button class="decrement-button" data-id="${item.productId}">➖</button>
           <span class="quantity-display">${item.quantity}</span>
           <button class="increment-button" data-id="${item.productId}">➕</button>
@@ -59,50 +57,42 @@ function renderCart(cart) {
 }
 
 function attachEventListeners(cart) {
-  const removeButtons = document.querySelectorAll('.remove-button');
-  const incrementButtons = document.querySelectorAll('.increment-button');
-  const decrementButtons = document.querySelectorAll('.decrement-button');
-
-  removeButtons.forEach(button => {
-    button.addEventListener('click', async (event) => {
-      const productId = event.target.getAttribute('data-id');
+  document.querySelectorAll('.remove-button').forEach(button => {
+    button.addEventListener('click', async e => {
+      const productId = e.target.dataset.id;
       const updatedCart = cart.filter(item => item.productId !== productId);
-      await updateCartInDB(updatedCart);
+      await updateCart(updatedCart);
       renderCart(updatedCart);
     });
   });
 
-  incrementButtons.forEach(button => {
-    button.addEventListener('click', async (event) => {
-      const productId = event.target.getAttribute('data-id');
+  document.querySelectorAll('.increment-button').forEach(button => {
+    button.addEventListener('click', async e => {
+      const productId = e.target.dataset.id;
       const updatedCart = cart.map(item => {
-        if (item.productId === productId) {
-          item.quantity += 1;
-        }
+        if (item.productId === productId) item.quantity += 1;
         return item;
       });
-      await updateCartInDB(updatedCart);
+      await updateCart(updatedCart);
       renderCart(updatedCart);
     });
   });
 
-  decrementButtons.forEach(button => {
-    button.addEventListener('click', async (event) => {
-      const productId = event.target.getAttribute('data-id');
+  document.querySelectorAll('.decrement-button').forEach(button => {
+    button.addEventListener('click', async e => {
+      const productId = e.target.dataset.id;
       let updatedCart = cart.map(item => {
-        if (item.productId === productId && item.quantity > 1) {
-          item.quantity -= 1;
-        }
+        if (item.productId === productId && item.quantity > 1) item.quantity -= 1;
         return item;
       });
       updatedCart = updatedCart.filter(item => item.quantity > 0);
-      await updateCartInDB(updatedCart);
+      await updateCart(updatedCart);
       renderCart(updatedCart);
     });
   });
 }
 
-async function updateCartInDB(updatedCart) {
+async function updateCart(updatedCart) {
   const user = auth.currentUser;
   if (user) {
     const cartRef = doc(db, 'carts', user.uid);
@@ -110,85 +100,54 @@ async function updateCartInDB(updatedCart) {
   }
 }
 
-checkoutButton.addEventListener('click', async () => {
-  const user = auth.currentUser;
-  if (!user) {
-    alert('You must be logged in to checkout.');
-    return;
-  }
-
-  const cartRef = doc(db, 'carts', user.uid);
-  const cartSnap = await getDoc(cartRef);
-
-  if (!cartSnap.exists()) {
-    alert("Cart not found.");
-    return;
-  }
-
-  const cartData = cartSnap.data();
-  const items = cartData.items || [];
-
-  if (items.length === 0) {
-    alert("Your cart is empty.");
-    return;
-  }
-
-  const total = items.reduce((acc, item) => {
-    return acc + parseFloat(item.price) * parseInt(item.quantity);
-  }, 0);
-
-  paypalContainer.style.display = 'block';
-  paypalContainer.innerHTML = ''; // clear previous buttons
-
+function handleCheckout(totalAmount, userEmail, user, items, total) {
   paypal.Buttons({
-    createOrder: function(data, actions) {
+    createOrder: (data, actions) => {
       return actions.order.create({
         purchase_units: [{
-          amount: {
-            value: total.toFixed(2),
-          }
+          amount: { value: totalAmount.toFixed(2) }
         }]
       });
     },
-    onApprove: function(data, actions) {
-      return actions.order.capture().then(async function(details) {
-        alert('Transaction completed by ' + details.payer.name.given_name);
+    onApprove: async (data, actions) => {
+      const details = await actions.order.capture();
+      alert(`Payment successful! Transaction ID: ${details.id}`);
 
-        const orderRef = doc(db, 'orders', `${user.uid}_${Date.now()}`);
-        await setDoc(orderRef, {
-          buyerId: user.uid,
-          buyerEmail: user.email,
-          items: items,
-          total: total,
-          status: 'completed',
-          createdAt: new Date()
-        });
-
-        await setDoc(doc(db, 'carts', user.uid), { items: [] });
-        renderCart([]);
-
-        paypalContainer.style.display = 'none';
+      const orderRef = doc(db, 'orders', `${user.uid}_${Date.now()}`);
+      await setDoc(orderRef, {
+        buyerId: user.uid,
+        buyerEmail: user.email,
+        items: items,
+        total: total,
+        status: 'pending',
+        createdAt: new Date()
       });
+
+      const cartRef = doc(db, 'carts', user.uid);
+      await setDoc(cartRef, { items: [] });
+      renderCart([]);
     },
-    onCancel: function(data) {
-      alert('Payment cancelled.');
-      paypalContainer.style.display = 'none';
+    onCancel: () => {
+      alert("Transaction cancelled.");
     },
-    onError: function(err) {
-      console.error('PayPal error:', err);
-      alert('An error occurred during the payment process.');
-      paypalContainer.style.display = 'none';
+    onError: err => {
+      console.error("PayPal error:", err);
+      alert("Payment failed.");
     }
   }).render('#paypal-button-container');
-});
+}
 
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(auth, async user => {
   if (user) {
     const cartRef = doc(db, 'carts', user.uid);
     const cartSnap = await getDoc(cartRef);
     if (cartSnap.exists()) {
-      const cartData = cartSnap.data();
-      renderCart(cartData.items || []);
+      const cart = cartSnap.data().items || [];
+      renderCart(cart);
+
+      const total = cart.reduce((sum, item) =>
+        sum + parseFloat(item.price) * item.quantity, 0);
+      handleCheckout(total, user.email, user, cart, total);
     } else {
       renderCart([]);
     }
