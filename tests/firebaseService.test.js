@@ -13,7 +13,7 @@ jest.mock('firebase/app', () => {
 });
 require('firebase/firestore');
 
-const { fetchData } = require('./firebaseService');
+const { fetchData } = require('../local_artisan/scripts/firebaseService');
 
 describe('fetchData', () => {
   test('returns mocked data', async () => {
