@@ -1,0 +1,11 @@
+UATs (given-when-then)
+
+Given that I am a seller, when I navigate to the "Analytics" then I should see key metrics such as weekly revenue, top-selling products, and store performance.
+
+Given that I am a seller, when I click the "Delete Product" button then I should be able to remove any product from my store.
+
+Given that I am a seller, when a buyer places an order then I should receive a confirmation notification.
+
+Given that I am a seller, when I click "Log out", then I am securely signed out and redirected to the homepage.
+
+Given that I am a seller, when I click "Delete Store" and confirm, then my store and all data will be permanently deleted.
