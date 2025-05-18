@@ -113,16 +113,33 @@ function handleCheckout(totalAmount, userEmail, user, items, total) {
       const details = await actions.order.capture();
       alert(`Payment successful! Transaction ID: ${details.id}`);
 
-      const orderRef = doc(db, 'orders', `${user.uid}_${Date.now()}`);
-      await setDoc(orderRef, {
-        buyerId: user.uid,
-        buyerEmail: user.email,
-        items: items,
-        total: total,
-        status: 'pending',
-        createdAt: new Date()
+      // Group items by sellerId
+      const ordersBySeller = items.reduce((acc, item) => {
+        const sellerId = item.sellerId || 'unknown_seller';
+        if (!acc[sellerId]) acc[sellerId] = [];
+        acc[sellerId].push(item);
+        return acc;
+      }, {});
+
+      // Create separate order documents per seller
+      const batchPromises = Object.entries(ordersBySeller).map(async ([sellerId, sellerItems]) => {
+        const orderRef = doc(db, 'orders', `${user.uid}_${sellerId}_${Date.now()}`);
+        const sellerTotal = sellerItems.reduce((sum, i) => sum + parseFloat(i.price) * i.quantity, 0);
+        return setDoc(orderRef, {
+          buyerId: user.uid,
+          buyerEmail: user.email,
+          sellerId: sellerId,
+          items: sellerItems,
+          total: sellerTotal,
+          status: 'pending',
+          createdAt: new Date(),
+          transactionId: details.id
+        });
       });
 
+      await Promise.all(batchPromises);
+
+      // Clear cart after orders created
       const cartRef = doc(db, 'carts', user.uid);
       await setDoc(cartRef, { items: [] });
       renderCart([]);
