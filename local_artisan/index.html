@@ -212,52 +212,53 @@
   
     onAuthStateChanged(auth, (user) => {
       if (user){
+        let isAdmin = false;
+
         admin_snapshot.forEach(doc => {
-          const userData = doc.data(); // Get data of each document
-          // Check if the uid field matches the one you're looking for
+          const userData = doc.data();
           if (userData.userId === user.uid) {
-            profileContainer = document.createRange().createContextualFragment(`
-              <section class="dropdown">
-                <a href="#" class="user-icon" onclick="toggleDropdown(event)" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-                  <img src="${user.photoURL || '../images/default_avatar.png'}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
-                  <strong style="color: #333;">${user.displayName || user.email}</strong>
-                </a>
-                <section id="dropdown-menu" class="dropdown-content">
-                  <a href="./html/user_info.html">View Profile</a>
-                  <a href="#" class="logout">Log Out</a>
-                  <a href="./html/admin.html" class="admin">Admin Page</a>
-                </section>
-              </section>
-            `);
-          }
-          else if(userData.userId !== user.uid){
-            profileContainer = document.createRange().createContextualFragment(`
-            <section class="dropdown">
-              <a href="#" class="user-icon" onclick="toggleDropdown(event)" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-                <img src="${user.photoURL || '../images/default_avatar.png'}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
-                <strong style="color: #333;">${user.displayName || user.email}</strong>
-              </a>
-              <section id="dropdown-menu" class="dropdown-content">
-                <a href="./html/user_info.html">View Profile</a>
-                <a href="#" class="logout">Log Out</a>
-              </section>
-            </section>
-          `);
+            isAdmin = true;
           }
         });
-            
+
+        const profileHTML = isAdmin ? `
+          <section class="dropdown">
+            <a href="#" class="user-icon" onclick="toggleDropdown(event)" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+              <img src="${user.photoURL || '../images/default_avatar.png'}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+              <strong style="color: #333;">${user.displayName || user.email}</strong>
+            </a>
+            <section id="dropdown-menu" class="dropdown-content">
+              <a href="./html/user_info.html">View Profile</a>
+              <a href="#" class="logout">Log Out</a>
+              <a href="./html/admin.html" class="admin">Admin Page</a>
+            </section>
+          </section>
+        ` : `
+          <section class="dropdown">
+            <a href="#" class="user-icon" onclick="toggleDropdown(event)" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+              <img src="${user.photoURL || '../images/default_avatar.png'}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+              <strong style="color: #333;">${user.displayName || user.email}</strong>
+            </a>
+            <section id="dropdown-menu" class="dropdown-content">
+              <a href="./html/user_info.html">View Profile</a>
+              <a href="#" class="logout">Log Out</a>
+            </section>
+          </section>
+        `;
+
+        const profileContainer = document.createRange().createContextualFragment(profileHTML);
         document.querySelector(".user-icon").replaceWith(profileContainer);
 
         document.querySelector(".logout").addEventListener("click", () => {
-        signOut(auth).then(() => {
-          console.log('User logged out successfully');
-          location.reload();  // Reload the page to reflect changes
-        }).catch((error) => {
-          console.error('Error signing out:', error);
+          signOut(auth).then(() => {
+            console.log('User logged out successfully');
+            location.reload();  // Reload the page to reflect changes
+          }).catch((error) => {
+            console.error('Error signing out:', error);
+          });
         });
-      });
-    }
-  });
+      }
+    });
   </script>
 
 <script type="module">
