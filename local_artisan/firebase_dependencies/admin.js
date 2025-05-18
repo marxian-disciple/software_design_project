@@ -1,7 +1,7 @@
-import { auth, db, storage } from '../local_artisan/lib/firebaseConfig.js';
+import { auth, db, storage } from '../lib/firebaseConfig.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 import { collection, getDocs, addDoc, deleteDoc, doc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-import { seller_applications, active_sellers, product_requests, closeBtn } from '../local_artisan/scripts/admin.js';
+import { seller_applications, active_sellers, product_requests, closeBtn } from './../scripts/admin.js';
 
 async function fetchAndDisplayApplications() {
     try {
