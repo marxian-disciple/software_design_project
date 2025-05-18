@@ -39,7 +39,7 @@ function initializeSellerRegistration(form, validationFunctions) {
 
                 // Submit to Firestore
                 try {
-                    await firebase.firestore().collection('sellers').add({
+                    await firebase.firestore().collection('seller_applications').add({
                         userId: user.uid,
                         businessName: formData.businessName,
                         registrationNumber: formData.registrationNumber,
@@ -51,7 +51,7 @@ function initializeSellerRegistration(form, validationFunctions) {
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
 
-                    alert('Seller added successfully!');
+                    alert('Your request to become a seller has been successfully sent to an admin! Please wait for 2-3 working days for the approval of your request. In the meantime, please visit our page "Sell on Artify" for more information. Thank you for your patience.');
                     window.location.href = '../html/seller_dashboard.html';
                 } catch (err) {
                     console.error('Error adding seller to database:', err);
