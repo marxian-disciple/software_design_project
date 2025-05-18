@@ -37,38 +37,40 @@ async function loadProduct() {
     document.getElementById('product-description').textContent = product.description;
     document.getElementById('product-price').textContent = `$${parseFloat(product.price).toFixed(2)}`;
 
-    document.getElementById('add-to-cart').addEventListener('click', async () => {
-      const user = auth.currentUser;
-      if (!user) {
-        alert("Please log in to add items to your cart.");
-        return;
-      }
+   document.getElementById('add-to-cart').addEventListener('click', async () => {
+  const user = auth.currentUser;
+  if (!user) {
+    alert("Please log in to add items to your cart.");
+    return;
+  }
 
-      const cartRef = doc(db, "carts", user.uid);
-      const cartSnap = await getDoc(cartRef);
-      let items = [];
+  const cartRef = doc(db, "carts", user.uid);
+  const cartSnap = await getDoc(cartRef);
+  let items = [];
 
-      if (cartSnap.exists()) {
-        items = cartSnap.data().items || [];
-      }
+  if (cartSnap.exists()) {
+    items = cartSnap.data().items || [];
+  }
 
-      const existingIndex = items.findIndex(item => item.productId === productId);
+  const existingIndex = items.findIndex(item => item.productId === productId);
 
-      if (existingIndex > -1) {
-        items[existingIndex].quantity += 1;
-      } else {
-        items.push({
-          productId,
-          name: product.name,
-          price: product.price,
-          image: product.imageUrl || product.image,
-          quantity: 1
-        });
-      }
-
-      await setDoc(cartRef, { items });
-      showToast(`${product.name} added to cart!`);
+  if (existingIndex > -1) {
+    items[existingIndex].quantity += 1;
+  } else {
+    items.push({
+      productId,
+      name: product.name,
+      price: product.price,
+      image: product.imageUrl || product.image,
+      quantity: 1,
+      sellerId: product.userId || "unknown"
     });
+  }
+
+  await setDoc(cartRef, { items });
+  showToast(`${product.name} added to cart!`);
+});
+
   } else {
     alert("Product not found.");
   }
