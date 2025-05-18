@@ -1,5 +1,5 @@
 
-const { groupData } = require('./analytics');
+const { groupData } = require('../local_artisan/scripts/analytics');
 
 describe('groupData', () => {
   const now = new Date();
