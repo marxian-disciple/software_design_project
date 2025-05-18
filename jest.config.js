@@ -2,7 +2,10 @@ module.exports = {
   transform: {
     '^.+\\.js$': 'babel-jest', // Handle JavaScript files with babel-jest
   },
-  testEnvironment: 'jsdom',
+   moduleNameMapper: {
+    "^https://www\\.gstatic\\.com/firebasejs/.+/.+$": "<rootDir>/tests/__mocks__/firebase_mocks.js"
+  },
+  testEnvironment: "jsdom",
 
   setupFiles: ['<rootDir>/jest.setup.js'], // ✅ Add this line
 
