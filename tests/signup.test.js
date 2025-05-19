@@ -3,67 +3,114 @@
  */
 import { initSignupForm, initGoogleButton, showUserProfile } from './../local_artisan/scripts/signup.js';
 
-describe('signupHandlers', () => {
-    beforeEach(() => {
-        document.body.innerHTML = `
-            <form class="login-form">
-                <input id="username" />
-                <input id="password" />
-                <input id="confirm_pass" />
-                <button type="submit">Sign Up</button>
-            </form>
-            <button class="google-btn">Google</button>
-            <div class="login-icon"></div>
-        `;
-    });
+describe('signupHandlers (100% coverage)', () => {
+  // Polyfill global alert and console.warn
+  beforeAll(() => {
+    global.alert = jest.fn();
+    jest.spyOn(console, 'warn').mockImplementation(() => {});
+  });
 
-    test('calls onSubmit when passwords match', () => {
-        const mockSubmit = jest.fn();
-        initSignupForm(mockSubmit);
+  beforeEach(() => {
+    jest.clearAllMocks();
+    document.body.innerHTML = `
+      <form class="login-form">
+        <input id="username" />
+        <input id="password" />
+        <input id="confirm_pass" />
+        <button type="submit">Sign Up</button>
+      </form>
+      <button class="google-btn">Google</button>
+      <div class="login-icon"></div>
+    `;
+  });
 
-        document.getElementById('username').value = 'test@example.com';
-        document.getElementById('password').value = 'password123';
-        document.getElementById('confirm_pass').value = 'password123';
+  afterAll(() => {
+    jest.useRealTimers();
+    console.warn.mockRestore();
+  });
 
-        document.querySelector('form').dispatchEvent(new Event('submit', { bubbles: true }));
+  test('initSignupForm does nothing if form is missing', () => {
+    document.body.innerHTML = '<div></div>';  // no .login-form
+    const fn = jest.fn();
+    expect(() => initSignupForm(fn)).not.toThrow();
+    // simulate submit anyway
+    document.body.dispatchEvent(new Event('submit'));
+    expect(fn).not.toHaveBeenCalled();
+  });
 
-        expect(mockSubmit).toHaveBeenCalledWith('test@example.com', 'password123');
-    });
+  test('calls onSubmit when passwords match', () => {
+    const mockSubmit = jest.fn();
+    initSignupForm(mockSubmit);
 
-    test('does not call onSubmit when passwords do not match', () => {
-        const mockSubmit = jest.fn();
-        initSignupForm(mockSubmit);
+    document.getElementById('username').value = 'a@b.com';
+    document.getElementById('password').value = 'pwd';
+    document.getElementById('confirm_pass').value = 'pwd';
 
-        document.getElementById('username').value = 'test@example.com';
-        document.getElementById('password').value = 'pass1';
-        document.getElementById('confirm_pass').value = 'pass2';
+    document.querySelector('form').dispatchEvent(new Event('submit', { bubbles: true }));
+    expect(mockSubmit).toHaveBeenCalledWith('a@b.com', 'pwd');
+    expect(global.alert).not.toHaveBeenCalled();
+  });
 
-        document.querySelector('form').dispatchEvent(new Event('submit', { bubbles: true }));
+  test('shows alert + red borders + resets fields then clears styling on mismatch', () => {
+    jest.useFakeTimers();
+    const mockSubmit = jest.fn();
+    initSignupForm(mockSubmit);
 
-        expect(mockSubmit).not.toHaveBeenCalled();
-        expect(document.getElementById('password').value).toBe('');
-        expect(document.getElementById('confirm_pass').value).toBe('');
-    });
+    // set initial values
+    const pw = document.getElementById('password');
+    const cpw = document.getElementById('confirm_pass');
+    pw.value = 'one';
+    cpw.value = 'two';
 
-    test('calls onGoogleClick when Google button is clicked', () => {
-        const mockGoogleClick = jest.fn();
-        initGoogleButton(mockGoogleClick);
+    document.querySelector('form').dispatchEvent(new Event('submit', { bubbles: true }));
 
-        document.querySelector('.google-btn').click();
+    // verify alert
+    expect(global.alert).toHaveBeenCalledWith("Passwords do not match!");
+    // verify submit not called
+    expect(mockSubmit).not.toHaveBeenCalled();
+    // values cleared
+    expect(pw.value).toBe('');
+    expect(cpw.value).toBe('');
+    // red borders applied
+    expect(pw.style.border).toBe('2px solid red');
+    expect(cpw.style.border).toBe('2px solid red');
 
-        expect(mockGoogleClick).toHaveBeenCalled();
-    });
+    // fast-forward 2 seconds
+    jest.advanceTimersByTime(2000);
+    expect(pw.style.border).toBe('');
+    expect(cpw.style.border).toBe('');
+  });
 
-    test('updates login icon with profile picture', () => {
-        const user = {
-            photoURL: 'http://example.com/avatar.jpg'
-        };
+  test('initGoogleButton does nothing & warns if button missing', () => {
+    document.body.innerHTML = '<div></div>';  // remove .google-btn
+    const fn = jest.fn();
+    initGoogleButton(fn);
+    expect(console.warn).toHaveBeenCalledWith('Google button not found in the DOM.');
+    // no click possible
+  });
 
-        showUserProfile(user);
+  test('calls onGoogleClick when Google button clicked', () => {
+    const mockGoogle = jest.fn();
+    initGoogleButton(mockGoogle);
 
-        const img = document.querySelector('.login-icon img');
-        expect(img).not.toBeNull();
-        expect(img.src).toBe(user.photoURL);
-        expect(img.alt).toBe('Profile');
-    });
+    document.querySelector('.google-btn').click();
+    expect(mockGoogle).toHaveBeenCalled();
+  });
+
+  test('showUserProfile inserts image when photoURL present', () => {
+    const user = { photoURL: 'https://x/y.png' };
+    showUserProfile(user);
+
+    const img = document.querySelector('.login-icon img');
+    expect(img).toBeTruthy();
+    expect(img.src).toBe(user.photoURL);
+    expect(img.alt).toBe('Profile');
+  });
+
+  test('showUserProfile does nothing if no photoURL', () => {
+    document.querySelector('.login-icon').innerHTML = '<p>old</p>';
+    showUserProfile({});  // user.photoURL undefined
+    // innerHTML remains unchanged
+    expect(document.querySelector('.login-icon').innerHTML).toBe('<p>old</p>');
+  });
 });
