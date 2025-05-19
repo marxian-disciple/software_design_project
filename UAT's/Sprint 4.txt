@@ -9,3 +9,7 @@ Given that I am a seller, when a buyer places an order then I should receive a c
 Given that I am a seller, when I click "Log out", then I am securely signed out and redirected to the homepage.
 
 Given that I am a seller, when I click "Delete Store" and confirm, then my store and all data will be permanently deleted.
+
+Given that I am a buyer, when  I click "checkout" button then  I should be able to start the process of paying for my cart.
+
+Given that I am a buyer, when I click the "delete my account" button then i should be able to delete my account on the platform.
