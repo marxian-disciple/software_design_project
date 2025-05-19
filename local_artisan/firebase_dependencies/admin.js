@@ -82,7 +82,7 @@ async function fetchAndDisplayProductRequests() {
             const formattedDate = createdAtDate.toLocaleString();
 
             card.innerHTML = `
-                <img src="${prod.imageUrl}" alt="${prod.name}" class="product-image">
+                <img src="${prod.imageUrl}" alt="${prod.name}" class="product-image" style="width: 300px; height: 200px;">
                 <p class="prod-name">Product Name: ${prod.name}</p>
                 <p class="price">Product Price: ${prod.price}</p>
                 <p class="category">Category of Product: ${prod.category}</p>
