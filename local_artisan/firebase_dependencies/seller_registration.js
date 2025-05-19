@@ -3,29 +3,30 @@ function initializeSellerRegistration(form, validationFunctions) {
 
     firebase.auth().onAuthStateChanged(function(user) {
         if (!user) {
-            alert('User not logged in!');
-        } else if (user && !formInitialized) {
+            alert('Please log in first!');
+            window.location.href = '../html/login.html';
+            return;
+        }
+
+        if (!formInitialized) {
             formInitialized = true;
             
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
 
-                // Validate form - pass the actual form element
-                if (!validationFunctions.validateAndAlert(form)) {
-                    return;
-                }
-
-                // Validate email and phone
+                // Validate form
+                if (!validationFunctions.validateAndAlert(form)) return;
+                
                 const email = form.email.value.trim();
                 const phone = form.phone.value.trim();
-
+                
                 if (!validationFunctions.isEmailValid(email)) {
                     alert("Please enter a valid email address.");
                     return;
                 }
 
                 if (!validationFunctions.isPhoneValid(phone)) {
-                    alert("Please enter a valid South African phone number (e.g. 0812345678 or +27812345678).");
+                    alert("Please enter a valid South African phone number.");
                     return;
                 }
 
@@ -40,13 +41,14 @@ function initializeSellerRegistration(form, validationFunctions) {
                         email: email,
                         phone: phone,
                         website: form.website.value.trim(),
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        status: "pending"
                     });
 
-                    alert('Your request has been successfully sent!');
+                    alert('Application submitted successfully!');
                     window.location.href = '../html/seller_dashboard.html';
-                } catch (err) {
-                    console.error('Error:', err);
+                } catch (error) {
+                    console.error("Error submitting:", error);
                     alert('Submission failed. Please try again.');
                 }
             });
@@ -55,4 +57,13 @@ function initializeSellerRegistration(form, validationFunctions) {
 }
 
 // Make available globally
-window.initializeSellerRegistration = initializeSellerRegistration;
+if (typeof window !== 'undefined') {
+    window.initializeSellerRegistration = initializeSellerRegistration;
+}
+
+// Node.js/test environment
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        initializeSellerRegistration
+    };
+}
