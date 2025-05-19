@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-const { isEmailValid, isPhoneValid, areRequiredFieldsFilled } = require('../local_artisan/scripts/formValidation');
+const { isEmailValid, isPhoneValid, areRequiredFieldsFilled, validateAndAlert } = require('../local_artisan/scripts/formValidation');
 
 describe('Validation Functions', () => {
   test('Valid email passes', () => {
@@ -43,7 +43,22 @@ describe('Required Fields Check', () => {
     expect(areRequiredFieldsFilled(formMock)).toBe(false);
   });
 });
+
 describe('validateAndAlert', () => {
+  let formMock;
+
+  beforeEach(() => {
+    formMock = {
+      businessName: { value: 'My Biz' },
+      fullName: { value: 'Jane Doe' },
+      email: { value: 'jane@example.com' },
+      phone: { value: '0812345678' }
+    };
+
+    // Mocking the alert function
+    global.alert = jest.fn();
+  });
+
   test('returns true and shows no alert when all fields are present', () => {
     const result = validateAndAlert(formMock);
     expect(result).toBe(true);
