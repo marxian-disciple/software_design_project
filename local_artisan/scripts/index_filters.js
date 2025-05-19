@@ -1,12 +1,13 @@
 import { collection, getDocs, query, where } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { db } from '../lib/firebaseConfig.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async() => {
     const categoryLinks = document.querySelectorAll('[data-filter-category]');
     const productContainer = document.querySelector('.middle-content');
-    const searchBar = document.querySelector('.search-bar'); // Add this if missing
-
+    const searchBar = document.querySelector('.search-bar'); 
     let currentCategory = 'all';
+    let allProductsCache = []; // Cache for all products
+
 
     // Unified function to handle product display
     const displayProducts = (products) => {
@@ -62,67 +63,69 @@ document.addEventListener('DOMContentLoaded', () => {
         // Refresh search cache when category changes 👇
         await initializeSearch();
         await fetchAndDisplayProducts(currentCategory);
-  });
+    });
     });
 
-    // Initial load - fetch all products
-    fetchAndDisplayProducts('all');
-
+    
     // Search functionality
-    let allProductsCache = []; // Cache for all products
 
     // Debounce function to limit search triggers
     const debounce = (func, delay) => {
-    let timeoutId;
-    return (...args) => {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => func.apply(this, args), delay);
-    };
+        let timeoutId;
+        return (...args) => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => func.apply(this, args), delay);
+        };
     };
 
-    // Initial fetch of all products for search
     const initializeSearch = async () => {
-    try {
-        const productsRef = collection(db, 'products');
-        const q = query(productsRef);
-        const querySnapshot = await getDocs(q);
-        allProductsCache = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-        }));
-    } catch (error) {
-        console.error('Error initializing search:', error);
-    }
+        try {
+            const productsRef = collection(db, 'products');
+            const q = query(productsRef);
+            const querySnapshot = await getDocs(q);
+            allProductsCache = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+        } catch (error) {
+            console.error('Error initializing search:', error);
+        }
     };
 
-    // Search handler
     const handleSearch = debounce(async (searchTerm) => {
     try {
         const term = searchTerm.toLowerCase().trim();
         
         if (!term) {
-        // If search is empty, show current category
-        await fetchAndDisplayProducts(currentCategory);
-        return;
+            // Show current category from cache when search is empty
+            const filtered = currentCategory === 'all' 
+                ? allProductsCache 
+                : allProductsCache.filter(p => p.category === currentCategory);
+            displayProducts(filtered);
+            return;
         }
 
-        // Filter cached products
-        const filteredProducts = allProductsCache.filter(product =>
-        product.name.toLowerCase().includes(term)
-        );
-        
+        // Actual search filtering logic
+        const filteredProducts = allProductsCache.filter(product => {
+            // Ensure product.name exists and is a string
+            const productName = product.name?.toLowerCase() || '';
+            return productName.includes(term);
+        });
+
         displayProducts(filteredProducts);
+
     } catch (error) {
         console.error('Search error:', error);
     }
-    }, 300);
+}, 300);
 
-    // Event listener for search input
-    searchBar.addEventListener('input', (e) => {
+searchBar.addEventListener('input', (e) => {
     handleSearch(e.target.value);
-    });
+});
 
-    initializeSearch(); 
+    // Initialize after main content load
+    await initializeSearch();
+    displayProducts(allProductsCache); // Display all products initially
 });
 
 

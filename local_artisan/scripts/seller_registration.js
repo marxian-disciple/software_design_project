@@ -1,45 +1,34 @@
-import { db, auth } from '../lib/firebaseConfig.js';
-import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+// local_artisan/scripts/seller_registration.js
 
-let formInitialized = false;
+export function isEmailValid(email) {
+  // Simple email regex that checks for basic email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
 
-onAuthStateChanged(auth, (user) => {
-    if (!user) {
-        alert('User not logged in!');
-    }
-    else if (user && !formInitialized) {
-        formInitialized = true; // to make sure event listener attatches only once so that even when onAuthStateChanged changes, we only add the listener once.
-        const form = document.querySelector('.seller-info');
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+export function isPhoneValid(phone) {
+  // South African phone number regex:
+  // - Optional +27 or 0 followed by 2 digits and 7 more digits
+  // - Or 27 followed by 2 digits and 7 more digits
+  const phoneRegex = /^(\+27\d{9}|0\d{9}|27\d{9})$/;
+  return phoneRegex.test(phone);
+}
 
-            const businessName = document.getElementById('businessName').value;
-            const registrationNumber = document.getElementById('registrationNumber').value;
-            const vatNumber = document.getElementById('vatNumber').value;
-            const  fullName = document.getElementById('fullName').value;
-            const  email = document.getElementById('email').value;
-            const  phone = document.getElementById('phone').value;
-            const  website = document.getElementById('website').value;
+export function areRequiredFieldsFilled(form) {
+  // Check if all required fields have non-empty values
+  return (
+    form.businessName.value.trim() !== '' &&
+    form.fullName.value.trim() !== '' &&
+    form.email.value.trim() !== '' &&
+    form.phone.value.trim() !== ''
+  );
+}
 
-            try {
-                await addDoc(collection(db, 'sellers'), {
-                    userId: user.uid,
-                    businessName,
-                    registrationNumber,
-                    vatNumber,
-                    fullName,
-                    email,
-                    phone,
-                    website,
-                    createdAt: new Date()
-                });
-
-                alert('Seller added successfully!');
-                window.location.href = '../html/seller_dashboard.html'
-            } catch (err) {
-                console.error(`Error adding product to database: ${err}`);
-            }
-        });
-    }
-});
+export function validateAndAlert(form) {
+  if (!form.businessName.value || !form.fullName.value || 
+      !form.email.value || !form.phone.value) {
+    alert("Please fill in all required fields: Business Name, Full Name, Email, and Phone Number.");
+    return false;
+  }
+  return true;
+}
