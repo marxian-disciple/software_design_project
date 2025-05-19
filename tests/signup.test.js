@@ -20,7 +20,7 @@ jest.mock("../lib/firebaseConfig.js", () => ({
 }));
 
 beforeEach(() => {
-  document.body.innerHTML = `
+  document.body.innerHTML = 
     <form class="login-form">
       <input id="username" value="test@example.com" />
       <input id="password" value="password123" />
@@ -29,7 +29,7 @@ beforeEach(() => {
     </form>
     <button class="google-btn">Google Sign In</button>
     <a class="login-icon"></a>
-  `;
+  ;
   jest.clearAllMocks();
 });
 
@@ -112,4 +112,4 @@ test("should handle Google sign-in error", async () => {
   await new Promise((resolve) => setTimeout(resolve, 0));
 
   expect(alertMock).toHaveBeenCalledWith("Google Sign-In failed. Please try again.");
-});
+}); 
