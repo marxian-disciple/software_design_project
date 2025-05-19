@@ -33,9 +33,9 @@ function validateAndAlert(form) {
   return true;
 }
 
-module.exports = {
-  isEmailValid,
-  isPhoneValid,
-  areRequiredFieldsFilled,
-  validateAndAlert
-};
+//module.exports = {
+//  isEmailValid,
+//  isPhoneValid,
+  //areRequiredFieldsFilled,
+  //validateAndAlert
+//};
