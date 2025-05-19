@@ -2,10 +2,21 @@
  * @jest-environment jsdom
  */
 
-const { groupData, drawCharts } = require('../local_artisan/scripts/analytics');
-
-// Mock Chart globally
+// Mock Firebase and Chart.js
 global.Chart = jest.fn().mockImplementation(() => ({}));
+
+// Mock Firebase
+jest.mock('firebase/app', () => ({
+  initializeApp: jest.fn()
+}));
+
+jest.mock('firebase/firestore', () => ({
+  getFirestore: jest.fn(),
+  collection: jest.fn(),
+  getDocs: jest.fn(() => ({
+    docs: []
+  }))
+}));
 
 // Set up basic DOM elements before tests
 beforeAll(() => {
@@ -15,6 +26,9 @@ beforeAll(() => {
     <canvas id="topProductsBar"></canvas>
   `;
 });
+
+// Import after setting up mocks
+import { groupData, drawCharts } from './analytics.js';
 
 describe('groupData', () => {
   const now = new Date();
