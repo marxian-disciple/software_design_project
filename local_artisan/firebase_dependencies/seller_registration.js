@@ -23,7 +23,7 @@ function initializeSellerRegistration(form, validationFunctions) {
                 };
 
                 // Validate form
-                if (!validationFunctions.validateAndAlert(formData)) {
+                if (!validationFunctions.validateAndAlert(form)) {
                     return;
                 }
 
