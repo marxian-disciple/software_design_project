@@ -8,8 +8,8 @@ As a seller, I want to deregister my store, so that I can exit the platform when
 
 As a seller, I want to see my top-selling product, so that I can focus on inventory and marketing strategies.
 
-As a buyer, I want to click the checkout button.
+As a buyer, I want to click the checkout button, so that I can proceed with purchasing the items in my cart.
 
-As a buyer, I want to pay for my cart.
+As a buyer, I want to pay for my cart, so that I can complete my order.
 
-As a buyer, I want to delete my account.
+As a buyer, I want to delete my account, so that I can remove my data from the platform.

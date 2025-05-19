@@ -54,29 +54,22 @@
     </form>
   </main>
 </body>
-<script type="module" src="../scripts/seller_registration.js"></script>
 <script>
   document.getElementById("closeBtn").addEventListener("click", () => {
     window.location.href = "../index.html"; 
   });
 </script>
-<!-- Include these in your HTML file -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="../scripts/seller_registration.js"></script>
-<script src="../../firebase dependencies/seller_registration.js"></script>
+<script type="module" src="./../scripts/seller_registration.js"></script>
+<script type="module" src="./../firebase_dependencies/seller_registration.js"></script>
 
 <script>
 // Initialize after DOM loads
 document.addEventListener('DOMContentLoaded', function() {
     var form = document.querySelector('.seller-info');
-    var validationFunctions = {
-        isEmailValid: isEmailValid,
-        isPhoneValid: isPhoneValid,
-        validateAndAlert: validateAndAlert
-    };
-    
+    let validationFunctions;
     initializeSellerRegistration(form, validationFunctions);
 });
 </script>

@@ -2,7 +2,9 @@ import { ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/fireba
 import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { auth, db, storage } from '../local_artisan/lib/firebaseConfig.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-import { addButton, form, name, price, weight, quantity, category, description, image, closeBtn} from '../local_artisan/scripts/add_product.js';
+
+import { addButton, form, name, price, weight, quantity, category, description, image, closeBtn} from './../scripts/add_product.js';
+
 let formInitialized = false;
 
 export function initializeForm() {

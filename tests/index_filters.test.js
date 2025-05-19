@@ -1,107 +1,80 @@
-// __tests__/productFilter.test.js
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '../lib/firebaseConfig';
-import { fetchAndDisplayProducts, displayProducts } from '../scripts/index_filters';
+/**
+ * @jest-environment jsdom
+ */
+jest.useFakeTimers();
 
-jest.mock('firebase/firestore');
-jest.mock('../lib/firebaseConfig.js');
+//
+// 1) First mock out your local firebaseConfig.js so that `db` is a plain object
+//
+jest.mock(
+  '../local_artisan/lib/firebaseConfig.js',
+  () => ({ db: {} })
+);
 
-describe('Product Filtering', () => {
-  let mockContainer;
-  let mockCategoryLinks;
+//
+// 2) Now require the script under test.  Because of moduleNameMapper,
+//    Jest will swap out the CDN import for your __mocks__/firebase‑firestore.js.
+//
+require('../local_artisan/scripts/index_filters.js');
 
+describe('Product Functionality (single-file)', () => {
   beforeEach(() => {
-    // Mock DOM elements
-    mockContainer = {
-      innerHTML: '',
-      appendChild: jest.fn()
-    };
-    
-    mockCategoryLinks = [
-      { dataset: { filterCategory: 'all' }, classList: { remove: jest.fn(), add: jest.fn() } },
-      { dataset: { filterCategory: 'electronics' }, classList: { remove: jest.fn(), add: jest.fn() } }
+    document.body.innerHTML = `
+      <div class="middle-content"></div>
+      <input class="search-bar" />
+      <a data-filter-category="all" class="active"></a>
+      <a data-filter-category="electronics"></a>
+    `;
+
+    // clear any previous mock calls
+    const fs = require('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    fs.collection.mockClear();
+    fs.getDocs.mockClear();
+    fs.query.mockClear();
+    fs.where.mockClear();
+
+    // fire DOMContentLoaded so your script initializes
+    document.dispatchEvent(new Event('DOMContentLoaded'));
+  });
+
+  test('displayProducts via window.testing', () => {
+    window.testing.displayProducts([
+      { id: '1', name: 'Test', price: '99.99', imageUrl: 't.jpg' }
+    ]);
+
+    const priceEl = document.querySelector('.product-price');
+    expect(priceEl.textContent).toBe('$99.99');
+  });
+
+  test('category click calls firestore.where', async () => {
+  document.querySelector('[data-filter-category="electronics"]').click();
+
+  // give the event‐handler’s async function a chance to run its awaits
+  await new Promise(resolve => setTimeout(resolve, 0));
+
+  const fs = require('https://www.gstatic.com/firebasejs/10.12.0/firebase‑firestore.js');
+  expect(fs.where).toHaveBeenCalledWith('category', '==', 'electronics');
+});
+  test('category click updates active class', () => {
+    const allLink = document.querySelector('[data-filter-category="all"]');
+    const electronicsLink = document.querySelector('[data-filter-category="electronics"]');
+
+    electronicsLink.click();
+
+    expect(allLink.classList.contains('active')).toBe(false);
+    expect(electronicsLink.classList.contains('active')).toBe(true);
+  });
+
+
+  test('search filters cached products', () => {
+    // prime the cache
+    window.testing.allProductsCache = [
+      { id: '1', name: 'iPhone', category: 'electronics' }
     ];
 
-    document.querySelectorAll = jest.fn().mockReturnValue(mockCategoryLinks);
-    document.querySelector = jest.fn().mockReturnValue(mockContainer);
-  });
-
-  describe('fetchAndDisplayProducts', () => {
-    it('should fetch all products when category is "all"', async () => {
-      const mockProducts = [
-        { id: '1', name: 'Product 1', price: 10, imageUrl: 'url1', category: 'electronics' },
-        { id: '2', name: 'Product 2', price: 20, imageUrl: 'url2', category: 'clothing' }
-      ];
-
-      getDocs.mockResolvedValue({
-        docs: mockProducts.map(p => ({
-          id: p.id,
-          data: () => ({ ...p })
-        }))
-      });
-
-      await fetchAndDisplayProducts('all');
-
-      expect(collection).toHaveBeenCalledWith(db, 'products');
-      expect(query).toHaveBeenCalled();
-      expect(displayProducts).toHaveBeenCalledWith(mockProducts);
-    });
-
-    it('should filter products by category', async () => {
-      const mockElectronics = [
-        { id: '1', name: 'Product 1', price: 10, imageUrl: 'url1', category: 'electronics' }
-      ];
-
-      getDocs.mockResolvedValue({
-        docs: mockElectronics.map(p => ({
-          id: p.id,
-          data: () => ({ ...p })
-        }))
-      });
-
-      await fetchAndDisplayProducts('electronics');
-
-      expect(where).toHaveBeenCalledWith('category', '==', 'electronics');
-      expect(displayProducts).toHaveBeenCalledWith(mockElectronics);
-    });
-  });
-
-  describe('displayProducts', () => {
-    it('should render products correctly', () => {
-      const products = [
-        { id: '1', name: 'Product 1', price: 10, imageUrl: 'url1' },
-        { id: '2', name: 'Product 2', price: 20, imageUrl: 'url2' }
-      ];
-
-      displayProducts(products);
-
-      expect(mockContainer.innerHTML).toBe('');
-      expect(mockContainer.appendChild).toHaveBeenCalledTimes(2);
-      expect(mockContainer.appendChild.mock.calls[0][0].innerHTML).toContain('Product 1');
-      expect(mockContainer.appendChild.mock.calls[1][0].innerHTML).toContain('Product 2');
-    });
-
-    it('should handle empty state', () => {
-      displayProducts([]);
-      expect(mockContainer.appendChild).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('Event Handlers', () => {
-    it('should update active class on category click', async () => {
-      const mockEvent = { 
-        preventDefault: jest.fn(),
-        target: mockCategoryLinks[1]
-      };
-
-      // Simulate click event
-      const clickHandler = mockCategoryLinks[1].addEventListener.mock.calls[0][1];
-      await clickHandler(mockEvent);
-
-      expect(mockEvent.preventDefault).toHaveBeenCalled();
-      expect(mockCategoryLinks[0].classList.remove).toHaveBeenCalled();
-      expect(mockCategoryLinks[1].classList.add).toHaveBeenCalled();
-      expect(fetchAndDisplayProducts).toHaveBeenCalledWith('electronics');
-    });
+    window.testing.handleSearch('iphone');
+    jest.runAllTimers(); // assume you used fake timers for debounce
+    const cards = document.querySelectorAll('.product-card');
+    expect(cards.length).toBe(1);
   });
 });
