@@ -1,4 +1,4 @@
-// Firebase Config (no import style)
+
 const firebaseConfig = {
   apiKey: "AIzaSyClkdKaYMnvNRPWbHLviEv_2Rzo5MLV5Uc",
   authDomain: "software-design-project-574a6.firebaseapp.com",
@@ -31,16 +31,16 @@ function groupData(data) {
 
     totalRevenue += price;
 
-    // Top products by quantity
+  
     productCount[product_name] = (productCount[product_name] || 0) + 1;
 
-    // Top products by revenue
+  
     productRevenue[product_name] = (productRevenue[product_name] || 0) + price;
 
-    // Store performance by date
+  
     revenueByDate[dayStr] = (revenueByDate[dayStr] || 0) + price;
 
-    // Revenue this week per user
+
     if (ts >= weekStart) {
       weekRevenue[userId] = (weekRevenue[userId] || 0) + price;
     }
@@ -50,7 +50,7 @@ function groupData(data) {
 }
 
 function drawCharts({ totalRevenue, productCount, productRevenue, revenueByDate }) {
-  // Total Revenue Donut
+
   new Chart(document.getElementById("revenueDonut"), {
     type: "doughnut",
     data: {
@@ -68,7 +68,7 @@ function drawCharts({ totalRevenue, productCount, productRevenue, revenueByDate 
     }
   });
 
-  // Store Performance Line
+
   new Chart(document.getElementById("performanceLine"), {
     type: "line",
     data: {
@@ -88,7 +88,7 @@ function drawCharts({ totalRevenue, productCount, productRevenue, revenueByDate 
     }
   });
 
-  // Top Selling Products Bar
+
   new Chart(document.getElementById("topProductsBar"), {
     type: "bar",
     data: {
