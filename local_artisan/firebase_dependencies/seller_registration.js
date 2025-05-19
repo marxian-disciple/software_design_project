@@ -1,4 +1,3 @@
-// seller_firebase.js
 function initializeSellerRegistration(form, validationFunctions) {
     let formInitialized = false;
 
@@ -11,28 +10,21 @@ function initializeSellerRegistration(form, validationFunctions) {
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
 
-                // Get form values
-                var formData = {
-                    businessName: document.getElementById('businessName').value.trim(),
-                    registrationNumber: document.getElementById('registrationNumber').value.trim(),
-                    vatNumber: document.getElementById('vatNumber').value.trim(),
-                    fullName: document.getElementById('fullName').value.trim(),
-                    email: document.getElementById('email').value.trim(),
-                    phone: document.getElementById('phone').value.trim(),
-                    website: document.getElementById('website').value.trim()
-                };
-
-                // Validate form
+                // Validate form - pass the actual form element
                 if (!validationFunctions.validateAndAlert(form)) {
                     return;
                 }
 
-                if (!validationFunctions.isEmailValid(formData.email)) {
+                // Validate email and phone
+                const email = form.email.value.trim();
+                const phone = form.phone.value.trim();
+
+                if (!validationFunctions.isEmailValid(email)) {
                     alert("Please enter a valid email address.");
                     return;
                 }
 
-                if (!validationFunctions.isPhoneValid(formData.phone)) {
+                if (!validationFunctions.isPhoneValid(phone)) {
                     alert("Please enter a valid South African phone number (e.g. 0812345678 or +27812345678).");
                     return;
                 }
@@ -41,23 +33,26 @@ function initializeSellerRegistration(form, validationFunctions) {
                 try {
                     await firebase.firestore().collection('seller_applications').add({
                         userId: user.uid,
-                        businessName: formData.businessName,
-                        registrationNumber: formData.registrationNumber,
-                        vatNumber: formData.vatNumber,
-                        fullName: formData.fullName,
-                        email: formData.email,
-                        phone: formData.phone,
-                        website: formData.website,
+                        businessName: form.businessName.value.trim(),
+                        registrationNumber: form.registrationNumber.value.trim(),
+                        vatNumber: form.vatNumber.value.trim(),
+                        fullName: form.fullName.value.trim(),
+                        email: email,
+                        phone: phone,
+                        website: form.website.value.trim(),
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
 
-                    alert('Your request to become a seller has been successfully sent to an admin! Please wait for 2-3 working days for the approval of your request. In the meantime, please visit our page "Sell on Artify" for more information. Thank you for your patience.');
+                    alert('Your request has been successfully sent!');
                     window.location.href = '../html/seller_dashboard.html';
                 } catch (err) {
-                    console.error('Error adding seller to database:', err);
-                    alert('Something went wrong while submitting the form. Please try again.');
+                    console.error('Error:', err);
+                    alert('Submission failed. Please try again.');
                 }
             });
         }
     });
 }
+
+// Make available globally
+window.initializeSellerRegistration = initializeSellerRegistration;
