@@ -1,11 +1,14 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-import { decrement_button, increment_button, remove_button, cartItemsContainer, cartTotalContainer, firebaseConfig } from './../scripts/view_cart.js'
+import { firebaseConfig } from './../scripts/view_cart.js';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+
+const cartItemsContainer = document.getElementById('cart-items');
+const cartTotalContainer = document.getElementById('cart-total');
 
 function renderCart(cart) {
   cartItemsContainer.innerHTML = '';
@@ -49,7 +52,7 @@ function renderCart(cart) {
 }
 
 function attachEventListeners(cart) {
-  remove_button.forEach(button => {
+  document.querySelectorAll('.remove-button').forEach(button => {
     button.addEventListener('click', async e => {
       const productId = e.target.dataset.id;
       const updatedCart = cart.filter(item => item.productId !== productId);
@@ -58,7 +61,7 @@ function attachEventListeners(cart) {
     });
   });
 
-  increment_button.forEach(button => {
+  document.querySelectorAll('.increment-button').forEach(button => {
     button.addEventListener('click', async e => {
       const productId = e.target.dataset.id;
       const updatedCart = cart.map(item => {
@@ -70,7 +73,7 @@ function attachEventListeners(cart) {
     });
   });
 
-  decrement_button.forEach(button => {
+  document.querySelectorAll('.decrement-button').forEach(button => {
     button.addEventListener('click', async e => {
       const productId = e.target.dataset.id;
       let updatedCart = cart.map(item => {
