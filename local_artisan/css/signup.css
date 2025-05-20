@@ -236,7 +236,7 @@ body {
   }
 }
 
-/* Artify Animated Section */
+/* Artify Animation Container */
 .animation {
   position: absolute;
   top: 0;
@@ -248,28 +248,57 @@ body {
   padding: 3rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  animation: slideInRight 1s ease-out forwards;
+  justify-content: flex-start;
+  align-items: stretch;
   overflow: hidden;
   z-index: 2;
   box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+  animation: slideInRight 1s ease-out forwards;
+}
+
+/* Initial header centered */
+.animation header {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
+  animation: moveHeaderTop 1s ease forwards;
+  animation-delay: 3s;
+  z-index: 2;
 }
 
 .animation h2 {
-  font-size: 8rem;
-  margin-bottom: 0.5rem;
-  animation: fadeIn 1.2s ease-out forwards;
+  font-size: 3rem;
+  font-family: 'Cinzel Decorative', serif;
+  letter-spacing: 2px;
+  margin: 0;
+  opacity: 0;
+  animation: fadeInText 1.5s ease-out forwards;
 }
 
 .animation h5 {
   font-size: 1.2rem;
   font-weight: 300;
-  animation: fadeIn 1.8s ease-out forwards;
-  opacity: 0.8;
+  opacity: 0;
+  animation: fadeInText 1.8s ease-out forwards;
 }
 
+/* Main fades in after header has moved */
+.animation main {
+  flex: 1;
+  opacity: 0;
+  animation: fadeInMain 1s ease forwards;
+  animation-delay: 4s;
+  padding-top: 6rem;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+}
 
+/* Background glow */
 .animation::before {
   content: '';
   position: absolute;
@@ -294,13 +323,26 @@ body {
   }
 }
 
-@keyframes fadeIn {
+@keyframes fadeInText {
   from {
     transform: translateY(20px);
     opacity: 0;
   }
   to {
     transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes moveHeaderTop {
+  to {
+    top: 2rem;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInMain {
+  to {
     opacity: 1;
   }
 }
@@ -317,15 +359,19 @@ body {
     width: 100%;
     height: auto;
     text-align: center;
-    align-items: center;
     padding: 2rem 1rem;
   }
-}
-.animation h2 {
-  font-family: 'Cinzel Decorative', serif;
-  font-size: 3rem;
-  letter-spacing: 2px;
-  margin-bottom: 0.5rem;
-}
 
+  .animation header {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    animation: none;
+  }
 
+  .animation main {
+    animation-delay: 1s;
+    opacity: 1;
+  }
+}
