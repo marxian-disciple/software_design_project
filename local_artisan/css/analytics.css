@@ -7,15 +7,18 @@
   --text-dark: #2e2e2e;
   --text-light: #888;
   --radius: 20px;
-}
 
+  --border-width: 2px;
+  --border-color-1: var(--accent1);
+  --border-color-2: var(--accent2);
+  --border-color-3: var(--accent3);
+}
 
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
 }
-
 
 body {
   display: flex;
@@ -26,7 +29,6 @@ body {
   background-color: var(--bg);
   color: var(--text-dark);
 }
-
 
 header {
   padding: 2rem 0;
@@ -81,10 +83,8 @@ header h1 {
   background-color: #f0f0f0;
 }
 
-
-
 main {
-  flex: 1; /* Allow main to grow and push footer down */
+  flex: 1;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
@@ -94,7 +94,7 @@ main {
   width: 100%;
 }
 
-/* Analytics cards */
+/* Base section style */
 section {
   background-color: var(--card);
   border-radius: var(--radius);
@@ -105,6 +105,8 @@ section {
   align-items: center;
   justify-content: center;
   transition: transform 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 section:hover {
@@ -124,13 +126,55 @@ canvas {
   max-height: 300px;
 }
 
+/* Glowing border effect (apply .glow-section class to section) */
+.glow-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: var(--radius);
+  padding: var(--border-width);
+  background: linear-gradient(
+    45deg,
+    var(--border-color-3),
+    var(--border-color-2),
+    var(--border-color-3),
+    var(--border-color-1)
+  );
+  background-size: 300% 300%;
+  z-index: 0;
+  animation: borderGlow 10s ease infinite;
 
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  box-sizing: border-box;
+}
 
+.glow-section::after {
+  content: '';
+  position: absolute;
+  top: -5px; left: -5px; right: -5px; bottom: -5px;
+  border-radius: var(--radius);
+  background: linear-gradient(
+    45deg,
+    var(--border-color-3),
+    var(--border-color-2),
+    var(--border-color-3),
+    var(--border-color-1)
+  );
+  background-size: 300% 300%;
+  z-index: -1;
+  filter: blur(15px);
+  opacity: 0.5;
+  animation: borderGlow 10s ease infinite;
+}
 
-
-
-
-
+@keyframes borderGlow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
 .main-footer {
   background-color: #f8f8f8;
@@ -179,8 +223,8 @@ canvas {
   }
   
   .search-bar {
-    flex-basis: 100%; /* Full width on mobile */
-    order: -1; /* Move search above nav */
+    flex-basis: 100%;
+    order: -1;
     margin-right: 0;
   }
   
@@ -190,7 +234,6 @@ canvas {
     justify-content: center;
   }
 
-  /* Original responsive styles below */
   .main-header {
     flex-direction: column;
     padding: 1rem;
@@ -217,4 +260,3 @@ canvas {
     margin-bottom: 20px;
   }
 }
-

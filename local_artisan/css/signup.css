@@ -41,7 +41,7 @@ body {
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
   margin-left: auto;
-  margin-right: 5%;
+  margin-right: 15%;
   position: relative;
   z-index: 1; /* Ensure it's above the ::before element */
 }
@@ -235,3 +235,97 @@ body {
     flex-direction: column;
   }
 }
+
+/* Artify Animated Section */
+.animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 40%;
+  background: transparent;
+  color: rgb(88, 37, 13);
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  animation: slideInRight 1s ease-out forwards;
+  overflow: hidden;
+  z-index: 2;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+}
+
+.animation h2 {
+  font-size: 8rem;
+  margin-bottom: 0.5rem;
+  animation: fadeIn 1.2s ease-out forwards;
+}
+
+.animation h5 {
+  font-size: 1.2rem;
+  font-weight: 300;
+  animation: fadeIn 1.8s ease-out forwards;
+  opacity: 0.8;
+}
+
+
+.animation::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(94, 76, 76, 0.05) 0%, transparent 70%);
+  animation: rotateGlow 20s linear infinite;
+  z-index: -1;
+}
+
+/* Keyframes */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes rotateGlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .animation {
+    position: static;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    align-items: center;
+    padding: 2rem 1rem;
+  }
+}
+.animation h2 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 3rem;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+}
+
+

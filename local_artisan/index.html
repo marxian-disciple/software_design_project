@@ -256,7 +256,7 @@
         document.querySelector(".logout").addEventListener("click", () => {
           signOut(auth).then(() => {
             console.log('User logged out successfully');
-            location.reload();  // Reload the page to reflect changes
+            location.reload(); 
           }).catch((error) => {
             console.error('Error signing out:', error);
           });
