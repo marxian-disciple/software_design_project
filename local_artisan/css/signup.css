@@ -24,7 +24,7 @@
 
 body {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background-color: var(--light);
+  background-color: #fcf2fb;;
   color: var(--text);
   min-height: 100vh;
   display: grid;
@@ -36,23 +36,25 @@ body {
 .login-container {
   width: 100%;
   max-width: 420px;
-  background: var(--white);
+  background: transparent;
   padding: 2rem;
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
   margin-left: auto;
   margin-right: 5%;
   position: relative;
+  z-index: 1; /* Ensure it's above the ::before element */
 }
 
 .login-container::before {
   content: '';
   position: absolute;
-  top: calc(-1 * var(--border-width));
-  left: calc(-1 * var(--border-width));
-  right: calc(-1 * var(--border-width));
-  bottom: calc(-1 * var(--border-width));
-  border-radius: calc(var(--border-radius) + var(--border-width));
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: var(--border-width);
+  border-radius: inherit;
   background: linear-gradient(
     45deg,
     var(--border-color-3),
@@ -63,12 +65,16 @@ body {
   background-size: 300% 300%;
   z-index: -1;
   animation: borderAnimation 10s ease infinite;
-}
-
-@keyframes borderAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  box-sizing: border-box;
 }
 
 .login-container h2 {
@@ -76,7 +82,7 @@ body {
   margin-bottom: 1.5rem;
   font-size: 1.75rem;
   font-weight: 700;
-  color: rgb(209, 49, 169);
+  color: rgb(88, 37, 13);
   text-decoration: underline;
 }
 
@@ -103,8 +109,10 @@ body {
 
 .input-group input {
   padding: 0.75rem 1rem;
-  border: 1px solid #e2e8f0;
+  background-color: transparent;
+  border: 1px solid #25538f;
   border-radius: var(--border-radius);
+  border-color:rgb(209, 49, 169);
   font-size: 1rem;
   transition: var(--transition);
 }
@@ -116,7 +124,6 @@ body {
 }
 
 .login-btn {
-  border: none;
   padding: 0.75rem;
   border: 1px solid #e2e8f0;
   border-radius: var(--border-radius);
@@ -127,10 +134,10 @@ body {
   cursor: pointer;
   transition: var(--transition);
   margin-top: 0.5rem;
+  background-color: transparent;
 }
 
 .login-btn:hover {
-
     border-color: var(--primary);
     color: var(--primary);
 }
