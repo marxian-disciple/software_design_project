@@ -112,3 +112,27 @@ fetchData().then(data => {
   const grouped = groupData(data);
   drawCharts(grouped);
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const menuButton = document.getElementById('menuButton');
+  const menuDropdown = document.getElementById('menuDropdown');
+
+  menuButton.addEventListener('click', () => {
+    const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+    menuButton.setAttribute('aria-expanded', !isExpanded);
+    if (!isExpanded) {
+      menuDropdown.style.display = 'block';
+    } else {
+      menuDropdown.style.display = 'none';
+    }
+  });
+
+  // Optional: Close dropdown if click outside
+  document.addEventListener('click', (event) => {
+    if (!menuButton.contains(event.target) && !menuDropdown.contains(event.target)) {
+      menuDropdown.style.display = 'none';
+      menuButton.setAttribute('aria-expanded', 'false');
+    }
+  });
+});
+
