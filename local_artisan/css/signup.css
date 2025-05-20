@@ -313,10 +313,11 @@ body {
   animation-name: fadeCycle;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
-  animation-duration: 5s;
+  animation-duration: 15s;
   overflow: visible;       /* ensure nothing gets clipped */
   object-fit: contain;     /* for images if you target img */
 }
+
 
 /* Also target the img inside figure */
 .animation main figure img {
@@ -333,17 +334,21 @@ body {
   animation-delay: 0s;
 }
 .animation main figure:nth-child(2) {
-  animation-delay: 2.1s;
+  animation-delay: 3s;
 }
 .animation main figure:nth-child(3) {
-  animation-delay: 4.1s;
+  animation-delay: 6s;
 }
 .animation main figure:nth-child(4) {
-  animation-delay: 6.2s;
+  animation-delay: 9s;
 }
 .animation main figure:nth-child(5) {
-  animation-delay: 8.3s;
+  animation-delay: 12s;
 }
+.animation main figure {
+  animation-fill-mode: both;
+}
+
 
 /* Background glow */
 .animation::before {
@@ -396,22 +401,13 @@ body {
 
 /* Keyframe for fading slideshow */
 @keyframes fadeCycle {
-  0% {
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  30% {
-    opacity: 1;
-  }
-  40% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-  }
+  0%   { opacity: 0; }
+  6.66%  { opacity: 1; }   /* fade in (1s) */
+  26.66% { opacity: 1; }   /* stay visible (2s) */
+  33.33% { opacity: 0; }   /* fade out (1s) */
+  100%  { opacity: 0; }    /* stay hidden */
 }
+
 
 @keyframes rotateGlow {
   0% { transform: rotate(0deg); }
