@@ -255,8 +255,6 @@ body {
   box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
   animation: slideInRight 1s ease-out forwards;
 }
-
-/* Initial header centered */
 .animation header {
   position: absolute;
   top: 50%;
@@ -285,17 +283,66 @@ body {
 
 /* Main fades in after header has moved */
 .animation main {
+  position: relative;
   flex: 1;
   opacity: 0;
   animation: fadeInMain 1s ease forwards;
   animation-delay: 4s;
   padding-top: 6rem;
   width: 100%;
+  max-width: 600px;  /* optional max width */
+  height: 400px;     /* fixed height for fading images */
+  margin: 0 auto;
   display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
   justify-content: center;
-  overflow-y: auto;
+  overflow: hidden;
+}
+
+/* Position and animate figures for fading slideshow */
+.animation main figure {
+  position: absolute;
+  top: 20%;                /* 20% from top as you wanted */
+  left: 50%;               /* center horizontally */
+  transform: translateX(-50%);
+  width: 80%;              /* reduce width so it fits better */
+  height: auto;            /* auto height to maintain aspect ratio */
+  margin: 0;
+  opacity: 0;
+  animation-name: fadeCycle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-duration: 5s;
+  overflow: visible;       /* ensure nothing gets clipped */
+  object-fit: contain;     /* for images if you target img */
+}
+
+/* Also target the img inside figure */
+.animation main figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain; /* keep aspect ratio */
+  pointer-events: none; /* optional: prevent image interactions */
+}
+
+
+/* Stagger animation delay for each image */
+.animation main figure:nth-child(1) {
+  animation-delay: 0s;
+}
+.animation main figure:nth-child(2) {
+  animation-delay: 2.1s;
+}
+.animation main figure:nth-child(3) {
+  animation-delay: 4.1s;
+}
+.animation main figure:nth-child(4) {
+  animation-delay: 6.2s;
+}
+.animation main figure:nth-child(5) {
+  animation-delay: 8.3s;
 }
 
 /* Background glow */
@@ -347,6 +394,25 @@ body {
   }
 }
 
+/* Keyframe for fading slideshow */
+@keyframes fadeCycle {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 @keyframes rotateGlow {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
@@ -373,5 +439,18 @@ body {
   .animation main {
     animation-delay: 1s;
     opacity: 1;
+    position: static;
+    height: auto;
+    max-width: 100%;
+    display: block;
+  }
+
+  .animation main figure {
+    position: relative;
+    width: 100%;
+    height: auto;
+    animation: none;
+    opacity: 1;
+    margin-bottom: 1rem;
   }
 }
