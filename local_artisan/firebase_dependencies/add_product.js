@@ -3,7 +3,7 @@ import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/f
 import { auth, db, storage } from './../lib/firebaseConfig.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
-import { addButton, form, name, price, weight, quantity, category, description, image, closeBtn} from './../scripts/add_product.js';
+import { addButton, form, name, price, weight, quantity, category, description, image, closeBtn , isNameValid, isImageValid, isPriceValid, isWeightValid, isQuantityValid, isCategoryValid } from './../scripts/add_product.js';
 
 let formInitialized = false;
 
@@ -27,9 +27,34 @@ export function initializeForm() {
         const productDescription = description.value;
         const productImage = image.files[0];
 
-        // Make sure an image is selected
-        if (!image) {
-          alert('Please upload an image.');
+        let errors = [];
+
+        if(!isNameValid(productName)){
+          errors.push('Please enter a valid name for your product.')
+        }
+
+        if(!isPriceValid(productPrice)){
+          errors.push('Please enter a valid price for your product.')
+        }
+
+        if(!isWeightValid(productWeight)){
+          errors.push('Please enter a valid weight for your product.')
+        }
+
+        if(!isQuantityValid(productQuantity)){
+          errors.push('Please enter a valid quantity for your product.')
+        }
+
+        if(!isCategoryValid(productCategory)){
+          errors.push('Please select a category for your product.')
+        }
+
+        if(!isImageValid(productImage)){
+          errors.push('Please provide a valid image for your product.')
+        }
+
+        if (errors.length > 0) {
+          alert(errors.join('\n'));
           return;
         }
 
