@@ -1,6 +1,6 @@
 import { ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js';
 import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-import { auth, db, storage } from '../local_artisan/lib/firebaseConfig.js';
+import { auth, db, storage } from './../lib/firebaseConfig.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
 import { addButton, form, name, price, weight, quantity, category, description, image, closeBtn} from './../scripts/add_product.js';
@@ -35,8 +35,8 @@ export function initializeForm() {
 
         try {
           // Upload the image to Firebase Storage
-          const storageRef = ref(storage, `product-images/${Date.now()}-${productImagemage.name}`);
-          await uploadBytes(storageRef, productImagemage);
+          const storageRef = ref(storage, `product-images/${Date.now()}-${productImage.name}`);
+          await uploadBytes(storageRef, productImage);
           const imageUrl = await getDownloadURL(storageRef);
 
           // Add product data to Firestore
