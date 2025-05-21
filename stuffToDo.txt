@@ -1,7 +1,8 @@
-Seller can only register once
+Login must take minimum of 8 characters for a password
+Fix signup.js file with regards to the registering of new the returning of old clients
 Buyer can only register once
 Checkout
 Change shop details
 Analytics
-Separate registration from sign in
 Need to delete products belonging to the seller when we delete their account
+Update the user info page

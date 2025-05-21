@@ -1,0 +1,33 @@
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+
+// Firebase Auth instance
+const auth = getAuth();
+
+// Function to handle sign-in or sign-up
+async function handleEmailPasswordLogin(email, password) {
+    try {
+        // Attempt to sign in the user with the provided email and password
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        console.log("User signed in:", userCredential.user);
+        // Successfully signed in
+    } catch (error) {
+        // If the error is "auth/user-not-found", create the user
+        if (error.code === 'auth/user-not-found') {
+            console.log("Email not found. Creating a new user...");
+            try {
+                // Create a new user with the email and password
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                console.log("User created:", userCredential.user);
+            } catch (creationError) {
+                // Handle any errors that occur during user creation
+                console.error("Error creating user:", creationError.message);
+            }
+        } else {
+            // Handle other errors (e.g., wrong password, network error)
+            console.error("Error signing in:", error.message);
+        }
+    }
+}
+
+// Example usage
+handleEmailPasswordLogin("user@example.com", "password123");

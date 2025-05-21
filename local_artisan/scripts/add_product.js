@@ -8,3 +8,30 @@ export const category = document.getElementById('categories');
 export const description = document.getElementById('description');
 export const image = document.getElementById('image');
 export const closeBtn = document.getElementById("closeBtn");
+
+export function isNameValid(name){
+    return typeof name === 'string' && name.trim().length > 0;
+};
+
+export function isPriceValid(price) {
+    return /^[+]?\d+(\.\d+)?$/.test(price);
+}
+
+export function isWeightValid(weight) {
+    return /^[+]?\d+(\.\d+)?$/.test(weight);
+}
+
+export function isQuantityValid(quantity) {
+    return /^[+]?\d+$/.test(quantity);
+}
+
+export function isImageValid(image){
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+    if (!image || !allowedTypes.includes(image.type)) {
+      return;
+    }
+};
+
+export function isCategoryValid(category){
+    return category && category !== "Select Option";
+};

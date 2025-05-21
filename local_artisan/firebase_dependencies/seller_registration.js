@@ -1,4 +1,4 @@
-import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { collection, addDoc, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { auth, db, storage } from '../lib/firebaseConfig.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 import {isEmailValid, isPhoneValid, validateAndAlert } from '../scripts/seller_registration.js'
@@ -10,7 +10,7 @@ function initializeSellerRegistration(form, validationFunctions) {
     onAuthStateChanged(auth, (user) => {
         if (!user) {
             alert('Please log in first!');
-            window.location.href = '../html/login.html';
+            window.location.href = './../html/signup.html';
             return;
         }
 
@@ -40,6 +40,26 @@ function initializeSellerRegistration(form, validationFunctions) {
 
                 // Submit to Firestore
                 try {
+                    const sellerApplicationQuery = query(collection(db, 'seller_applications'), where('userId', '==', user.uid));
+                    const applicationQuerySnapshot = await getDocs(sellerApplicationQuery);
+
+                    if (!applicationQuerySnapshot.empty) {
+                        // If user already exists
+                        alert('You have already sent an application to register to become a seller. Please use a different email or contact support.');
+                        window.location.href = './../index.html';
+                        return;
+                    }
+
+                    const sellerQuery = query(collection(db, 'sellers'), where('userId', '==', user.uid));
+                    const querySnapshot = await getDocs(sellerQuery);
+
+                    if (!querySnapshot.empty) {
+                        // If user already exists
+                        alert('You are already registered as a seller. Please use a different email or contact support.');
+                        window.location.href = './../index.html';
+                        return;
+                    }
+
                     await addDoc(collection(db, 'seller_applications'), {
                         userId: user.uid,
                         businessName: form.businessName.value.trim(),

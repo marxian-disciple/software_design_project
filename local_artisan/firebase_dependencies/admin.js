@@ -17,6 +17,8 @@ async function fetchAndDisplayApplications() {
 
             const createdAtDate = application.createdAt.toDate();
             const formattedDate = createdAtDate.toLocaleString();
+            card.setAttribute('data-created-at', createdAtDate.toISOString());
+
 
             card.innerHTML = `
                 <p class="business-name">Business Name: ${application.businessName}</p>
@@ -85,6 +87,8 @@ async function fetchAndDisplayProductRequests() {
 
             const createdAtDate = prod.createdAt.toDate();
             const formattedDate = createdAtDate.toLocaleString();
+            card.setAttribute('data-created-at', createdAtDate.toISOString());
+
 
             card.innerHTML = `
                 <img src="${prod.imageUrl}" alt="${prod.name}" class="product-image" style="width: 300px; height: 200px;">
