@@ -12,3 +12,216 @@
     justify-content: space-between;
     padding: 20px;
 }
+
+/* Container setup */
+#seller_applications,
+#active_sellers,
+#product_requests {
+  margin: 20px auto;
+  max-width: 1000px;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+}
+
+/* Section cards */
+.application, .active, .prods {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: white;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.application:hover, .active:hover, .prods:hover {
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.15);
+}
+
+/* Text styling */
+.application p, .active p, .prods p {
+  margin: 6px 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+
+.business-name, .prod-name {
+  font-weight: 700;
+  font-size: 16px;
+  color: #222;
+}
+
+.created-at {
+  color: #666;
+  font-style: italic;
+  font-size: 12px;
+}
+
+.product-image {
+  display: block;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+/* Buttons */
+button.approve-seller,
+button.approve-product {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+button.approve-seller:hover,
+button.approve-product:hover {
+  background-color: #218838;
+}
+
+/* Close button (assuming closeBtn is a button on page) */
+button#closeBtn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 1000;
+}
+
+button#closeBtn:hover {
+  background-color: #c82333;
+}
+
+/* Base styling matching your site */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FAD4D8;
+    color: #231942;
+    margin: 0;
+    padding: 2rem;
+}
+
+/* Container for all cards */
+#seller_applications,
+#active_sellers,
+#product_requests {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+/* Card base */
+section.application,
+section.active,
+section.prods {
+    background-color: #93A8AC;
+    border-radius: 0.75rem;
+    padding: 1.5rem 2rem;
+    width: 320px;
+    box-shadow: 0 2px 8px rgba(35, 25, 66, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: #231942;
+    position: relative;
+    transition: transform 0.2s ease;
+}
+
+section.application:hover,
+section.active:hover,
+section.prods:hover {
+    transform: translateY(-5px);
+}
+
+/* Headings inside cards */
+section.application p.business-name,
+section.active p.business-name,
+section.prods p.prod-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+}
+
+/* Product image */
+section.prods img.product-image {
+    border-radius: 0.5rem;
+    max-width: 100%;
+    height: 180px;
+    object-fit: cover;
+    margin-bottom: 1rem;
+}
+
+/* Info paragraphs */
+section p {
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Buttons */
+button.approve-seller,
+button.approve-product {
+    background-color: #3B5249;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    align-self: flex-start;
+    transition: background-color 0.3s ease;
+}
+
+button.approve-seller:hover,
+button.approve-product:hover {
+    background-color: #231942;
+}
+
+/* Close button */
+button#closeBtn {
+    background-color: #AA6373;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 2rem;
+    transition: background-color 0.3s ease;
+}
+
+button#closeBtn:hover {
+    background-color: #231942;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    #seller_applications,
+    #active_sellers,
+    #product_requests {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    section.application,
+    section.active,
+    section.prods {
+        width: 90%;
+    }
+}
+
