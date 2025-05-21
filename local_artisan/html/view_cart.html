@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View Cart</title>
   <link rel="stylesheet" href="../css/view_products_styling.css">
+
+  <!-- ✅ Load PayPal SDK BEFORE any script that uses it -->
+  <script src="https://www.paypal.com/sdk/js?client-id=AR-njgG9jo_e6BNr2_Za7WcP8234PjMN9FUZy-LlZQ7SaJzD5TBu_Ye1sKBfO-Ha8EiHxCA71JV9kqn_&currency=USD"></script>
 </head>
 
 <body>
@@ -31,7 +34,9 @@
 
       <section id="cart-summary" style="margin-top: 2rem;">
         <h3>Total: $<span id="cart-total">0.00</span></h3>
-        <button id="checkout-button">Checkout</button>
+
+        <!-- ✅ PayPal button renders here -->
+        <div id="paypal-button-container"></div>
       </section>
     </article>
   </main>
@@ -40,7 +45,9 @@
     <p>&copy; 2025 Artify Marketplace. All rights reserved.</p>
   </footer>
 
-  <script src="../scripts/view_cart.js"></script>
+  <!-- ✅ Load your JavaScript AFTER the PayPal SDK -->
+  <script type="module" src="../scripts/view_cart.js"></script>
+  <script type="module" src="./../firebase_dependencies/view_cart.js"></script>
 
 </body>
 </html>

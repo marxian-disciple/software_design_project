@@ -126,6 +126,18 @@ searchBar.addEventListener('input', (e) => {
     // Initialize after main content load
     await initializeSearch();
     displayProducts(allProductsCache); // Display all products initially
+
+
+    if (typeof window !== 'undefined') {
+        window.testing = {
+            displayProducts,
+            fetchAndDisplayProducts,
+            handleSearch,
+            initializeSearch,
+            allProductsCache: ( ) => allProductsCache, // Expose the cache for testing
+            currentCategory: () => currentCategory // Expose the current category for testing
+        };
+    }
 });
 
 

@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-const { isEmailValid, isPhoneValid, areRequiredFieldsFilled } = require('../local_artisan/scripts/seller_registration');
+const { isEmailValid, isPhoneValid, areRequiredFieldsFilled, validateAndAlert } = require('../local_artisan/scripts/seller_registration');
 
 describe('Validation Functions', () => {
   describe('Email Validation', () => {
@@ -74,6 +74,43 @@ describe('Validation Functions', () => {
       formMock.vatNumber.value = '';
       formMock.website.value = '';
       expect(areRequiredFieldsFilled(formMock)).toBe(true);
+    });
+  });
+
+  describe('validateAndAlert', () => {
+    let formMock;
+
+    beforeEach(() => {
+      formMock = {
+        businessName: { value: 'Artisan Crafts' },
+        fullName: { value: 'John Doe' },
+        email: { value: 'john@example.com' },
+        phone: { value: '0831234567' }
+      };
+
+      // Mock the global alert function
+      global.alert = jest.fn();
+    });
+
+    test('returns true and shows no alert when all fields are present', () => {
+      const result = validateAndAlert(formMock);
+      expect(result).toBe(true);
+      expect(alert).not.toHaveBeenCalled();
+    });
+
+    test('returns false and shows alert when any field is missing', () => {
+      const requiredFields = ['businessName', 'fullName', 'email', 'phone'];
+
+      requiredFields.forEach(field => {
+        const originalValue = formMock[field].value;
+        formMock[field].value = ''; // Simulate missing field
+        const result = validateAndAlert(formMock);
+        expect(result).toBe(false);
+        expect(alert).toHaveBeenCalledWith(
+          "Please fill in all required fields: Business Name, Full Name, Email, and Phone Number."
+        );
+        formMock[field].value = originalValue; // Restore original value
+      });
     });
   });
 });

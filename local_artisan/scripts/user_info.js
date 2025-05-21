@@ -1,68 +1,69 @@
-import { auth, db } from "../lib/firebaseConfig.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+// profileHandlers.js
 
-const body = document.querySelector("body");
+/**
+ * Renders the “seller” profile sections for every matching doc.
+ * @param {HTMLElement} container  where to append 
+ * @param {Object[]} docs         array of { data: () => {...} } from Firestore
+ * @param {Object} user           firebase User object
+ */
+export function renderProfiles(container, docs, user) {
+  let found = false;
 
-onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-        body.innerHTML = "<p>You must be logged in to view this page.</p>";
-        return;
+  docs.forEach(doc => {
+    const data = doc.data();
+    if (data.userId === user.uid) {
+      const html = `
+        <section class="info">
+          <!-- logo + header omitted for brevity -->
+          <strong>My Full Name: ${data.fullName || user.displayName || user.email}</strong><br>
+          <p class="business-name"><strong>My Business Name:</strong> ${data.businessName || 'N/A'}</p><br>
+          <p class="created-at"><strong>Created At:</strong> ${data.createdAt?.toDate().toLocaleString() || 'N/A'}</p><br>
+          <p class="email"><strong>My Email:</strong> ${data.email || user.email}</p><br>
+          <p class="reg-number"><strong>My Registration Number:</strong> ${data.registrationNumber || 'N/A'}</p><br>
+          <p class="phone"><strong>My Phone:</strong> ${data.phone || 'N/A'}</p><br>
+          <p class="user-id"><strong>My UserID:</strong> ${data.userId}</p><br>
+          <p class="vat-number"><strong>My VAT Number:</strong> ${data.vatNumber || 'N/A'}</p><br>
+          <p class="website"><strong>My Business Website:</strong> ${data.website || 'N/A'}</p><br>
+        </section>
+      `;
+      container.appendChild(
+        document.createRange().createContextualFragment(html)
+      );
+      found = true;
     }
+  });
 
-    try {
-        const sellersSnapshot = await getDocs(collection(db, "admin")); // or 'sellers' if that's your main seller DB
-        let foundSeller = false;
+  if (!found) {
+    const fallback = `
+      <section class="info">
+        <strong>User Name: ${user.displayName || 'No display name'}</strong><br>
+        <p><strong>Email:</strong> ${user.email}</p>
+      </section>
+    `;
+    container.appendChild(
+      document.createRange().createContextualFragment(fallback)
+    );
+  }
+}
 
-        sellersSnapshot.forEach(doc => {
-            const userData = doc.data();
-            if (userData.userId === user.uid) {
-                const profileHTML = `
-                    <section class="info">
-                    <section style="display: block; text-align: center; width: 100%;">
-                        <img style="padding-top: 40px;" src="https://raw.githubusercontent.com/marxian-disciple/software_design_project/refs/heads/main/local_artisan/images/logo.png" alt="Artify Logo" class="logo" />
-                        <br><br>
-                    </section>
-                        <strong style="color: #333;">My Full Name: ${userData.fullName || user.displayName || user.email}</strong>
-                        <br><br>
-                        <p class="business-name"><strong>My Business Name:</strong> ${userData.businessName || 'N/A'}</p>
-                        <br><br>
-                        <p class="created-at"><strong>Created At:</strong> ${userData.createdAt?.toDate().toLocaleString() || 'N/A'}</p>
-                        <br><br>
-                        <p class="email"><strong>My Email:</strong> ${userData.email || user.email}</p>
-                        <br><br>
-                        <p class="reg-number"><strong>My Registration Number:</strong> ${userData.registrationNumber || 'N/A'}</p>
-                        <br><br>
-                        <p class="phone"><strong>My Phone:</strong> ${userData.phone || 'N/A'}</p>
-                        <br><br>
-                        <p class="user-id"><strong>My UserID:</strong> ${userData.userId}</p>
-                        <br><br>
-                        <p class="vat-number"><strong>My VAT Number:</strong> ${userData.vatNumber || 'N/A'}</p>
-                        <br><br>
-                        <p class="website"><strong>My Business Website:</strong> ${userData.website || 'N/A'}</p>
-                    </section>
-                `;
-                body.appendChild(document.createRange().createContextualFragment(profileHTML));
-                foundSeller = true;
-            }
-        });
+/**
+ * Renders a “must be logged in” message.
+ */
+export function renderNotLoggedIn(container) {
+  container.innerHTML = `<p>You must be logged in to view this page.</p>`;
+}
 
-        if (!foundSeller) {
-            const fallbackHTML = `
-                <section class="info">
-                    <strong style="color: #333;">User Name: ${user.displayName || 'No display name'}</strong>
-                    <p><strong>Email:</strong> ${user.email}</p>
-                </section>
-            `;
-            body.appendChild(document.createRange().createContextualFragment(fallbackHTML));
-        }
+/**
+ * Renders a “load failed” message.
+ */
+export function renderError(container) {
+  container.innerHTML = `<p>Failed to load user profile.</p>`;
+}
 
-    } catch (err) {
-        console.error("Error fetching user profile:", err);
-        body.innerHTML = "<p>Failed to load user profile.</p>";
-    }
-});
-
-document.getElementById("closeBtn")?.addEventListener("click", () => {
-    window.location.href = "./../index.html";
-});
+/**
+ * Wire up a close button that calls your callback.
+ */
+export function initCloseButton(onClose) {
+  const btn = document.getElementById("closeBtn");
+  if (btn) btn.addEventListener("click", onClose);
+}

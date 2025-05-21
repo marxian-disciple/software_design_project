@@ -1,115 +1,116 @@
-// signup.test.js
+/**
+ * @jest-environment jsdom
+ */
+import { initSignupForm, initGoogleButton, showUserProfile } from './../local_artisan/scripts/signup.js';
 
-import {
-  createUserWithEmailAndPassword,
-  signInWithPopup
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-import { auth, provider } from "../lib/firebaseConfig.js";
-
-// Mock Firebase functions
-jest.mock("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js", () => ({
-  createUserWithEmailAndPassword: jest.fn(),
-  signInWithPopup: jest.fn(),
-}));
-
-// Mock Firebase Config
-jest.mock("../lib/firebaseConfig.js", () => ({
-  auth: {},
-  provider: {},
-}));
-
-beforeEach(() => {
-  document.body.innerHTML = `
-    <form class="login-form">
-      <input id="username" value="test@example.com" />
-      <input id="password" value="password123" />
-      <input id="confirm_pass" value="password123" />
-      <button type="submit">Sign Up</button>
-    </form>
-    <button class="google-btn">Google Sign In</button>
-    <a class="login-icon"></a>
-  `;
-  jest.clearAllMocks();
-});
-
-test("should sign up user with email and password", async () => {
-  createUserWithEmailAndPassword.mockResolvedValue({
-    user: { email: "test@example.com" },
+describe('signupHandlers (100% coverage)', () => {
+  // Polyfill global alert and console.warn
+  beforeAll(() => {
+    global.alert = jest.fn();
+    jest.spyOn(console, 'warn').mockImplementation(() => {});
   });
 
-  require("../scripts/signup.js"); // Load your script
-
-  const form = document.querySelector(".login-form");
-  form.dispatchEvent(new Event("submit"));
-
-  await new Promise((resolve) => setTimeout(resolve, 0)); // Wait for promises
-
-  expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(
-    auth,
-    "test@example.com",
-    "password123"
-  );
-});
-
-test("should alert on password mismatch", async () => {
-  document.getElementById("confirm_pass").value = "wrongPassword";
-
-  const alertMock = jest.spyOn(window, "alert").mockImplementation(() => {});
-  require("../scripts/signup.js");
-
-  const form = document.querySelector(".login-form");
-  form.dispatchEvent(new Event("submit"));
-
-  expect(alertMock).toHaveBeenCalledWith("Passwords do not match!");
-});
-
-test("should handle signup error", async () => {
-  createUserWithEmailAndPassword.mockRejectedValue(new Error("Signup failed"));
-  const alertMock = jest.spyOn(window, "alert").mockImplementation(() => {});
-
-  require("../scripts/signup.js");
-
-  const form = document.querySelector(".login-form");
-  form.dispatchEvent(new Event("submit"));
-
-  await new Promise((resolve) => setTimeout(resolve, 0));
-
-  expect(alertMock).toHaveBeenCalledWith("Signup failed: Signup failed");
-});
-
-test("should sign in with Google and update profile", async () => {
-  signInWithPopup.mockResolvedValue({
-    user: {
-      displayName: "Test User",
-      photoURL: "https://example.com/photo.jpg",
-    },
+  beforeEach(() => {
+    jest.clearAllMocks();
+    document.body.innerHTML = `
+      <form class="login-form">
+        <input id="username" />
+        <input id="password" />
+        <input id="confirm_pass" />
+        <button type="submit">Sign Up</button>
+      </form>
+      <button class="google-btn">Google</button>
+      <div class="login-icon"></div>
+    `;
   });
 
-  const alertMock = jest.spyOn(window, "alert").mockImplementation(() => {});
+  afterAll(() => {
+    jest.useRealTimers();
+    console.warn.mockRestore();
+  });
 
-  require("../scripts/signup.js");
+  test('initSignupForm does nothing if form is missing', () => {
+    document.body.innerHTML = '<div></div>';  // no .login-form
+    const fn = jest.fn();
+    expect(() => initSignupForm(fn)).not.toThrow();
+    // simulate submit anyway
+    document.body.dispatchEvent(new Event('submit'));
+    expect(fn).not.toHaveBeenCalled();
+  });
 
-  const btn = document.querySelector(".google-btn");
-  btn.click();
+  test('calls onSubmit when passwords match', () => {
+    const mockSubmit = jest.fn();
+    initSignupForm(mockSubmit);
 
-  await new Promise((resolve) => setTimeout(resolve, 0));
+    document.getElementById('username').value = 'a@b.com';
+    document.getElementById('password').value = 'pwd';
+    document.getElementById('confirm_pass').value = 'pwd';
 
-  expect(alertMock).toHaveBeenCalledWith("Welcome, Test User!");
-  expect(signInWithPopup).toHaveBeenCalledWith(auth, provider);
-});
+    document.querySelector('form').dispatchEvent(new Event('submit', { bubbles: true }));
+    expect(mockSubmit).toHaveBeenCalledWith('a@b.com', 'pwd');
+    expect(global.alert).not.toHaveBeenCalled();
+  });
 
-test("should handle Google sign-in error", async () => {
-  signInWithPopup.mockRejectedValue(new Error("Google error"));
+  test('shows alert + red borders + resets fields then clears styling on mismatch', () => {
+    jest.useFakeTimers();
+    const mockSubmit = jest.fn();
+    initSignupForm(mockSubmit);
 
-  const alertMock = jest.spyOn(window, "alert").mockImplementation(() => {});
+    // set initial values
+    const pw = document.getElementById('password');
+    const cpw = document.getElementById('confirm_pass');
+    pw.value = 'one';
+    cpw.value = 'two';
 
-  require("../scripts/signup.js");
+    document.querySelector('form').dispatchEvent(new Event('submit', { bubbles: true }));
 
-  const btn = document.querySelector(".google-btn");
-  btn.click();
+    // verify alert
+    expect(global.alert).toHaveBeenCalledWith("Passwords do not match!");
+    // verify submit not called
+    expect(mockSubmit).not.toHaveBeenCalled();
+    // values cleared
+    expect(pw.value).toBe('');
+    expect(cpw.value).toBe('');
+    // red borders applied
+    expect(pw.style.border).toBe('2px solid red');
+    expect(cpw.style.border).toBe('2px solid red');
 
-  await new Promise((resolve) => setTimeout(resolve, 0));
+    // fast-forward 2 seconds
+    jest.advanceTimersByTime(2000);
+    expect(pw.style.border).toBe('');
+    expect(cpw.style.border).toBe('');
+  });
 
-  expect(alertMock).toHaveBeenCalledWith("Google Sign-In failed. Please try again.");
+  test('initGoogleButton does nothing & warns if button missing', () => {
+    document.body.innerHTML = '<div></div>';  // remove .google-btn
+    const fn = jest.fn();
+    initGoogleButton(fn);
+    expect(console.warn).toHaveBeenCalledWith('Google button not found in the DOM.');
+    // no click possible
+  });
+
+  test('calls onGoogleClick when Google button clicked', () => {
+    const mockGoogle = jest.fn();
+    initGoogleButton(mockGoogle);
+
+    document.querySelector('.google-btn').click();
+    expect(mockGoogle).toHaveBeenCalled();
+  });
+
+  test('showUserProfile inserts image when photoURL present', () => {
+    const user = { photoURL: 'https://x/y.png' };
+    showUserProfile(user);
+
+    const img = document.querySelector('.login-icon img');
+    expect(img).toBeTruthy();
+    expect(img.src).toBe(user.photoURL);
+    expect(img.alt).toBe('Profile');
+  });
+
+  test('showUserProfile does nothing if no photoURL', () => {
+    document.querySelector('.login-icon').innerHTML = '<p>old</p>';
+    showUserProfile({});  // user.photoURL undefined
+    // innerHTML remains unchanged
+    expect(document.querySelector('.login-icon').innerHTML).toBe('<p>old</p>');
+  });
 });

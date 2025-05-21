@@ -1,0 +1,452 @@
+/* styles.css - Modern Login Form with Animated Border */
+:root {
+  --primary: #4361ee;
+  --primary-dark: #3a56d4;
+  --text: #2b2d42;
+  --text-light: #8d99ae;
+  --light: #edf2f4;
+  --white: #ffffff;
+  --error: #ef233c;
+  --border-radius: 12px;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --transition: all 0.3s ease;
+  --border-width: 3px;
+  --border-color-1: #4361ee;
+  --border-color-2: #7209b7;
+  --border-color-3: #f72585;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: #fcf2fb;;
+  color: var(--text);
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  line-height: 1.5;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  background: transparent;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  margin-left: auto;
+  margin-right: 15%;
+  position: relative;
+  z-index: 1; /* Ensure it's above the ::before element */
+}
+
+.login-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: var(--border-width);
+  border-radius: inherit;
+  background: linear-gradient(
+    45deg,
+    var(--border-color-3),
+    var(--border-color-2),
+    var(--border-color-3),
+    var(--border-color-1)
+  );
+  background-size: 300% 300%;
+  z-index: -1;
+  animation: borderAnimation 10s ease infinite;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  box-sizing: border-box;
+}
+
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: rgb(88, 37, 13);
+  text-decoration: underline;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: relative;
+  z-index: 1;
+  opacity: 10;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.input-group input {
+  padding: 0.75rem 1rem;
+  background-color: transparent;
+  border: 1px solid #25538f;
+  border-radius: var(--border-radius);
+  border-color:rgb(209, 49, 169);
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+}
+
+.login-btn {
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--border-radius);
+  border-color:rgb(209, 49, 169);
+  color:rgb(209, 49, 169);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 0.5rem;
+  background-color: transparent;
+}
+
+.login-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.social-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.social-login p {
+  color: var(--text-light);
+  font-size: 0.875rem;
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+.social-login p::before,
+.social-login p::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 30%;
+  height: 1px;
+  background-color: #425670;
+}
+
+.social-login p::before {
+  left: 0;
+}
+
+.social-login p::after {
+  right: 0;
+}
+
+.social-buttons {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.google-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: var(--white);
+  border: 1px solid #e2e8f0;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.google-btn:hover {
+  border-color:rgb(209, 49, 169);
+  color:rgb(209, 49, 169);
+}
+
+
+.forgot-password {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.forgot-password a {
+  color: var(--text-light);
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.forgot-password a:hover {
+  color: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 1.5rem;
+  }
+  
+  .social-buttons {
+    flex-direction: column;
+  }
+}
+
+/* Artify Animation Container */
+.animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 40%;
+  background: transparent;
+  color: rgb(88, 37, 13);
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  overflow: hidden;
+  z-index: 2;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+  animation: slideInRight 1s ease-out forwards;
+}
+.animation header {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
+  animation: moveHeaderTop 1s ease forwards;
+  animation-delay: 1s;
+  z-index: 2;
+}
+
+.animation h2 {
+  font-size: 3rem;
+  font-family: 'Cinzel Decorative', serif;
+  letter-spacing: 2px;
+  margin: 0;
+  opacity: 0;
+  animation: fadeInText 1.5s ease-out forwards;
+}
+
+.animation h5 {
+  font-size: 1.2rem;
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeInText 1.8s ease-out forwards;
+}
+
+/* Main fades in after header has moved */
+.animation main {
+  position: relative;
+  flex: 1;
+  opacity: 0;
+  animation: fadeInMain 1s ease forwards;
+  animation-delay: 2s;
+  padding-top: 6rem;
+  width: 100%;
+  max-width: 600px;  /* optional max width */
+  height: 400px;     /* fixed height for fading images */
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Position and animate figures for fading slideshow */
+.animation main figure {
+  position: absolute;
+  top: 20%;                /* 20% from top as you wanted */
+  left: 50%;               /* center horizontally */
+  transform: translateX(-50%);
+  width: 80%;              /* reduce width so it fits better */
+  height: auto;            /* auto height to maintain aspect ratio */
+  margin: 0;
+  opacity: 0;
+  animation-name: fadeCycle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-duration: 15s;
+  overflow: visible;       /* ensure nothing gets clipped */
+  object-fit: contain;     /* for images if you target img */
+}
+
+
+/* Also target the img inside figure */
+.animation main figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain; /* keep aspect ratio */
+  pointer-events: none; /* optional: prevent image interactions */
+}
+
+
+/* Stagger animation delay for each image */
+.animation main figure:nth-child(1) {
+  animation-delay: 0s;
+}
+.animation main figure:nth-child(2) {
+  animation-delay: 3s;
+}
+.animation main figure:nth-child(3) {
+  animation-delay: 6s;
+}
+.animation main figure:nth-child(4) {
+  animation-delay: 9s;
+}
+.animation main figure:nth-child(5) {
+  animation-delay: 12s;
+}
+.animation main figure {
+  animation-fill-mode: both;
+}
+
+
+/* Background glow */
+.animation::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(94, 76, 76, 0.05) 0%, transparent 70%);
+  animation: rotateGlow 20s linear infinite;
+  z-index: -1;
+}
+
+/* Keyframes */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInText {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes moveHeaderTop {
+  to {
+    top: 2rem;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInMain {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Keyframe for fading slideshow */
+@keyframes fadeCycle {
+  0%   { opacity: 0; }
+  6.66%  { opacity: 1; }   /* fade in (1s) */
+  26.66% { opacity: 1; }   /* stay visible (2s) */
+  33.33% { opacity: 0; }   /* fade out (1s) */
+  100%  { opacity: 0; }    /* stay hidden */
+}
+
+
+@keyframes rotateGlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .animation {
+    position: static;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+
+  .animation header {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    animation: none;
+  }
+
+  .animation main {
+    animation-delay: 1s;
+    opacity: 1;
+    position: static;
+    height: auto;
+    max-width: 100%;
+    display: block;
+  }
+
+  .animation main figure {
+    position: relative;
+    width: 100%;
+    height: auto;
+    animation: none;
+    opacity: 1;
+    margin-bottom: 1rem;
+  }
+}

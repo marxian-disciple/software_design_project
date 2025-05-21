@@ -1,63 +1,77 @@
-// seller_firebase.js
+import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { auth, db, storage } from '../lib/firebaseConfig.js';
+import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import {isEmailValid, isPhoneValid, validateAndAlert } from '../scripts/seller_registration.js'
+
 function initializeSellerRegistration(form, validationFunctions) {
+    validationFunctions = { isEmailValid: isEmailValid, isPhoneValid: isPhoneValid, validateAndAlert: validateAndAlert};
     let formInitialized = false;
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    onAuthStateChanged(auth, (user) => {
         if (!user) {
-            alert('User not logged in!');
-        } else if (user && !formInitialized) {
+            alert('Please log in first!');
+            window.location.href = '../html/login.html';
+            return;
+        }
+
+        if (!formInitialized) {
             formInitialized = true;
             
-            form.addEventListener('submit', async function(e) {
+            form.addEventListener('submit', async function (e) {
                 e.preventDefault();
 
-                // Get form values
-                var formData = {
-                    businessName: document.getElementById('businessName').value.trim(),
-                    registrationNumber: document.getElementById('registrationNumber').value.trim(),
-                    vatNumber: document.getElementById('vatNumber').value.trim(),
-                    fullName: document.getElementById('fullName').value.trim(),
-                    email: document.getElementById('email').value.trim(),
-                    phone: document.getElementById('phone').value.trim(),
-                    website: document.getElementById('website').value.trim()
-                };
-
                 // Validate form
-                if (!validationFunctions.validateAndAlert(formData)) {
-                    return;
-                }
-
-                if (!validationFunctions.isEmailValid(formData.email)) {
+                if (!validationFunctions.validateAndAlert(form)) return;
+                
+                const email = form.email.value.trim();
+                const phone = form.phone.value.trim();
+                
+                // Check for valid email
+                if (!validationFunctions.isEmailValid(email)) {
                     alert("Please enter a valid email address.");
                     return;
                 }
 
-                if (!validationFunctions.isPhoneValid(formData.phone)) {
-                    alert("Please enter a valid South African phone number (e.g. 0812345678 or +27812345678).");
+                // Check for valid phone number
+                if (!validationFunctions.isPhoneValid(phone)) {
+                    alert("Please enter a valid South African phone number.");
                     return;
                 }
 
                 // Submit to Firestore
                 try {
-                    await firebase.firestore().collection('seller_applications').add({
+                    await addDoc(collection(db, 'seller_applications'), {
                         userId: user.uid,
-                        businessName: formData.businessName,
-                        registrationNumber: formData.registrationNumber,
-                        vatNumber: formData.vatNumber,
-                        fullName: formData.fullName,
-                        email: formData.email,
-                        phone: formData.phone,
-                        website: formData.website,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        businessName: form.businessName.value.trim(),
+                        registrationNumber: form.registrationNumber.value.trim(),
+                        vatNumber: form.vatNumber.value.trim(),
+                        fullName: form.fullName.value.trim(),
+                        email: email,
+                        phone: phone,
+                        website: form.website.value.trim(),
+                        createdAt: new Date(),
+                        status: "pending"
                     });
 
-                    alert('Your request to become a seller has been successfully sent to an admin! Please wait for 2-3 working days for the approval of your request. In the meantime, please visit our page "Sell on Artify" for more information. Thank you for your patience.');
+                     alert('Your request to become a seller has been successfully sent to an admin! Please wait for 2-3 working days for the approval of your request. In the meantime, please visit our page "Sell on Artify" for more information. Thank you for your patience.');
                     window.location.href = '../html/seller_dashboard.html';
-                } catch (err) {
-                    console.error('Error adding seller to database:', err);
-                    alert('Something went wrong while submitting the form. Please try again.');
+                } catch (error) {
+                    console.error("Error submitting:", error);
+                    alert('Submission failed. Please try again.');
                 }
             });
         }
     });
+}
+
+// Make available globally
+if (typeof window !== 'undefined') {
+    window.initializeSellerRegistration = initializeSellerRegistration;
+}
+
+// Node.js/test environment
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        initializeSellerRegistration
+    };
 }

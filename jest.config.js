@@ -19,4 +19,8 @@ module.exports = {
       statements: 80,
     },
   },
+  moduleNameMapper: {
+    '^https://www\\.gstatic\\.com/firebasejs/10\\.12\\.0/firebase-firestore\\.js$':
+      '<rootDir>/__mocks__/firebase‑firestore.js'
+  }
 };
