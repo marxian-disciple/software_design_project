@@ -8,3 +8,9 @@ export const category = document.getElementById('categories');
 export const description = document.getElementById('description');
 export const image = document.getElementById('image');
 export const closeBtn = document.getElementById("closeBtn");
+
+export function isNameValid(){};
+export function isPriceValid(){};
+export function isWeightValid(){};
+export function isQuantityValid(){};
+export function isImageValid(){};
