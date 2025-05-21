@@ -1,5 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, doc, getDoc, setDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 import { firebaseConfig } from './../scripts/view_cart.js';
 
@@ -94,6 +94,96 @@ async function updateCart(updatedCart) {
     await setDoc(cartRef, { items: updatedCart });
   }
 }
+function renderPayPalButton(totalAmount, user, items) {
+  const paypalContainer = document.getElementById('paypal-button-container');
+  if (!paypalContainer) return;
+
+  paypalContainer.innerHTML = ''; // Clear any previous PayPal button
+
+  paypal.Buttons({
+    createOrder: (data, actions) => {
+      return actions.order.create({
+        purchase_units: [{
+          amount: { value: totalAmount.toFixed(2) }
+        }]
+      });
+    },
+    onApprove: async (data, actions) => {
+      const details = await actions.order.capture();
+      alert(`Payment successful! Transaction ID: ${details.id}`);
+
+      const ordersBySeller = {};
+      let valid = true;
+
+      for (const item of items) {
+        const productRef = doc(db, 'products', item.productId);
+        const productSnap = await getDoc(productRef);
+
+        if (!productSnap.exists()) {
+          alert(`Product not found: ${item.name}`);
+          valid = false;
+          break;
+        }
+
+        const productData = productSnap.data();
+        const currentStock = productData.quantity ?? 0;
+
+        if (item.quantity > currentStock) {
+          alert(`Not enough stock for ${item.name}. Available: ${currentStock}`);
+          valid = false;
+          break;
+        }
+
+        const sellerId = item.sellerId || 'unknown_seller';
+        if (!ordersBySeller[sellerId]) ordersBySeller[sellerId] = [];
+        ordersBySeller[sellerId].push(item);
+      }
+
+      if (!valid) return;
+
+      const batchPromises = Object.entries(ordersBySeller).map(async ([sellerId, sellerItems]) => {
+        const orderId = `${user.uid}_${sellerId}_${Date.now()}`;
+        const orderRef = doc(db, 'orders', orderId);
+        const sellerTotal = sellerItems.reduce((sum, i) => sum + parseFloat(i.price) * i.quantity, 0);
+
+        await setDoc(orderRef, {
+          buyerId: user.uid,
+          buyerEmail: user.email,
+          sellerId: sellerId,
+          items: sellerItems,
+          total: sellerTotal,
+          status: 'pending',
+          createdAt: new Date(),
+          transactionId: details.id
+        });
+
+        await Promise.all(sellerItems.map(async item => {
+          const productRef = doc(db, 'products', item.productId);
+          const productSnap = await getDoc(productRef);
+          if (productSnap.exists()) {
+            const productData = productSnap.data();
+            const currentStock = productData.quantity ?? 0;
+            const newStock = Math.max(0, currentStock - item.quantity);
+            await updateDoc(productRef, { quantity: newStock });
+          }
+        }));
+      });
+
+      await Promise.all(batchPromises);
+
+      const cartRef = doc(db, 'carts', user.uid);
+      await setDoc(cartRef, { items: [] });
+      renderCart([]);
+    },
+    onCancel: () => {
+      alert("Transaction cancelled.");
+    },
+    onError: err => {
+      console.error("PayPal error:", err);
+      alert("Payment failed.");
+    }
+  }).render('#paypal-button-container');
+}
 
 function handleCheckout(totalAmount, userEmail, user, items, total) {
   paypal.Buttons({
@@ -108,19 +198,43 @@ function handleCheckout(totalAmount, userEmail, user, items, total) {
       const details = await actions.order.capture();
       alert(`Payment successful! Transaction ID: ${details.id}`);
 
-      // Group items by sellerId
-      const ordersBySeller = items.reduce((acc, item) => {
-        const sellerId = item.sellerId || 'unknown_seller';
-        if (!acc[sellerId]) acc[sellerId] = [];
-        acc[sellerId].push(item);
-        return acc;
-      }, {});
+      const ordersBySeller = {};
+      let valid = true;
 
-      // Create separate order documents per seller
+      for (const item of items) {
+        const productRef = doc(db, 'products', item.productId);
+        const productSnap = await getDoc(productRef);
+
+        if (!productSnap.exists()) {
+          alert(`Product not found: ${item.name}`);
+          valid = false;
+          break;
+        }
+
+        const productData = productSnap.data();
+        const currentStock = productData.quantity ?? 0;
+
+        if (item.quantity > currentStock) {
+          alert(`Not enough stock for ${item.name}. Available: ${currentStock}`);
+          valid = false;
+          break;
+        }
+
+        // Group by seller
+        const sellerId = item.sellerId || 'unknown_seller';
+        if (!ordersBySeller[sellerId]) ordersBySeller[sellerId] = [];
+        ordersBySeller[sellerId].push(item);
+      }
+
+      if (!valid) return;
+
       const batchPromises = Object.entries(ordersBySeller).map(async ([sellerId, sellerItems]) => {
-        const orderRef = doc(db, 'orders', `${user.uid}_${sellerId}_${Date.now()}`);
+        const orderId = `${user.uid}_${sellerId}_${Date.now()}`;
+        const orderRef = doc(db, 'orders', orderId);
         const sellerTotal = sellerItems.reduce((sum, i) => sum + parseFloat(i.price) * i.quantity, 0);
-        return setDoc(orderRef, {
+
+        // Save order
+        await setDoc(orderRef, {
           buyerId: user.uid,
           buyerEmail: user.email,
           sellerId: sellerId,
@@ -130,11 +244,23 @@ function handleCheckout(totalAmount, userEmail, user, items, total) {
           createdAt: new Date(),
           transactionId: details.id
         });
+
+        // Decrement stock
+        await Promise.all(sellerItems.map(async item => {
+          const productRef = doc(db, 'products', item.productId);
+          const productSnap = await getDoc(productRef);
+          if (productSnap.exists()) {
+            const productData = productSnap.data();
+            const currentStock = productData.quantity ?? 0;
+            const newStock = Math.max(0, currentStock - item.quantity);
+            await updateDoc(productRef, { quantity: newStock });
+          }
+        }));
       });
 
       await Promise.all(batchPromises);
 
-      // Clear cart after orders created
+      // Clear cart
       const cartRef = doc(db, 'carts', user.uid);
       await setDoc(cartRef, { items: [] });
       renderCart([]);
@@ -159,7 +285,7 @@ onAuthStateChanged(auth, async user => {
 
       const total = cart.reduce((sum, item) =>
         sum + parseFloat(item.price) * item.quantity, 0);
-      handleCheckout(total, user.email, user, cart, total);
+        renderPayPalButton(total, auth.currentUser, cart);
     } else {
       renderCart([]);
     }
