@@ -1,8 +1,6 @@
-Seller can only register once
 Buyer can only register once
 Checkout
 Change shop details
 Analytics
-Separate registration from sign in
 Need to delete products belonging to the seller when we delete their account
 Update the user info page
