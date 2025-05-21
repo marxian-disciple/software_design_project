@@ -13,17 +13,17 @@ export function isNameValid(name){
     return typeof name === 'string' && name.trim().length > 0;
 };
 
-export function isPriceValid(price){
-    return /^\d*(\.\d*)?$/.test(price);
-};
+export function isPriceValid(price) {
+    return /^[+]?\d+(\.\d+)?$/.test(price);
+}
 
-export function isWeightValid(weight){
-    return /^\d*(\.\d*)?$/.test(weight);
-};
+export function isWeightValid(weight) {
+    return /^[+]?\d+(\.\d+)?$/.test(weight);
+}
 
-export function isQuantityValid(quantity){
-    return /^\d*$/.test(quantity);
-};
+export function isQuantityValid(quantity) {
+    return /^[+]?\d+$/.test(quantity);
+}
 
 export function isImageValid(image){
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
