@@ -1,64 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Login Page</title>
-    <link rel="stylesheet" href="../css/signup.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Great+Vibes&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Analytics Dashboard</title>
+  <link rel="stylesheet" href="../css/analytics.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-    <section class="login-container">
-        <h2>Login</h2>
-        <form class="login-form">
-            <section class="input-group">
-                <label for="email">Email</label>
-                <input type="text" id="email" name="email" required>
-            </section>
-            <section class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </section>
-            <section class="input-group">
-                <label for="confirm_pass">Confirm Password</label>
-                <input type="password" id="confirm_pass" name="confirm_pass" required>
-            </section>            
-            <button type="submit" class="login-btn">Log In</button>
-            
-            <section class="social-login">
-                <p>Or continue with</p>
-                <section class="social-buttons">
-                    <button type="button" class="google-btn">
-                        <i class="fab fa-google"></i> Google
-                    </button>
-                    
-                </section>
-            </section>
-            
-            <nav class="forgot-password">
-                <a href="#">Forgot Password?</a>
-            </nav>
-        </form>
+  <header>
+    <h1>Analytics Dashboard</h1>
+    <button class="menu-button" id="menuButton" aria-haspopup="true" aria-expanded="false" aria-controls="menuDropdown" aria-label="Menu"></button>
+    <nav id="menuDropdown" class="dropdown" role="menu" aria-labelledby="menuButton">
+      <a href="../html/seller_dashboard.html" role="menuitem" tabindex="-1">Back to your Store</a>
+      <a href="../index.html" role="menuitem" tabindex="-1">Back to Home Page</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Total Revenue</h2>
+      <canvas id="revenueDonut"></canvas>
     </section>
-
-    <section class="animation"> 
-        <header>
-            <h2> Artify</h2>
-        <h5> Where Art meets Lovers</h5>
-        </header>
-
-        <main>
-          <figure><img src="../lib/1.jpg" alt="Art sample" /></figure>
-          <figure><img src="../lib/2.jpg" alt="Art sample" /></figure>
-          <figure><img src="../lib/3.jpg" alt="Art sample" /></figure>
-          <figure><img src="../lib/4.jpg" alt="Art sample" /></figure>
-          <figure><img src="../lib/5.jpg" alt="Art sample" /></figure>
-        </main>
+    <section>
+      <h2>Store Performance</h2>
+      <canvas id="performanceLine"></canvas>
     </section>
+    <section>
+      <h2>Top Selling Products</h2>
+      <canvas id="topProductsBar"></canvas>
+    </section>
+  </main>
 
+  <footer class="main-footer">
+    <!-- Footer sections (optional) -->
+  </footer>
+
+  <script src="../scripts/analytics.js"></script>
 </body>
-<script type="module" src="../scripts/signup.js"></script>
-<script type="module" src="../firebase_dependencies/signup.js"></script>
 </html>
