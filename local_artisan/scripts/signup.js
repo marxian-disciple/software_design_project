@@ -5,7 +5,7 @@ export function initSignupForm(onSubmit) {
     signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const confirmPass = document.getElementById('confirm_pass').value;
 
@@ -25,7 +25,7 @@ export function initSignupForm(onSubmit) {
             return;
         }
 
-        onSubmit(username, password);
+        onSubmit(email, password);
     });
 }
 
