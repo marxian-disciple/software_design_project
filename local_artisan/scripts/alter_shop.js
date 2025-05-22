@@ -13,40 +13,52 @@ export function renderProfiles(container, docs, user) {
     const data = doc.data();
     if (data.userId === user.uid) {
       const html = `
-        <section class="info">
-            <!-- logo + header omitted for brevity -->
-            <section class="input-group">
-                <label for="business-name" style="color: #231942;">My Business Name</label><br>
-                <input type="text" placeholder="${data.businessName || 'N/A'}" required><br><br>
-            </section>
+        <form action="#" class="shop-info">
+            <section class="info">
+                <!-- logo + header omitted for brevity -->
+                <section class="input-group">
+                    <label for="businessName" style="color: #231942;">My Business Name</label><br>
+                    <input id="businessName" name="businessName" type="text" placeholder="${data.businessName || 'N/A'}" required><br><br>
+                </section>
 
-            <section class="input-group">
-                <label for="email" style="color: #231942;">My Email</label><br>
-                <input type="text" placeholder="${data.email || user.email}" required style="width: 200%;"><br><br>
-            </section>
+                <section class="input-group">
+                    <label for="owner" style="color: #231942;">Owner</label><br>
+                    <input id="owner" name="owner" type="text" placeholder="${data.fullName || 'N/A'}" required><br><br>
+                </section>
 
-            <section class="input-group">
-                <label for="phone" style="color: #231942;">My Phone Number</label><br>
-                <input type="text" placeholder="${data.phone || 'N/A'}" required style="width: 200%;"><br><br>
-            </section>
+                <section class="input-group">
+                    <label for="email" style="color: #231942;">My Email</label><br>
+                    <input id="email" name="email" type="text" placeholder="${data.email || user.email}" required style="width: 200%;"><br><br>
+                </section>
 
-            <section class="input-group">
-                <label for="vat" style="color: #231942;">My VAT Number</label><br>
-                <input type="text" placeholder="${data.vatNumber || 'N/A'}" style="width: 200%;"><br><br>
-            </section>
+                <section class="input-group">
+                    <label for="phone" style="color: #231942;">My Phone Number</label><br>
+                    <input id="phone" name="phone" type="text" placeholder="${data.phone || 'N/A'}" required style="width: 200%;"><br><br>
+                </section>
 
-            <section class="input-group">
-                <label for="website" style="color: #231942;">My Business Website</label><br>
-                <input type="text" placeholder="${data.website || 'N/A'}" style="width: 200%;"><br><br>
-            </section>
+                <section class="input-group">
+                    <label for="vat" style="color: #231942;">My VAT Number</label><br>
+                    <input id="vat" name="vat" type="text" placeholder="${data.vatNumber || 'N/A'}" style="width: 200%;"><br><br>
+                </section>
 
-            <button type="submit" class="btn">Submit Changes</button>
-            </section>
+                <section class="input-group">
+                    <label for="website" style="color: #231942;">My Business Website</label><br>
+                    <input id="website" name="website" type="text" placeholder="${data.website || 'N/A'}" style="width: 200%;"><br><br>
+                </section>
+
+                <button type="submit" class="btn">Submit Changes</button>
+                </section>
+        </form>
       `;
       container.appendChild(
         document.createRange().createContextualFragment(html)
       );
       found = true;
+
+      const form = document.querySelector('.shop-info');
+      let validationFunctions;
+      initializeShopUpdate(form, validationFunctions);
+
     }
   });
 }
@@ -93,14 +105,14 @@ export function areRequiredFieldsFilled(form) {
   // Check if all required fields have non-empty values
   return (
     form.businessName.value.trim() !== '' &&
-    form.fullName.value.trim() !== '' &&
+    form.owner.value.trim() !== '' &&
     form.email.value.trim() !== '' &&
     form.phone.value.trim() !== ''
   );
 }
 
 export function validateAndAlert(form) {
-  if (!form.businessName.value || !form.fullName.value || 
+  if (!form.businessName.value || !form.owner.value || 
       !form.email.value || !form.phone.value) {
     alert("Please fill in all required fields: Business Name, Full Name, Email, and Phone Number.");
     return false;
