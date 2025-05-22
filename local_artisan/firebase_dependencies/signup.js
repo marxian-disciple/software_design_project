@@ -15,25 +15,36 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // Check if this email is already registered with a different provider (e.g., Google)
             const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+            console.log("Typed email:", email);
+            console.log("Checking sign-in methods for:", email, signInMethods);
 
             if (signInMethods.includes('google.com') && !signInMethods.includes('password')) {
                 alert('This email is already registered using Google Sign-In. Please sign in with Google instead.');
                 return;
             }
 
+            if (!email || !password.length >= 8) {
+                console.log(password.length);
+                alert("Please enter a valid email and password (no shorter than 8 characters).");
+                return;
+            }
+
             try {
                 // Try signing in first
+                console.log("I'm trying...");
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 console.log("User signed in:", userCredential.user);
+                window.location.href = '../index.html';
             } catch (signInError) {
                 if (signInError.code === 'auth/user-not-found') {
                     // If no user found, create a new one
                     console.log("No user found, creating new account...");
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                     console.log("User created:", userCredential.user);
+                    window.location.href = '../index.html';
                 } else {
-                    console.error("Sign-in error:", signInError.message);
-                    alert(`Error: ${signInError.message}`);
+                    console.error("Sign-in error:", signInError.code, signInError.message, signInError);
+                    alert(`Sign-in failed: ${signInError.message}`);
                 }
             }
 
@@ -48,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
-            alert(`Welcome, ${user.displayName || 'user'}!`);
             showUserProfile(user);
             window.location.href = '../index.html';
         } catch (error) {
