@@ -1,8 +1,5 @@
-Login must take minimum of 8 characters for a password
-Fix signup.js file with regards to the registering of new the returning of old clients
-Buyer can only register once
 Checkout
-Change shop details
+Change shop details - edit product info, edit shop info, custom view
 Analytics
 Need to delete products belonging to the seller when we delete their account
 Update the user info page
