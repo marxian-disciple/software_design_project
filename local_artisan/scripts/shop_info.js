@@ -15,7 +15,6 @@ export function renderProfiles(container, docs, user) {
       const html = `
         <section class="info">
           <!-- logo + header omitted for brevity -->
-          <strong>My Full Name: ${data.fullName || user.displayName || user.email}</strong><br><br>
           <p class="business-name"><strong>My Business Name:</strong> ${data.businessName || 'N/A'}</p><br>
           <p class="created"><strong>Created At:</strong> ${data.createdAt?.toDate().toLocaleString() || 'N/A'}</p><br>
           <p class="email"><strong>My Email:</strong> ${data.email || user.email}</p><br>
@@ -23,6 +22,7 @@ export function renderProfiles(container, docs, user) {
           <p class="phone"><strong>My Phone:</strong> ${data.phone || 'N/A'}</p><br>
           <p class="vat-number"><strong>My VAT Number:</strong> ${data.vatNumber || 'N/A'}</p><br>
           <p class="website"><strong>My Business Website:</strong> ${data.website || 'N/A'}</p><br>
+          <button class="btn" onclick="window.location.href='./alter_shop.html';">Change Details</button>
         </section>
       `;
       container.appendChild(
@@ -31,18 +31,6 @@ export function renderProfiles(container, docs, user) {
       found = true;
     }
   });
-
-  if (!found) {
-    const fallback = `
-      <section class="info">
-        <strong>User Name: ${user.displayName || 'No display name'}</strong><br>
-        <p><strong>Email:</strong> ${user.email}</p>
-      </section>
-    `;
-    container.appendChild(
-      document.createRange().createContextualFragment(fallback)
-    );
-  }
 }
 
 /**
@@ -56,7 +44,7 @@ export function renderNotLoggedIn(container) {
  * Renders a “load failed” message.
  */
 export function renderError(container) {
-  container.innerHTML = `<p>Failed to load user profile.</p>`;
+  container.innerHTML = `<p>Failed to load shop information.</p>`;
 }
 
 /**

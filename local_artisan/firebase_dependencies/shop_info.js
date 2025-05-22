@@ -8,7 +8,7 @@ import {
   renderNotLoggedIn,
   renderError,
   initCloseButton
-} from "./../scripts/user_info.js";
+} from "./../scripts/shop_info.js";
 
 const body = document.querySelector("body");
 
@@ -28,5 +28,5 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 initCloseButton(() => {
-  window.location.href = "./../index.html";
+  window.location.href = "./seller_dashboard.html";
 });
