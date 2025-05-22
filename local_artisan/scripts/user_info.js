@@ -15,9 +15,9 @@ export function renderProfiles(container, docs, user) {
       const html = `
         <section class="info">
           <!-- logo + header omitted for brevity -->
-          <strong>My Full Name: ${data.fullName || user.displayName || user.email}</strong><br>
+          <strong>My Full Name: ${data.fullName || user.displayName || user.email}</strong><br><br>
           <p class="business-name"><strong>My Business Name:</strong> ${data.businessName || 'N/A'}</p><br>
-          <p class="created-at"><strong>Created At:</strong> ${data.createdAt?.toDate().toLocaleString() || 'N/A'}</p><br>
+          <p class="created"><strong>Created At:</strong> ${data.createdAt?.toDate().toLocaleString() || 'N/A'}</p><br>
           <p class="email"><strong>My Email:</strong> ${data.email || user.email}</p><br>
           <p class="reg-number"><strong>My Registration Number:</strong> ${data.registrationNumber || 'N/A'}</p><br>
           <p class="phone"><strong>My Phone:</strong> ${data.phone || 'N/A'}</p><br>
