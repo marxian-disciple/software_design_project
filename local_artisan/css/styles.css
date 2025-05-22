@@ -47,6 +47,20 @@ h2 {
     font-size: 1rem;
 }
 
+.btn {
+    width: 100%;
+    padding: 1rem;
+    background: #3b5249;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: bold;
+}
+
 .login-btn {
     width: 100%;
     padding: 1rem;
