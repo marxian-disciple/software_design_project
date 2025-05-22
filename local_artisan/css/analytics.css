@@ -26,22 +26,24 @@ body {
   flex-direction: column;
   min-height: 100vh;
   font-family: 'Segoe UI', sans-serif;
-  background-color: var(--bg);
+  background-color: #231942;
   color: var(--text-dark);
 }
 
 header {
-  padding: 2rem 0;
-  text-align: center;
+  padding: 1.5rem 2rem;
   background: white;
   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--text-dark);
+header > nav[aria-label="Main navigation"] {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .menu-button {
@@ -54,34 +56,24 @@ header h1 {
   background-position: center;
   background-size: contain;
   cursor: pointer;
-  position: absolute;
-  top: 20px;
-  left: 20px;
 }
 
-.dropdown {
-  display: none;
-  position: absolute;
-  background-color: white;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-  left: 10px;
-  top: 50px;
-  z-index: 1000;
-  padding: 10px;
-  border-radius: 4px;
+#modeToggle {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white; /
 }
 
-.dropdown a {
-  display: block;
-  padding: 5px 10px;
-  text-decoration: none;
-  color: black;
+header h1 {
+  margin: 0 auto;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+    align-self: center;
 }
 
-.dropdown a:hover {
-  background-color: #f0f0f0;
-}
 
 main {
   flex: 1;
@@ -118,6 +110,7 @@ section h2 {
   font-weight: 600;
   color: var(--text-light);
   margin-bottom: 0.5rem;
+
 }
 
 canvas {
@@ -174,89 +167,4 @@ canvas {
   0%   { background-position: 0% 50%; }
   50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
-}
-
-.main-footer {
-  background-color: #f8f8f8;
-  padding: 40px 20px;
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-}
-
-.main-footer section {
-  flex: 1 1 200px;
-  margin: 10px;
-}
-
-.main-footer h2 {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-}
-
-.main-footer ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.main-footer li {
-  margin-bottom: 8px;
-}
-
-.main-footer a {
-  text-decoration: none;
-  color: #333;
-  transition: color 0.3s ease;
-}
-
-.main-footer a:hover {
-  text-decoration: underline;
-  color: #1a73e8;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .main-header > section:first-child,
-  .main-header > section:last-child {
-    padding: 0 1rem;
-  }
-  
-  .search-bar {
-    flex-basis: 100%;
-    order: -1;
-    margin-right: 0;
-  }
-  
-  .things ul {
-    margin-left: 0;
-    width: 100%;
-    justify-content: center;
-  }
-
-  .main-header {
-    flex-direction: column;
-    padding: 1rem;
-    position: static;
-  }
-
-  .main-header section {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .things ul {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .main-footer {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .main-footer section {
-    width: 100%;
-    margin-bottom: 20px;
-  }
 }

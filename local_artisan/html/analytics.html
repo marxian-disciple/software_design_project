@@ -3,95 +3,81 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Analytics Dashboard</title>
-  <link rel="stylesheet" href="../css/analytics.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-
+  <title>Seller Analytics</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 1em;
+      transition: background-color 0.3s ease;
+    }
+    header {
+      padding: 1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.3s ease;
+    }
+    section {
+      margin-top: 2em;
+    }
+    canvas {
+      max-width: 100%;
+      margin: 1em 0;
+    }
+    article {
+      margin-top: 2em;
+      padding: 1em;
+      border: 1px solid #ccc;
+      background-color: white;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>Analytics Dashboard</h1>
-
-<button class="menu-button" id="menuButton" aria-haspopup="true" aria-expanded="false" aria-controls="menuDropdown" aria-label="Menu"></button>
-
-<nav id="menuDropdown" class="dropdown" role="menu" aria-labelledby="menuButton">
-  <a href="../html/seller_dashboard.html" role="menuitem" tabindex="-1">Back to your Store</a>
-  <a href="../index.html" role="menuitem" tabindex="-1">Back to Home Page</a>
-</nav>
-
+    <h1>Seller Analytics</h1>
+    <nav>
+      <button id="menuButton" aria-expanded="false">☰ Menu</button>
+      <button id="modeToggle">☀</button>
+    </nav>
+    <div id="menuDropdown">
+      <!-- Menu contents if needed -->
+    </div>
   </header>
 
   <main>
+    <section>
+      <h2>Product Sales</h2>
+      <canvas id="topProductsBar"></canvas>
+      <canvas id="topProductRevenueBar"></canvas>
+    </section>
 
     <section>
-      <h2>Total Revenue</h2>
+      <h2>Abandoned Cart Data</h2>
+      <canvas id="abandonedCartBar"></canvas>
+    </section>
+
+    <section>
+      <h2>Store Performance Over Time</h2>
+      <canvas id="revenueLine"></canvas>
+    </section>
+
+    <section>
+      <h2>Revenue Breakdown</h2>
       <canvas id="revenueDonut"></canvas>
-    </section>
-    <section>
-      <h2>Store Performance</h2>
-      <canvas id="performanceLine"></canvas>
-    </section>
-    <section>
-      <h2>Top Selling Products</h2>
-      <canvas id="topProductsBar"></canvas>
     </section>
 
     <article>
-      <!-- will have the recommended products right here. will just use a simple ai to analyse the store perfomance and recommend according to that --> 
+      <h2>Recommendations</h2>
+      <!-- Recommendations will be inserted here -->
     </article>
- 
   </main>
 
- <footer class="main-footer">
-    <section>
-      <h2>Shop</h2>
-      <ul class="shop">
-        <li><a href="#">Daily Deals</a></li>
-        <li><a href="#">Clearance Sales</a></li>
-        <li><a href="#">Seasonal Deals</a></li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>Account</h2>
-      <ul>
-        <li><a href="#">My Account</a></li>
-        <li><a href="#">Track Orders</a></li>
-        <li><a href="#">Personal Details</a></li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>Company</h2>
-      <ul>
-        <li><a href="./html/footer/about.html">About Us</a></li>
-        <li><a href="./html/footer/sell_on_artify.html">Sell on Artify</a></li>
-        <li><a href="./html/footer/deliver.html">Deliver for Artify</a></li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>Artify Policy</h2>
-      <ul>
-        <li><a href="./html/footer/return_policy.html">Return Policy</a></li>
-        <li><a href="./html/footer/privacy.html">Privacy Policy</a></li>
-        <li><a href="./html/footer/tc.html">Terms & Conditions</a></li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>Help</h2>
-      <ul>
-        <li><a href="./html/footer/help.html">Help Centre</a></li>
-        <li><a href="./html/footer/contact.html">Contact Us</a></li>
-        <li><a href="./html/footer/returns.html">Returns</a></li>
-      </ul>
-    </section>
-  </footer>
-
+  <!-- Firebase + Chart.js -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="../scripts/analytics.js"></script>
 </body>
 </html>
