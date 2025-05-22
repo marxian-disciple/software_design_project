@@ -6,13 +6,14 @@ import { seller_applications, active_sellers, product_requests, closeBtn } from 
 async function fetchAndDisplayApplications() {
     try {
         const sel_apps = await getDocs(collection(db, 'seller_applications'));
-        sel_apps.forEach(doc => {
-            const application = doc.data();
-            application.id = doc.id;
+        sel_apps.forEach(docSnap => {
+            const application = docSnap.data();
+            application.id = docSnap.id;
 
             const card = document.createElement('section');
             card.classList.add('application');
             card.setAttribute('data-doc-id', application.id);
+            card.setAttribute('data-created-at', application.createdAt?.toMillis?.() ?? '');
 
             const createdAtDate = application.createdAt.toDate();
             const formattedDate = createdAtDate.toLocaleString();
@@ -43,10 +44,11 @@ async function fetchAndDisplayApplications() {
 async function fetchAndDisplayActiveSellers() {
     try {
         const act_sels = await getDocs(collection(db, 'sellers'));
-        act_sels.forEach(doc => {
-            const active = doc.data();
+        act_sels.forEach(docSnap => {
+            const active = docSnap.data();
             const card = document.createElement('section');
             card.classList.add('active');
+            card.setAttribute('data-created-at', active.createdAt?.toMillis?.() ?? '');
 
             const createdAtDate = active.createdAt.toDate();
             const formattedDate = createdAtDate.toLocaleString();
@@ -74,11 +76,14 @@ async function fetchAndDisplayActiveSellers() {
 async function fetchAndDisplayProductRequests() {
     try {
         const prod_reqs = await getDocs(collection(db, 'product_requests'));
-        prod_reqs.forEach(doc => {
-            const prod = doc.data();
+        prod_reqs.forEach(docSnap => {
+            const prod = docSnap.data();
+            prod.id = docSnap.id;
+
             const card = document.createElement('section');
             card.classList.add('prods');
             card.setAttribute('data-doc-id', prod.id);
+            card.setAttribute('data-created-at', prod.createdAt?.toMillis?.() ?? '');
 
             const createdAtDate = prod.createdAt.toDate();
             const formattedDate = createdAtDate.toLocaleString();
@@ -113,6 +118,8 @@ document.addEventListener('click', async (e) => {
         if (!card) return;
 
         const docId = card.getAttribute('data-doc-id');
+        const createdAtMillis = card.getAttribute('data-created-at');
+        const createdAt = createdAtMillis ? new Date(parseInt(createdAtMillis)) : new Date();
 
         const businessName = card.querySelector('.business-name')?.textContent.split(':').slice(1).join(':').trim();
         const registrationNumber = card.querySelector('.reg-number')?.textContent.split(':').slice(1).join(':').trim();
@@ -122,8 +129,6 @@ document.addEventListener('click', async (e) => {
         const phone = card.querySelector('.phone')?.textContent.split(':').slice(1).join(':').trim();
         const website = card.querySelector('.website')?.textContent.split(':').slice(1).join(':').trim();
         const userId = card.querySelector('.user-id')?.textContent.split(':').slice(1).join(':').trim();
-        const createdAtText = card.querySelector('.created-at')?.textContent.split(':').slice(1).join(':').trim();
-        const createdAt = new Date(createdAtText);
 
         try {
             await addDoc(collection(db, 'sellers'), {
@@ -132,7 +137,7 @@ document.addEventListener('click', async (e) => {
                 email, phone, website, createdAt
             });
 
-            await deleteDoc(doc(db, 'applications', docId));
+            await deleteDoc(doc(db, 'seller_applications', docId));
             alert('Seller approved and application deleted.');
             card.remove();
         } catch (err) {
@@ -148,6 +153,8 @@ document.addEventListener('click', async (e) => {
         if (!card) return;
 
         const docId = card.getAttribute('data-doc-id');
+        const createdAtMillis = card.getAttribute('data-created-at');
+        const createdAt = createdAtMillis ? new Date(parseInt(createdAtMillis)) : new Date();
 
         const name = card.querySelector('.prod-name')?.textContent.split(':').slice(1).join(':').trim();
         const price = card.querySelector('.price')?.textContent.split(':').slice(1).join(':').trim();
@@ -157,8 +164,6 @@ document.addEventListener('click', async (e) => {
         const description = card.querySelector('.description')?.textContent.split(':').slice(1).join(':').trim();
         const imageUrl = card.querySelector('.product-image')?.src;
         const userId = card.querySelector('.user-id')?.textContent.split(':').slice(1).join(':').trim();
-        const createdAtText = card.querySelector('.created-at')?.textContent.split(':').slice(1).join(':').trim();
-        const createdAt = new Date(createdAtText);
 
         try {
             await addDoc(collection(db, 'products'), {

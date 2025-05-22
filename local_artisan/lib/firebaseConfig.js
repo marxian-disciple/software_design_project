@@ -29,5 +29,5 @@ isSupported().then((supported) => {
   if (supported) getAnalytics(app);
 });
 
-// Export Firebase instances
-export { db, provider, auth, storage };
+// At the bottom, include `app` in your exports:
+export { app, db, provider, auth, storage };
