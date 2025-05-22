@@ -44,7 +44,7 @@ export function renderNotLoggedIn(container) {
  * Renders a “load failed” message.
  */
 export function renderError(container) {
-  container.innerHTML = `<p>Failed to load user profile.</p>`;
+  container.innerHTML = `<p>Failed to load shop information.</p>`;
 }
 
 /**

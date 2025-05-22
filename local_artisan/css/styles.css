@@ -39,13 +39,27 @@ h2 {
     color: #333;
 }
 
-.input-group input {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
+.input-group {
+  display: flex;
+  flex-direction: column; /* input on top, label underneath */
+  align-items: center; /* center-align both */
+  margin-bottom: 2rem;
 }
+
+.input-group input {
+  width: 100%; /* controlled by the parent width */
+  max-width: 500px;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.input-group label {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #231942;
+  text-align: center;
+}
+
 
 .btn {
     width: 100%;
