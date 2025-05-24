@@ -43,7 +43,7 @@ describe('Product Functionality (single-file)', () => {
     ]);
 
     const priceEl = document.querySelector('.product-price');
-    expect(priceEl.textContent).toBe('$99.99');
+    expect(priceEl.textContent).toBe('R99.99');
   });
 
   test('category click calls firestore.where', async () => {
