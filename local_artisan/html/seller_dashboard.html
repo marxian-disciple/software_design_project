@@ -17,7 +17,8 @@
     <a href="./shop_info.html">View My Shop Info</a>
     <a href="../html/deleteproduct.html">Delete Product</a>
     <a href="../html/deletestore.html">Delete Store </a>
-    <a href="#">Logout</a>
+    <a href="../html/logout.html">Logout</a>
+    <a id="dark-mode-toggle">Toggle Dark Mode</a>
   </nav>
 
   <main class="main">
@@ -54,15 +55,15 @@
    <table id="orders-table">
   <thead>
     <tr>
-      <th>Buyer</th>
+     <th>Buyer</th>
       <th>Transaction</th>
-      <th>Item</th>
-      <th>Qty</th>
-      <th>Price</th>
+      <th>Items</th>
+      <th>Total</th> <!-- Add this line -->
       <th>Date</th>
       <th>Status</th>
       <th>Delivery</th>
       <th>Action</th>
+
     </tr>
   </thead>
   <tbody></tbody>
@@ -84,54 +85,64 @@
       window.location.href = "../html/add_product.html";
     });
 
-    async function loadProducts(userId) {
-      const q = query(collection(db, "products"), where("userId", "==", userId));
-      const snapshot = await getDocs(q);
-      const tbody = document.querySelector("#products-table tbody");
-      tbody.innerHTML = "";
+ async function loadProducts(userId) {
+  const q = query(collection(db, "products"), where("userId", "==", userId));
+  const snapshot = await getDocs(q);
+  const tbody = document.querySelector("#products-table tbody");
+  tbody.innerHTML = "";
 
-      let total = 0;
-      snapshot.forEach(docSnap => {
-        const d = docSnap.data();
-        total += Number(d.quantity || 0);
-        const row = document.createElement("tr");
+  let total = 0;
 
-        row.innerHTML = `
-          <td>${d.name}</td>
-          <td>${d.category}</td>
-          <td>${d.description}</td>
-          <td contenteditable="true" class="editable-price">${d.price}</td>
-          <td contenteditable="true" class="editable-qty">${d.quantity}</td>
-          <td>${d.weight}</td>
-          <td><img src="${d.imageUrl}" width="50"></td>
-          <td><button data-id="${docSnap.id}" class="save-btn">Save</button></td>
-        `;
-        tbody.appendChild(row);
-      });
+  snapshot.forEach(docSnap => {
+    const d = docSnap.data();
+    total += Number(d.quantity || 0);
 
-      document.getElementById("total-products-count").textContent = total;
+    const row = document.createElement("tr");
 
-      document.querySelectorAll(".save-btn").forEach(btn => {
-        btn.addEventListener("click", async () => {
-          const row = btn.closest("tr");
-          const price = row.querySelector(".editable-price").textContent;
-          const qty = row.querySelector(".editable-qty").textContent;
-          const id = btn.getAttribute("data-id");
+    row.innerHTML = `
+      <td contenteditable="true" class="editable-name">${d.name}</td>
+      <td contenteditable="true" class="editable-category">${d.category}</td>
+      <td contenteditable="true" class="editable-description">${d.description}</td>
+      <td contenteditable="true" class="editable-price">${d.price}</td>
+      <td contenteditable="true" class="editable-qty">${d.quantity}</td>
+      <td>${d.weight}</td>
+      <td><img src="${d.imageUrl}" width="50"></td>
+      <td><button data-id="${docSnap.id}" class="save-btn">Save</button></td>
+    `;
 
-          try {
-            await updateDoc(doc(db, "products", id), {
-              price: Number(price),
-              quantity: Number(qty)
-            });
-            alert("Updated successfully");
-          } catch (err) {
-            console.error("Update failed", err);
-            alert("Failed to update");
-          }
+    tbody.appendChild(row);
+  });
+
+  document.getElementById("total-products-count").textContent = total;
+
+  document.querySelectorAll(".save-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const row = btn.closest("tr");
+
+      const id = btn.getAttribute("data-id");
+      const name = row.querySelector(".editable-name").textContent.trim();
+      const category = row.querySelector(".editable-category").textContent.trim();
+      const description = row.querySelector(".editable-description").textContent.trim();
+      const price = parseFloat(row.querySelector(".editable-price").textContent.trim());
+      const quantity = parseInt(row.querySelector(".editable-qty").textContent.trim());
+
+      try {
+        await updateDoc(doc(db, "products", id), {
+          name,
+          category,
+          description,
+          price,
+          quantity
         });
-      });
-    }
-
+        alert("Updated successfully");
+      } catch (err) {
+        console.error("Update failed", err);
+        alert("Failed to update");
+      }
+    });
+  });
+}
+   
 
 async function loadOrders(userId) {
   const ordersRef = collection(db, "orders");
@@ -140,51 +151,73 @@ async function loadOrders(userId) {
   const tbody = document.querySelector("#orders-table tbody");
   tbody.innerHTML = "";
 
+  const ordersByTransaction = {};
+
+  // Group orders by transactionId
   querySnapshot.forEach((docSnap) => {
     const orderId = docSnap.id;
     const order = docSnap.data();
     const { buyerEmail, transactionId, items, createdAt, status, deliveryOption } = order;
 
-    if (Array.isArray(items)) {
-      items.forEach(item => {
-        const itemName = item.name || "N/A";
-        const itemQty = item.quantity || 0;
-        let price = 0;
-
-        if (typeof item.price === "number") price = item.price;
-        else if (typeof item.price === "string") price = parseFloat(item.price);
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${buyerEmail}</td>
-          <td>${transactionId}</td>
-          <td>${itemName}</td>
-          <td>${itemQty}</td>
-          <td>$${price.toFixed(2)}</td>
-          <td>${createdAt?.seconds ? new Date(createdAt.seconds * 1000).toLocaleString() : "N/A"}</td>
-          <td>
-            <select class="status-select" data-id="${orderId}">
-              <option value="Pending" ${status === "Pending" ? "selected" : ""}>Pending</option>
-              <option value="Processing" ${status === "Processing" ? "selected" : ""}>Processing</option>
-              <option value="Shipped" ${status === "Shipped" ? "selected" : ""}>Shipped</option>
-              <option value="Delivered" ${status === "Delivered" ? "selected" : ""}>Delivered</option>
-              <option value="Cancelled" ${status === "Cancelled" ? "selected" : ""}>Cancelled</option>
-            </select>
-          </td>
-          <td>
-            <select class="delivery-select" data-id="${orderId}">
-              <option value="Pickup" ${deliveryOption === "Pickup" ? "selected" : ""}>Pickup</option>
-              <option value="Courier" ${deliveryOption === "Courier" ? "selected" : ""}>Courier</option>
-              <option value="Drop-off" ${deliveryOption === "Drop-off" ? "selected" : ""}>Drop-off</option>
-            </select>
-          </td>
-          <td>
-            <button class="save-order-btn" data-id="${orderId}">Save</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
+    if (!ordersByTransaction[transactionId]) {
+      ordersByTransaction[transactionId] = {
+        orderId,
+        buyerEmail,
+        transactionId,
+        items: [],
+        createdAt,
+        status,
+        deliveryOption,
+      };
     }
+
+    if (Array.isArray(items)) {
+      ordersByTransaction[transactionId].items.push(...items);
+    }
+  });
+
+  // Render each unique transaction
+  Object.values(ordersByTransaction).forEach(order => {
+    const { orderId, buyerEmail, transactionId, items, createdAt, status, deliveryOption } = order;
+
+    let totalAmount = 0;
+    const itemDescriptions = items.map(item => {
+      const itemName = item.name || "N/A";
+      const itemQty = parseInt(item.quantity) || 0;
+      const itemPrice = parseFloat(item.price) || 0;
+      const itemTotal = itemQty * itemPrice;
+      totalAmount += itemTotal;
+      return `${itemName} (x${itemQty}) - $${itemPrice.toFixed(2)}`;
+    }).join("<br>");
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${buyerEmail}</td>
+      <td>${transactionId}</td>
+      <td>${itemDescriptions}</td>
+      <td>$${totalAmount.toFixed(2)}</td>
+      <td>${createdAt?.seconds ? new Date(createdAt.seconds * 1000).toLocaleString() : "N/A"}</td>
+      <td>
+        <select class="status-select" data-id="${orderId}">
+          <option value="Pending" ${status === "Pending" ? "selected" : ""}>Pending</option>
+          <option value="Processing" ${status === "Processing" ? "selected" : ""}>Processing</option>
+          <option value="Shipped" ${status === "Shipped" ? "selected" : ""}>Shipped</option>
+          <option value="Delivered" ${status === "Delivered" ? "selected" : ""}>Delivered</option>
+          <option value="Cancelled" ${status === "Cancelled" ? "selected" : ""}>Cancelled</option>
+        </select>
+      </td>
+      <td>
+        <select class="delivery-select" data-id="${orderId}">
+          <option value="Pickup" ${deliveryOption === "Pickup" ? "selected" : ""}>Pickup</option>
+          <option value="Courier" ${deliveryOption === "Courier" ? "selected" : ""}>Courier</option>
+          <option value="Drop-off" ${deliveryOption === "Drop-off" ? "selected" : ""}>Drop-off</option>
+        </select>
+      </td>
+      <td>
+        <button class="save-order-btn" data-id="${orderId}">Save</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
   });
 
   // Attach save listeners
@@ -233,6 +266,21 @@ async function loadOrders(userId) {
         // window.location.href = "../html/login.html";
       }
     });
+
+    // DARK MODE TOGGLE
+    const toggleBtn = document.getElementById("dark-mode-toggle");
+    const currentMode = localStorage.getItem("theme");
+
+    if (currentMode === "dark") {
+      document.body.classList.add("dark-mode");
+    }
+
+    toggleBtn?.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+      const mode = document.body.classList.contains("dark-mode") ? "dark" : "light";
+      localStorage.setItem("theme", mode);
+    });
+
   </script>
 </body>
 <!-- <script src="../scripts/seller_dashboard.js"></script> -->

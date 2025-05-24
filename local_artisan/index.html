@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="css/index.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
   <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/login_icon_logic.css">
 </head>
 
 <body>
@@ -23,45 +24,6 @@
 </a>
 
         <!-- Login icon logic-->
-        <style>
-          .dropdown {
-            position: relative;
-            display: inline-block;
-          }
-
-          .user-icon {
-              color: #333;
-              font-size: 1.2rem;
-              text-decoration: none;
-              padding: 0.5rem;
-              transition: color 0.3s ease;
-          }
-
-          .user-icon:hover {
-              color: #1a73e8;
-          }
-
-          .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: #fff;
-            min-width: 150px;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-            z-index: 1;
-          }
-
-          .dropdown-content a {
-            display: block;
-            padding: 10px 16px;
-            text-decoration: none;
-            color: #333;
-          }
-
-          .dropdown-content a:hover {
-            background-color: #f0f0f0;
-          }
-        </style>
 
         <section class="dropdown">
           <!-- Use # in href to prevent navigation -->
@@ -115,6 +77,10 @@
           <li><a href="#" class="low-stock">Low Stock</a></li>
         </ul>
       </nav>
+    </section>
+    <section class ="price-filters">
+      <p>Search by price</p>
+      <section class = "ranges"></section>
     </section>
   </header>
 
@@ -206,8 +172,12 @@
   <!-- 🔹 Script section -->
   <script type="module" src="./scripts/index_filters.js"></script>
   <script type="module" src="./scripts/theme.js"></script>
+
   <script type = "module" src = "./firebase_dependencies/new_arrivals.js"></script>
   <script type = "module" src = "./firebase_dependencies/low_stock.js"></script>
+
+  <script type="module" src ="firebase_dependencies/priceFilters.js"></script>
+  <script type ="module" src="scripts/priceFilters.js"></script>
 
   <!-- 🔹 Firebase Profile Display Script -->
   <script type="module">

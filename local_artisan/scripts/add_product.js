@@ -42,7 +42,7 @@ export function isImageValid(image){
     if (!image || !allowedTypes.includes(image.type)) {
       return false;
     }
-    return true
+    return true;
 };
 
 export function isCategoryValid(category){

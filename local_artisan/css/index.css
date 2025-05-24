@@ -147,12 +147,22 @@ body {
 /* Main content area (pushes footer down) */
 .content {
   flex: 1;
-  margin-top: 210px; /* Reduced fro 300 to 180 for shorter header */
+  margin-top: 250px; /* Reduced fro 300 to 180 for shorter header */
   background: #f8f9fa;
   padding: 2rem;
   background: #FAD4D8;
   display: flex;
   gap:40px;
+}
+
+.no-products {
+  grid-column: 1 / -1;
+  text-align: center;
+  justify-self: center;
+  font-size: 1rem;
+  font-style: italic;
+  color: #f10707;
+  margin: 1rem 0; /* give it some breathing room */
 }
 
 .right_side_content{
@@ -266,6 +276,8 @@ body {
 }
 
 
+
+
 .view-button {
   background: #3B5249;
   color: white;
@@ -276,8 +288,75 @@ body {
   transition: background 0.3s ease;
 }
 
+
+
 .view-button:hover {
   background: #231942;
+}
+
+/* Container */
+.ranges {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  font-size: 0.95rem;
+}
+
+/* Hide the native radio circles */
+.ranges input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Style each label as a pill */
+.ranges label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4em 1em;
+  margin: 0;
+  background: #f0f0f0;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* Add a custom dot before each label */
+.ranges label::before {
+  content: "";
+  display: inline-block;
+  width: 0.8em; height: 0.8em;
+  margin-right: 0.6em;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  background: #fff;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+/* Checked state: fill the dot & invert pill colors */
+.ranges input[type="radio"]:checked + label {
+  background: #3B5249;
+  color: #fff;
+}
+
+.ranges input[type="radio"]:checked + label::before {
+  background: #fff;
+  border-color: #fff;
+}
+
+/* Hover states */
+.ranges label:hover {
+  background: #e0e0e0;
+}
+
+.ranges label:hover::before {
+  border-color: #3B5249;
 }
 
 /* Footer Styles */
@@ -319,6 +398,37 @@ body {
   text-decoration: underline;
   color: #1a73e8;
 }
+
+.price-filters {
+  display: flex;
+  flex-direction: row; 
+  gap: 10px; 
+  overflow-x: auto; 
+  padding: 10px 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.price-filter-item {
+  flex: 0 0 auto; 
+  white-space: nowrap;
+  padding: 8px 15px;
+  background: #f5f5f5;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.price-filter p{
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Optional: Style for active filter */
+.price-filter-item.active {
+  background: #007bff;
+  color: white;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
