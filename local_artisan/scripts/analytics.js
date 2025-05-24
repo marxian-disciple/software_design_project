@@ -4,6 +4,7 @@ const firebaseConfig = {
   authDomain: "software-design-project-574a6.firebaseapp.com",
   projectId: "software-design-project-574a6"
 };
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
