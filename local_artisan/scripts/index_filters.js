@@ -12,6 +12,14 @@ document.addEventListener('DOMContentLoaded', async() => {
     // Unified function to handle product display
     const displayProducts = (products) => {
         productContainer.innerHTML = ''; // Clear previous products
+        if (products.length === 0) {
+        // Show no‐results message
+        const msg = document.createElement('p');
+        msg.textContent = 'NO ITEMS FOUND';
+        msg.classList.add('no-products');
+        productContainer.appendChild(msg);
+        return;
+    }
         
         products.forEach(product => {
             const card = document.createElement('section');
@@ -137,6 +145,11 @@ searchBar.addEventListener('input', (e) => {
             allProductsCache: ( ) => allProductsCache, // Expose the cache for testing
             currentCategory: () => currentCategory // Expose the current category for testing
         };
+    }
+    // After your products are loaded
+    if (window.priceFilter) {
+        window.priceFilter.setProducts(allProductsCache);
+        window.priceFilter.onFilterChange = displayProducts;
     }
 });
 
