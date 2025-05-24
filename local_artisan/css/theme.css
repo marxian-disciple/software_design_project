@@ -1,0 +1,26 @@
+[data-theme="dark"] {
+  --primary-color: #4cc9f0;
+  --secondary-color: #4361ee;
+  --accent-color: #3f37c9;
+  --text-color: #f8f9fa;
+  --bg-color: #1a1a2e;
+  --card-bg: #16213e;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+#modeToggle {
+  position:absolute;
+  top: 3.9rem; /* Adjust this value based on button height + spacing */
+  left: 1rem;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.9rem;
+  cursor: pointer;
+  padding: 1rem;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
