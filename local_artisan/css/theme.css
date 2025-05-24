@@ -1,26 +1,22 @@
-[data-theme="dark"] {
-  --primary-color: #4cc9f0;
-  --secondary-color: #4361ee;
-  --accent-color: #3f37c9;
-  --text-color: #f8f9fa;
-  --bg-color: #1a1a2e;
-  --card-bg: #16213e;
-  --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+:root {
+  /* light mode defaults */
+  --primary-bg: #FAD4D8;    /* your pink page background */
+  --primary-text: #231942;  /* your dark text */
+  --accent-color: #3B5249;  /* dark green for buttons, links */
 }
 
-#modeToggle {
-  position:absolute;
-  top: 3.9rem; /* Adjust this value based on button height + spacing */
-  left: 1rem;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.9rem;
-  cursor: pointer;
-  padding: 1rem;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+body {
+  background-color: var(--primary-bg) !important;
+  color: var(--primary-text) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+/* apply accent color to wherever you need it */
+.view-button,
+.view-button:hover,
+.right_side_content nav a.active,
+.right_side_content nav a:hover {
+  background-color: var(--accent-color) !important;
+}
+
+

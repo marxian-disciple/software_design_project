@@ -1,22 +1,36 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const modeToggle = document.getElementById('modeToggle');
-  let darkMode = false;
+// toggle light <-> dark
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("modeToggle");
+  if (!btn) return;
 
-  document.body.style.backgroundColor = '#FADAD8';
-  header.style.backgroundColor = '#FFE5E0';
-  modeToggle.textContent = '☀';  
-  modeToggle.style.color = 'black';
+  // track 0 = light, 1 = dark
+  let isDark = false;
 
-  modeToggle.addEventListener('click', () => {
-    if (!darkMode) {
-      document.body.style.backgroundColor = '#231942';
-      header.style.backgroundColor = '#E1D9D1';
-      modeToggle.style.color = 'white';
-    } else {
-      document.body.style.backgroundColor = '#FADAD8';
-      header.style.backgroundColor = '#FFE5E0';
-      modeToggle.style.color = 'black';
-    }
-    darkMode = !darkMode;
+  // dark theme variables
+  const dark = {
+    bg: "#3B5249",
+    text: "#FAD4D8",
+    accent: "#231942"
+  };
+
+  const light = {
+    bg: "#FAD4D8",
+    text: "#231942",
+    accent: "#3B5249"
+  };
+
+  const apply = ({ bg, text, accent }) => {
+    const root = document.documentElement;
+    root.style.setProperty("--primary-bg", bg);
+    root.style.setProperty("--primary-text", text);
+    root.style.setProperty("--accent-color", accent);
+  };
+
+  btn.addEventListener("click", () => {
+    isDark = !isDark;
+    apply(isDark ? dark : light);
+
+    // optional: swap the icon between sun and moon
+    btn.textContent = isDark ? "🌙" : "☀";
   });
 });
