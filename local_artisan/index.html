@@ -100,11 +100,11 @@
     </section>
 
 
-    <section>
-      <header>
-            <h2 class="title"> Artify</h2>
-        </header>
-    </section>
+    
+    <header style="padding: 0px; margin-top: -30px;">
+          <h2 class="title"> Artify</h2>
+    </header>
+    
 
     <section class="search-nav-section">
       <input type="search" placeholder="Search..." class="search-bar" />
@@ -235,7 +235,7 @@
         const profileHTML = isAdmin ? `
           <section class="dropdown">
             <a href="#" class="user-icon" onclick="toggleDropdown(event)" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-              <img src="${user.photoURL || '../images/default_avatar.png'}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+              <img src="${user.photoURL || '../images/default_avatar.png'}" alt="Profile" style="width: 20px; height: 20px; border-radius: 50%; object-fit: cover;">
               <strong style="color: #333;">${user.displayName || user.email}</strong>
             </a>
             <section id="dropdown-menu" class="dropdown-content">
@@ -248,7 +248,7 @@
         ` : `
           <section class="dropdown">
             <a href="#" class="user-icon" onclick="toggleDropdown(event)" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-              <img src="${user.photoURL || '../images/default_avatar.png'}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+              <img src="${user.photoURL || '../images/default_avatar.png'}" alt="Profile" style="width: 20px; height: 20px; border-radius: 50%; object-fit: cover;">
               <strong style="color: #333;">${user.displayName || user.email}</strong>
             </a>
             <section id="dropdown-menu" class="dropdown-content">
