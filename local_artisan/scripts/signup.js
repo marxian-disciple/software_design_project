@@ -47,3 +47,8 @@ export function showUserProfile(user) {
         `;
     }
 }
+
+document.querySelector(".forgot-password a").addEventListener("click", function(event) {
+    event.preventDefault();
+    alert("Please use Google to reset your password!.");
+});
