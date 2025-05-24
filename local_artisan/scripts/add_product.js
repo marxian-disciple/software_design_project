@@ -28,8 +28,9 @@ export function isQuantityValid(quantity) {
 export function isImageValid(image){
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
     if (!image || !allowedTypes.includes(image.type)) {
-      return;
+      return false;
     }
+    return true
 };
 
 export function isCategoryValid(category){
