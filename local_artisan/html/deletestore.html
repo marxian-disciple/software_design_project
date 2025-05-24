@@ -84,15 +84,20 @@
         }
 
         try {
-          const q = query(collection(db, "sellers"), where("userId", "==", user.uid));
+          const q = query(collection(db, "products"), where("userId", "==", user.uid));
           const snap = await getDocs(q);
 
-          if (snap.empty) {
+          await Promise.all(snap.docs.map(doc => deleteDoc(doc.ref)));
+
+          const seller = query(collection(db, "sellers"), where("userId", "==", user.uid));
+          const seller_doc = await getDocs(seller);
+
+          if (seller_doc.empty) {
             alert("No store found for this user.");
             return;
           }
 
-          await Promise.all(snap.docs.map(doc => deleteDoc(doc.ref)));
+          await Promise.all(seller_doc.docs.map(doc => deleteDoc(doc.ref)));
 
           alert("Store deleted successfully!");
           document.getElementById("confirmId").value = "";
