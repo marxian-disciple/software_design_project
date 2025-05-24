@@ -66,6 +66,18 @@
           <figure><img src="../lib/5.jpg" alt="Art sample" /></figure>
         </main>
     </section>
+    <script>
+    document.querySelectorAll('.toggle-password').forEach(icon => {
+        icon.addEventListener('click', () => {
+            const targetInput = document.querySelector(icon.getAttribute('data-toggle'));
+            const type = targetInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            targetInput.setAttribute('type', type);
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+        });
+    });
+</script>
+
 
 </body>
 <script type="module" src="../scripts/signup.js"></script>
