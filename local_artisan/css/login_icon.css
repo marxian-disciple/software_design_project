@@ -1,0 +1,37 @@
+.dropdown {
+position: relative;
+display: inline-block;
+}
+
+.user-icon {
+    color: #333;
+    font-size: 1.2rem;
+    text-decoration: none;
+    padding: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.user-icon:hover {
+    color: #1a73e8;
+}
+
+.dropdown-content {
+display: none;
+position: absolute;
+right: 0;
+background-color: #fff;
+min-width: 150px;
+box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+z-index: 1;
+}
+
+.dropdown-content a {
+display: block;
+padding: 10px 16px;
+text-decoration: none;
+color: #333;
+}
+
+.dropdown-content a:hover {
+background-color: #f0f0f0;
+}
