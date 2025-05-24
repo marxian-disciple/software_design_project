@@ -80,9 +80,6 @@ describe('profileHandlers', () => {
     expect(() => initCloseButton(() => {})).not.toThrow();
   });
 });
-/**
- * @jest-environment jsdom
- */
 const { isEmailValid, isPhoneValid, areRequiredFieldsFilled, validateAndAlert } = require('../local_artisan/scripts/seller_registration');
 
 describe('Validation Functions', () => {
