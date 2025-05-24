@@ -253,3 +253,27 @@ document.addEventListener('DOMContentLoaded', () => {
     darkMode = !darkMode;
   });
 });
+
+document.getElementById("download").addEventListener("click", async () => {
+  const { jsPDF } = window.jspdf;
+  const main = document.querySelector("main");
+
+  // Optional: Scroll to top so everything is loaded/rendered properly
+  window.scrollTo(0, 0);
+
+  // Use html2canvas to capture main section
+  html2canvas(main, {
+    scale: 2, // Higher scale = higher resolution
+    useCORS: true
+  }).then(canvas => {
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "px",
+      format: [canvas.width, canvas.height] // Match canvas size to avoid clipping
+    });
+
+    pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+    pdf.save("analytics-report.pdf");
+  });
+});
