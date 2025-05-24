@@ -44,23 +44,10 @@ body {
   justify-content: space-between !important; /* Force left-right alignment */
   padding: 0 2rem;
 }
-.logo-row {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  position: relative; /* Establish positioning context */
-}
-
-.logo-row .side_right {
-  margin-left: auto;
-}
-
-/* Center the logo absolutely */
-.logo-row .middle {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1; /* Ensure it's above other elements if needed */
+.title {
+  font-size: 45px;
+  font-family: 'Cinzel Decorative', serif;
+  letter-spacing: 2px;
 }
 
 .header-middle {

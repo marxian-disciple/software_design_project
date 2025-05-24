@@ -450,3 +450,10 @@ body {
     margin-bottom: 1rem;
   }
 }
+
+a.tc {
+  color: inherit;         /* Inherit the color from parent (like a <p> or <div>) */
+  text-decoration: underline;  /* Remove the underline */
+  text-align: center;
+  padding-top: 20px;
+}

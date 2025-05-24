@@ -14,15 +14,27 @@ export function isNameValid(name){
 };
 
 export function isPriceValid(price) {
-    return /^[+]?\d+(\.\d+)?$/.test(price);
+    const numPrice = Number(price);
+    if (/^[+]?\d+(\.\d+)?$/.test(price) && numPrice > 0){
+        return true;
+    }
+    return false;
 }
 
 export function isWeightValid(weight) {
-    return /^[+]?\d+(\.\d+)?$/.test(weight);
+    const numWeight = Number(weight);
+    if(/^[+]?\d+(\.\d+)?$/.test(weight) && numWeight > 0){
+        return true;
+    }
+    return false;
 }
 
 export function isQuantityValid(quantity) {
-    return /^[+]?\d+$/.test(quantity);
+    const numQuantity = Number(quantity);
+    if(/^[+]?\d+$/.test(quantity) && numQuantity > 0){
+        return true;
+    }
+    return false;
 }
 
 export function isImageValid(image){

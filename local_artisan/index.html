@@ -62,19 +62,19 @@
     </section>
 
 
-    <section class="logo-row">
-      <img src="images/side_left.png" class="side_left" alt="Left Decoration" width="150" height="100" />
-      <img id="profile-img" class = "middle" src="images/logo.png" alt="Artify Logo" class="logo" />
-      <img src="images/side.png" class="side_right" alt="Right Decoration" width="150" height="100" />
-    </section>
+    
+    <header style="padding: 0px; margin-top: -30px;">
+          <h2 class="title"> Artify</h2>
+    </header>
+    
 
     <section class="search-nav-section">
       <input type="search" placeholder="Search..." class="search-bar" />
       <nav class="things">
         <ul>
-          <li><a href="#">New Arrivals</a></li>
+          <li><a href="#" class="new-arrivals">New Arrivals</a></li>
           <li><a href="#">Sales</a></li>
-          <li><a href="#">Low Stock</a></li>
+          <li><a href="#" class="low-stock">Low Stock</a></li>
         </ul>
       </nav>
     </section>
@@ -172,9 +172,12 @@
   <!-- 🔹 Script section -->
   <script type="module" src="./scripts/index_filters.js"></script>
   <script type="module" src="./scripts/theme.js"></script>
+
+  <script type = "module" src = "./firebase_dependencies/new_arrivals.js"></script>
+  <script type = "module" src = "./firebase_dependencies/low_stock.js"></script>
+
   <script type="module" src ="firebase_dependencies/priceFilters.js"></script>
   <script type ="module" src="scripts/priceFilters.js"></script>
-
 
   <!-- 🔹 Firebase Profile Display Script -->
   <script type="module">
@@ -202,11 +205,12 @@
         const profileHTML = isAdmin ? `
           <section class="dropdown">
             <a href="#" class="user-icon" onclick="toggleDropdown(event)" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-              <img src="${user.photoURL || '../images/default_avatar.png'}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+              <img src="${user.photoURL || '../images/default_avatar.png'}" alt="Profile" style="width: 20px; height: 20px; border-radius: 50%; object-fit: cover;">
               <strong style="color: #333;">${user.displayName || user.email}</strong>
             </a>
             <section id="dropdown-menu" class="dropdown-content">
               <a href="./html/user_info.html">View Profile</a>
+              <a href="./html/orders.html">View My Orders</a>
               <a href="#" class="logout">Log Out</a>
               <a href="./html/admin.html" class="admin">Admin Page</a>
             </section>
@@ -214,11 +218,12 @@
         ` : `
           <section class="dropdown">
             <a href="#" class="user-icon" onclick="toggleDropdown(event)" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-              <img src="${user.photoURL || '../images/default_avatar.png'}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+              <img src="${user.photoURL || '../images/default_avatar.png'}" alt="Profile" style="width: 20px; height: 20px; border-radius: 50%; object-fit: cover;">
               <strong style="color: #333;">${user.displayName || user.email}</strong>
             </a>
             <section id="dropdown-menu" class="dropdown-content">
-              <a href="./html/user_info.html">View Profile</a>
+              <a href="./html/user_info.html">View My Profile</a>
+              <a href="./html/orders.html">View My Orders</a>
               <a href="#" class="logout">Log Out</a>
             </section>
           </section>
