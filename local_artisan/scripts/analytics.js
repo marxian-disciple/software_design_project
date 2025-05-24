@@ -1,9 +1,10 @@
-// Firebase config
+
 const firebaseConfig = {
   apiKey: "AIzaSyClkdKaYMnvNRPWbHLviEv_2Rzo5MLV5Uc",
   authDomain: "software-design-project-574a6.firebaseapp.com",
   projectId: "software-design-project-574a6"
 };
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
@@ -212,6 +213,10 @@ function drawCharts({ totalRevenue, productCount, productRevenue, revenueByDate 
   article.appendChild(summary);
 }
 
+
+
+
+// dom 
 document.addEventListener('DOMContentLoaded', () => {
   const menuButton = document.getElementById('menuButton');
   const menuDropdown = document.getElementById('menuDropdown');
