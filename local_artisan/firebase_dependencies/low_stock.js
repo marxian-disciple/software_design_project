@@ -1,17 +1,13 @@
-import { collection, getDocs, query, where, Timestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { collection, getDocs, query, where } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { db } from '../lib/firebaseConfig.js';
 
 const content = document.querySelector('.middle-content');
-const newArrivals = document.querySelector(".new-arrivals");
+const lowStock = document.querySelector(".low-stock");
 
-async function fetchAndDisplayNewArrivals() {
+async function fetchAndDisplayLowStock() {
     try {
-        // Calculate timestamp for one week ago
-        const oneWeekAgoDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-        const oneWeekAgoTimestamp = Timestamp.fromDate(oneWeekAgoDate);
-
         // Query products created less than a week ago
-        const q = query(collection(db, "products"), where("createdAt", ">", oneWeekAgoTimestamp));
+        const q = query(collection(db, "products"), where("quantity", "<", 10));
 
         const querySnapshot = await getDocs(q);
         content.innerHTML = ''; // Clear previous content if needed
@@ -34,7 +30,7 @@ async function fetchAndDisplayNewArrivals() {
         });
 
         if (querySnapshot.empty) {
-            content.innerHTML = '<p>No new arrivals this week.</p>';
+            content.innerHTML = '<p>No low stock products found.</p>';
         }
     } catch (err) {
         console.error("Error fetching products:", err);
@@ -42,4 +38,4 @@ async function fetchAndDisplayNewArrivals() {
     }
 }
 
-newArrivals.addEventListener("click", fetchAndDisplayNewArrivals);
+lowStock.addEventListener("click", fetchAndDisplayLowStock);
