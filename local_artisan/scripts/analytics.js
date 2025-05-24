@@ -102,7 +102,6 @@ function groupData(data) {
 
 function drawCharts({ totalRevenue, productCount, productRevenue, revenueByDate }, in_cart_only, recommendations) {
   const sortedDates = Object.keys(revenueByDate).sort();
-  const inCartRevenueByDate = {};
   const cartProductRevenue = {};
   let totalCartRevenue = 0;
 
@@ -165,7 +164,7 @@ function drawCharts({ totalRevenue, productCount, productRevenue, revenueByDate 
         },
         {
           label: "Estimated Cart Revenue",
-          data: sortedDates.map(() => 0), // No cart revenue by date in this version
+          data: sortedDates.map(() => 0), 
           fill: false,
           borderColor: "red"
         }
@@ -186,8 +185,18 @@ function drawCharts({ totalRevenue, productCount, productRevenue, revenueByDate 
     options: { plugins: { title: { display: true, text: "Revenue Breakdown" } } }
   });
 
-  // Display recommendations
   const article = document.querySelector("article");
+
+
+  const revenueSummary = document.createElement("div");
+  revenueSummary.style.margin = "1rem 0";
+  revenueSummary.style.fontWeight = "bold";
+  revenueSummary.innerHTML = `
+    <p>Total Revenue Earned: R${totalRevenue.toFixed(2)}</p>
+    <p>Total Revenue Sitting in Carts: R${totalCartRevenue.toFixed(2)}</p>
+  `;
+  article.appendChild(revenueSummary);
+
   recommendations.forEach(msg => {
     const p = document.createElement("p");
     p.textContent = msg;
@@ -203,7 +212,6 @@ function drawCharts({ totalRevenue, productCount, productRevenue, revenueByDate 
   article.appendChild(summary);
 }
 
-// DOM for menu + dark mode
 document.addEventListener('DOMContentLoaded', () => {
   const menuButton = document.getElementById('menuButton');
   const menuDropdown = document.getElementById('menuDropdown');
@@ -227,7 +235,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Light mode default
   document.body.style.backgroundColor = '#FADAD8';
   header.style.backgroundColor = '#FFE5E0';
   modeToggle.textContent = '☀';  
