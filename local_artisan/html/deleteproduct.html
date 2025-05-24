@@ -44,7 +44,7 @@
       margin-bottom: 20px;
     }
 
-    input, button {
+    input, button, select {
       padding: 10px;
       margin-top: 10px;
       font-size: 16px;
@@ -65,11 +65,22 @@
     button:hover {
       background-color: #8b4e5e;
     }
+
+    #preview {
+      margin-top: 20px;
+    }
+
+    #preview img {
+      max-width: 150px;
+      display: block;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
 
   <div class="sidebar">
+    <a href="seller_dashboard.html">Back to Seller Dashboard</a>
     <a href="../index.html">Home</a>
     <a href="add_product.html">Add Products</a>
     <a href="#">Analytics</a>
@@ -80,7 +91,13 @@
 
   <div class="main">
     <h1>Delete Product</h1>
-    <input type="text" id="name" placeholder="Enter product name" />
+
+    <select id="productSelect">
+      <option value="">-- Select a product --</option>
+    </select>
+
+    <div id="preview"></div>
+
     <button id="deleteBtn">Delete Product</button>
   </div>
 
@@ -96,41 +113,82 @@
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
     import { db, auth } from "../lib/firebaseConfig.js";
 
-    document.getElementById("deleteBtn").addEventListener("click", () => {
-      const name = document.getElementById("name").value.trim();
+    const productSelect = document.getElementById("productSelect");
+    const preview = document.getElementById("preview");
+    let productsMap = new Map();
 
-      if (!name) {
-        alert("Please enter a product name.");
+    // Load products into dropdown
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        alert("You must be logged in.");
         return;
       }
 
-      onAuthStateChanged(auth, async (user) => {
-        if (!user) {
-          alert("You must be logged in.");
+      const q = query(collection(db, "products"), where("userId", "==", user.uid));
+      const snapshot = await getDocs(q);
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const option = document.createElement("option");
+        option.value = doc.id;
+        option.textContent = data.name;
+        productSelect.appendChild(option);
+        productsMap.set(doc.id, { ...data, ref: doc.ref });
+      });
+    });
+
+    // Show image on select
+    productSelect.addEventListener("change", () => {
+      const productId = productSelect.value;
+      preview.innerHTML = "";
+
+      if (productId && productsMap.has(productId)) {
+        const product = productsMap.get(productId);
+        preview.innerHTML = `
+          <p><strong>${product.name}</strong></p>
+          <img src="${product.imageUrl}" alt="${product.name}">
+        `;
+      }
+    });
+
+    // Delete logic
+    document.getElementById("deleteBtn").addEventListener("click", async () => {
+      const productId = productSelect.value;
+
+      if (!productId || !productsMap.has(productId)) {
+        alert("Please select a valid product.");
+        return;
+      }
+
+      const product = productsMap.get(productId);
+
+      try {
+        // Step 1: Check for orders that include the product
+        const ordersSnapshot = await getDocs(collection(db, "orders"));
+        let productInOrders = false;
+
+        ordersSnapshot.forEach(orderDoc => {
+          const items = orderDoc.data().items || [];
+          if (items.some(item => item.productId === productId)) {
+            productInOrders = true;
+          }
+        });
+
+        if (productInOrders) {
+          alert(`Cannot delete "${product.name}" because it exists in one or more orders.`);
           return;
         }
 
-        try {
-          const q = query(collection(db, "products"), where("name", "==", name));
-          const snapshot = await getDocs(q);
-
-          if (snapshot.empty) {
-            alert("No product found with that name.");
-            return;
-          }
-
-          await Promise.all(snapshot.docs.map(doc => deleteDoc(doc.ref)));
-          alert("Product deleted successfully!");
-          document.getElementById("name").value = "";
-          window.location.href = "../html/seller_dashboard.html";
-        } catch (err) {
-          console.error("Error deleting product:", err);
-          alert("Failed to delete product.");
-        }
-      });
+        // Step 2: Safe to delete
+        await deleteDoc(product.ref);
+        alert("Product deleted successfully!");
+        productSelect.removeChild(productSelect.querySelector(`option[value="${productId}"]`));
+        preview.innerHTML = "";
+      } catch (err) {
+        console.error("Error deleting product:", err);
+        alert("Failed to delete product.");
+      }
     });
   </script>
 
 </body>
 </html>
-
