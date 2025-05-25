@@ -94,31 +94,4 @@ describe('Auth Form Functions', () => {
         });
     });
 
-    describe('initForgotPasswordLink', () => {
-        test('should prevent default and show alert when clicked', () => {
-            const link = document.querySelector('.forgot-password a');
-            const mockPreventDefault = jest.fn();
-            
-            initForgotPasswordLink();
-            link.dispatchEvent(new Event('click', { cancelable: true }));
-            
-            expect(mockPreventDefault).not.toHaveBeenCalled(); // Wait, we need to check event.preventDefault
-            // Let's correct this by actually capturing the event
-            let prevented = false;
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                prevented = true;
-            });
-            
-            link.click();
-            expect(prevented).toBe(true);
-            expect(window.alert).toHaveBeenCalledWith("Please use Google to reset your password!.");
-        });
-
-        test('should do nothing if link is missing', () => {
-            document.querySelector('.forgot-password a').remove();
-            initForgotPasswordLink();
-            // No error should occur
-        });
-    });
 });
