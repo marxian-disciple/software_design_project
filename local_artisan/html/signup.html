@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,89 +32,6 @@
         <i class="fas fa-eye toggle-password" data-toggle="#confirm_pass"></i>
     </div>
 </section>            
-            <button type="submit" class="login-btn">Log In</button>
-            
-            <section class="social-login">
-                <p>Or continue with</p>
-                <section class="social-buttons">
-                    <button type="button" class="google-btn">
-                        <i class="fab fa-google"></i> Google
-                    </button>
-                    
-                </section>
-            </section>
-            
-            <nav class="forgot-password">
-                <a href="#">Forgot Password?</a>
-            </nav>
-
-            <a href="../html/footer/tc.html" class="tc">Terms and Conditions</a>
-        </form>
-    </section>
-
-    <section class="animation"> 
-        <header>
-            <h2> Artify</h2>
-            <h5> Where Art meets Lovers</h5>
-        </header>
-
-        <main>
-          <figure><img src="../lib/1.jpg" alt="Art sample" /></figure>
-          <figure><img src="../lib/2.jpg" alt="Art sample" /></figure>
-          <figure><img src="../lib/3.jpg" alt="Art sample" /></figure>
-          <figure><img src="../lib/4.jpg" alt="Art sample" /></figure>
-          <figure><img src="../lib/5.jpg" alt="Art sample" /></figure>
-        </main>
-    </section>
-    <script>
-    document.querySelectorAll('.toggle-password').forEach(icon => {
-        icon.addEventListener('click', () => {
-            const targetInput = document.querySelector(icon.getAttribute('data-toggle'));
-            const type = targetInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            targetInput.setAttribute('type', type);
-            icon.classList.toggle('fa-eye');
-            icon.classList.toggle('fa-eye-slash');
-        });
-    });
-</script>
-
-
-</body>
-<script type="module" src="../scripts/signup.js"></script>
-<script type="module" src="../firebase_dependencies/signup.js"></script>
-</html>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & Registration Page</title>
-    <link rel="stylesheet" href="../css/signup.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Great+Vibes&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-
-</head>
-<body>
-    <section class="login-container">
-        <h2>Login</h2>
-        <form class="login-form">
-            <section class="input-group">
-                <label for="email">Email</label>
-                <input type="text" id="email" name="email" required>
-            </section>
-            <section class="input-group">
-                <label for="password">Password</label>
-                <section class="password-wrapper">
-                    <input type="password" id="password" name="password" required>
-                    <i class="fas fa-eye toggle-password" data-toggle="#password"></i>
-                </section>
-            </section>
-
-            <section class="input-group">
-                <label for="confirm_pass">Confirm Password</label>
-                <section class="password-wrapper">
-                    <input type="password" id="confirm_pass" name="confirm_pass" required>
-                    <i class="fas fa-eye toggle-password" data-toggle="#confirm_pass"></i>
-                </section>
-            </section>            
             <button type="submit" class="login-btn">Log In</button>
             
             <section class="social-login">
