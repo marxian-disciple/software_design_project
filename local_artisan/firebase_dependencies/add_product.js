@@ -74,7 +74,7 @@ export function initializeForm() {
             category: productCategory,
             description: productDescription,
             imageUrl,
-            createdAt: new Date(),
+            createdAt: new Date()
           });
 
           alert('A request has been sent to an Admin to add your product/s to your shop! Please check your shop later.');

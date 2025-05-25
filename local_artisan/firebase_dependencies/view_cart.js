@@ -14,8 +14,20 @@ const cartTotalContainer = document.getElementById('cart-total');
 async function fetchExchangeRate() {
   try {
     const response = await fetch(`https://api.currencyfreaks.com/v2.0/rates/latest?apikey=${API_KEY}&symbols=ZAR`);
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
     const data = await response.json();
+
+    if (!data.rates || !data.rates.ZAR) {
+      throw new Error('ZAR rate missing from API response');
+    }
+
     const rateZAR = parseFloat(data.rates.ZAR);
+    if (isNaN(rateZAR) || rateZAR === 0) {
+      throw new Error('Invalid ZAR rate');
+    }
+
     const rateUSD = 1 / rateZAR;
     return rateUSD;
   } catch (error) {
@@ -23,6 +35,7 @@ async function fetchExchangeRate() {
     return null;
   }
 }
+
 
 function renderCart(cart) {
   cartItemsContainer.innerHTML = '';

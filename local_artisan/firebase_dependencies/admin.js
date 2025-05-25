@@ -1,8 +1,10 @@
 import { auth, db, storage } from '../lib/firebaseConfig.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-import { collection, getDocs, addDoc, deleteDoc, doc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { collection, getDocs, addDoc, deleteDoc, doc, query, where } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { seller_applications, active_sellers, product_requests, closeBtn } from './../scripts/admin.js';
 
+let trueSellerCreatedAt;
+let trueProductCreatedAt;
 async function fetchAndDisplayApplications() {
     try {
         const sel_apps = await getDocs(collection(db, 'seller_applications'));
@@ -118,8 +120,6 @@ document.addEventListener('click', async (e) => {
         if (!card) return;
 
         const docId = card.getAttribute('data-doc-id');
-        const createdAtMillis = card.getAttribute('data-created-at');
-        const createdAt = createdAtMillis ? new Date(parseInt(createdAtMillis)) : new Date();
 
         const businessName = card.querySelector('.business-name')?.textContent.split(':').slice(1).join(':').trim();
         const registrationNumber = card.querySelector('.reg-number')?.textContent.split(':').slice(1).join(':').trim();
@@ -130,11 +130,21 @@ document.addEventListener('click', async (e) => {
         const website = card.querySelector('.website')?.textContent.split(':').slice(1).join(':').trim();
         const userId = card.querySelector('.user-id')?.textContent.split(':').slice(1).join(':').trim();
 
+        const q = query(collection(db, 'applications'), where('userId', '==', userId));
+        const querySnapshot = await getDocs(q);
+        let createdAt;
+        if (!querySnapshot.empty) {
+            const doc = querySnapshot.docs[0];
+            const data = doc.data();
+            createdAt = data.createdAt;
+        }
+        console.log(createdAt);
+
         try {
             await addDoc(collection(db, 'sellers'), {
                 userId, fullName: name, businessName,
                 registrationNumber, vatNumber,
-                email, phone, website, createdAt
+                email, phone, website, createdAt: new Date()
             });
 
             await deleteDoc(doc(db, 'seller_applications', docId));
@@ -153,8 +163,6 @@ document.addEventListener('click', async (e) => {
         if (!card) return;
 
         const docId = card.getAttribute('data-doc-id');
-        const createdAtMillis = card.getAttribute('data-created-at');
-        const createdAt = createdAtMillis ? new Date(parseInt(createdAtMillis)) : new Date();
 
         const name = card.querySelector('.prod-name')?.textContent.split(':').slice(1).join(':').trim();
         const price = card.querySelector('.price')?.textContent.split(':').slice(1).join(':').trim();
@@ -168,7 +176,7 @@ document.addEventListener('click', async (e) => {
         try {
             await addDoc(collection(db, 'products'), {
                 userId, name, price, weight, quantity,
-                category, description, imageUrl, createdAt
+                category, description, imageUrl, createdAt: new Date()
             });
 
             await deleteDoc(doc(db, 'product_requests', docId));

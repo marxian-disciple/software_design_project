@@ -11,11 +11,11 @@ class PriceFilter {
     }
     
     initDOM() {
-        this.container = document.createElement('div');
+        this.container = document.createElement('section');
         this.container.className = 'price-filters';
         
         PRICE_RANGES.forEach(range => {
-            const wrapper = document.createElement('div');
+            const wrapper = document.createElement('section');
             wrapper.className = 'price-filter-option';
             
             const input = document.createElement('input');
