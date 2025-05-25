@@ -6,7 +6,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 import { auth, provider } from "../lib/firebaseConfig.js";
-import { initSignupForm, initGoogleButton, showUserProfile } from './../scripts/signup.js';
+import { initSignupForm, initGoogleButton, showUserProfile, initForgotPasswordLink } from './../scripts/signup.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -66,5 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Google Sign-In failed. Please try again.");
         }
     });
+
+    initForgotPasswordLink();
 
 });

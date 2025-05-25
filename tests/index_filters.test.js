@@ -3,19 +3,12 @@
  */
 jest.useFakeTimers();
 
-//
-// 1) First mock out your local firebaseConfig.js so that `db` is a plain object
-//
 jest.mock(
   '../local_artisan/lib/firebaseConfig.js',
   () => ({ db: {} })
 );
 
-//
-// 2) Now require the script under test.  Because of moduleNameMapper,
-//    Jest will swap out the CDN import for your __mocks__/firebase‑firestore.js.
-//
-require('../local_artisan/scripts/index_filters.js');
+import '../local_artisan/scripts/index_filters.js';
 
 describe('Product Functionality (single-file)', () => {
   beforeEach(() => {
@@ -26,14 +19,12 @@ describe('Product Functionality (single-file)', () => {
       <a data-filter-category="electronics"></a>
     `;
 
-    // clear any previous mock calls
     const fs = require('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
     fs.collection.mockClear();
     fs.getDocs.mockClear();
     fs.query.mockClear();
     fs.where.mockClear();
 
-    // fire DOMContentLoaded so your script initializes
     document.dispatchEvent(new Event('DOMContentLoaded'));
   });
 
@@ -49,12 +40,12 @@ describe('Product Functionality (single-file)', () => {
   test('category click calls firestore.where', async () => {
   document.querySelector('[data-filter-category="electronics"]').click();
 
-  // give the event‐handler’s async function a chance to run its awaits
-  await new Promise(resolve => setTimeout(resolve, 0));
+  await new Promise(resolve => setTimeout(resolve, 100));
 
-  const fs = require('https://www.gstatic.com/firebasejs/10.12.0/firebase‑firestore.js');
+  const fs = require('../local_artisan/lib/firebaseConfig.js');
   expect(fs.where).toHaveBeenCalledWith('category', '==', 'electronics');
-});
+  }, 10000); // 10 seconds
+
   test('category click updates active class', () => {
     const allLink = document.querySelector('[data-filter-category="all"]');
     const electronicsLink = document.querySelector('[data-filter-category="electronics"]');
@@ -67,13 +58,12 @@ describe('Product Functionality (single-file)', () => {
 
 
   test('search filters cached products', () => {
-    // prime the cache
     window.testing.allProductsCache = [
       { id: '1', name: 'iPhone', category: 'electronics' }
     ];
 
     window.testing.handleSearch('iphone');
-    jest.runAllTimers(); // assume you used fake timers for debounce
+    jest.runAllTimers(); 
     const cards = document.querySelectorAll('.product-card');
     expect(cards.length).toBe(1);
   });

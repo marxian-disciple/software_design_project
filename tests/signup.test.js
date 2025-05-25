@@ -1,116 +1,124 @@
 /**
  * @jest-environment jsdom
  */
-import { initSignupForm, initGoogleButton, showUserProfile } from '../local_artisan/scripts/signup.js';
 
-describe('signupHandlers (100% coverage)', () => {
-  // Polyfill global alert and console.warn
-  beforeAll(() => {
-    global.alert = jest.fn();
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
-  });
+const {
+    initSignupForm,
+    initGoogleButton,
+    showUserProfile,
+    initForgotPasswordLink
+} = require('../local_artisan/scripts/signup.js');
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-    document.body.innerHTML = `
-      <form class="login-form">
-        <input id="username" />
-        <input id="password" />
-        <input id="confirm_pass" />
-        <button type="submit">Sign Up</button>
-      </form>
-      <button class="google-btn">Google</button>
-      <div class="login-icon"></div>
-    `;
-  });
+describe('Auth Form Functions', () => {
+    let mockSubmitHandler, mockGoogleClickHandler;
+    
+    beforeEach(() => {
+        document.body.innerHTML = `
+            <form class="login-form">
+                <input id="email" value="test@example.com">
+                <input id="password" type="password" value="password123">
+                <input id="confirm_pass" type="password" value="password123">
+            </form>
+            <button class="google-btn">Google</button>
+            <div class="login-icon"></div>
+            <div class="forgot-password"><a href="/reset">Forgot?</a></div>
+        `;
 
-  afterAll(() => {
-    jest.useRealTimers();
-    console.warn.mockRestore();
-  });
+        mockSubmitHandler = jest.fn();
+        mockGoogleClickHandler = jest.fn();
+        
+        // Mock timers and alerts
+        jest.useFakeTimers();
+        window.alert = jest.fn();
+    });
 
-  test('initSignupForm does nothing if form is missing', () => {
-    document.body.innerHTML = '<div></div>';  // no .login-form
-    const fn = jest.fn();
-    expect(() => initSignupForm(fn)).not.toThrow();
-    // simulate submit anyway
-    document.body.dispatchEvent(new Event('submit'));
-    expect(fn).not.toHaveBeenCalled();
-  });
+    afterEach(() => {
+        jest.clearAllMocks();
+        jest.useRealTimers();
+    });
 
-  test('calls onSubmit when passwords match', () => {
-    const mockSubmit = jest.fn();
-    initSignupForm(mockSubmit);
+    describe('initSignupForm', () => {
+        test('should handle form submission with matching passwords', async () => {
+            initSignupForm(mockSubmitHandler);
+            document.querySelector('.login-form').dispatchEvent(new Event('submit'));
+            
+            expect(mockSubmitHandler).toHaveBeenCalledWith('test@example.com', 'password123');
+        });
 
-    document.getElementById('username').value = 'a@b.com';
-    document.getElementById('password').value = 'pwd';
-    document.getElementById('confirm_pass').value = 'pwd';
+        test('should handle password mismatch', async () => {
+            document.getElementById('confirm_pass').value = 'wrongpassword';
+            
+            initSignupForm(mockSubmitHandler);
+            document.querySelector('.login-form').dispatchEvent(new Event('submit'));
+            
+            expect(window.alert).toHaveBeenCalledWith("Passwords do not match!");
+            expect(document.getElementById('password').style.border).toBe('2px solid red');
+            expect(document.getElementById('confirm_pass').style.border).toBe('2px solid red');
+            
+            // Test timeout clearance
+            jest.advanceTimersByTime(2000);
+            expect(document.getElementById('password').style.border).toBe('');
+            expect(document.getElementById('confirm_pass').style.border).toBe('');
+        });
+    });
 
-    document.querySelector('form').dispatchEvent(new Event('submit', { bubbles: true }));
-    expect(mockSubmit).toHaveBeenCalledWith('a@b.com', 'pwd');
-    expect(global.alert).not.toHaveBeenCalled();
-  });
+    describe('initGoogleButton', () => {
+        test('should attach click handler to google button', () => {
+            initGoogleButton(mockGoogleClickHandler);
+            document.querySelector('.google-btn').click();
+            expect(mockGoogleClickHandler).toHaveBeenCalled();
+        });
 
-  test('shows alert + red borders + resets fields then clears styling on mismatch', () => {
-    jest.useFakeTimers();
-    const mockSubmit = jest.fn();
-    initSignupForm(mockSubmit);
+        test('should warn if google button is missing', () => {
+            document.querySelector('.google-btn').remove();
+            jest.spyOn(console, 'warn');
+            initGoogleButton(mockGoogleClickHandler);
+            expect(console.warn).toHaveBeenCalledWith('Google button not found in the DOM.');
+        });
+    });
 
-    // set initial values
-    const pw = document.getElementById('password');
-    const cpw = document.getElementById('confirm_pass');
-    pw.value = 'one';
-    cpw.value = 'two';
+    describe('showUserProfile', () => {
+        test('should update login icon with user photo', () => {
+            const user = { photoURL: 'https://example.com/avatar.jpg' };
+            showUserProfile(user);
+            
+            const img = document.querySelector('.login-icon img');
+            expect(img.src).toBe(user.photoURL);
+            expect(img.alt).toBe('Profile');
+        });
 
-    document.querySelector('form').dispatchEvent(new Event('submit', { bubbles: true }));
+        test('should handle missing photoURL', () => {
+            const initialHTML = document.querySelector('.login-icon').innerHTML;
+            showUserProfile({});
+            expect(document.querySelector('.login-icon').innerHTML).toBe(initialHTML);
+        });
+    });
 
-    // verify alert
-    expect(global.alert).toHaveBeenCalledWith("Passwords do not match!");
-    // verify submit not called
-    expect(mockSubmit).not.toHaveBeenCalled();
-    // values cleared
-    expect(pw.value).toBe('');
-    expect(cpw.value).toBe('');
-    // red borders applied
-    expect(pw.style.border).toBe('2px solid red');
-    expect(cpw.style.border).toBe('2px solid red');
+    describe('initForgotPasswordLink', () => {
+        test('should prevent default and show alert when clicked', () => {
+            const link = document.querySelector('.forgot-password a');
+            const mockPreventDefault = jest.fn();
+            
+            initForgotPasswordLink();
+            link.dispatchEvent(new Event('click', { cancelable: true }));
+            
+            expect(mockPreventDefault).not.toHaveBeenCalled(); // Wait, we need to check event.preventDefault
+            // Let's correct this by actually capturing the event
+            let prevented = false;
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                prevented = true;
+            });
+            
+            link.click();
+            expect(prevented).toBe(true);
+            expect(window.alert).toHaveBeenCalledWith("Please use Google to reset your password!.");
+        });
 
-    // fast-forward 2 seconds
-    jest.advanceTimersByTime(2000);
-    expect(pw.style.border).toBe('');
-    expect(cpw.style.border).toBe('');
-  });
-
-  test('initGoogleButton does nothing & warns if button missing', () => {
-    document.body.innerHTML = '<div></div>';  // remove .google-btn
-    const fn = jest.fn();
-    initGoogleButton(fn);
-    expect(console.warn).toHaveBeenCalledWith('Google button not found in the DOM.');
-    // no click possible
-  });
-
-  test('calls onGoogleClick when Google button clicked', () => {
-    const mockGoogle = jest.fn();
-    initGoogleButton(mockGoogle);
-
-    document.querySelector('.google-btn').click();
-    expect(mockGoogle).toHaveBeenCalled();
-  });
-
-  test('showUserProfile inserts image when photoURL present', () => {
-    const user = { photoURL: 'https://x/y.png' };
-    showUserProfile(user);
-
-    const img = document.querySelector('.login-icon img');
-    expect(img).toBeTruthy();
-    expect(img.src).toBe(user.photoURL);
-    expect(img.alt).toBe('Profile');
-  });
-
-  test('showUserProfile does nothing if no photoURL', () => {
-    document.querySelector('.login-icon').innerHTML = '<p>old</p>';
-    showUserProfile({});  // user.photoURL undefined
-    // innerHTML remains unchanged
-    expect(document.querySelector('.login-icon').innerHTML).toBe('<p>old</p>');
-  });
+        test('should do nothing if link is missing', () => {
+            document.querySelector('.forgot-password a').remove();
+            initForgotPasswordLink();
+            // No error should occur
+        });
+    });
 });

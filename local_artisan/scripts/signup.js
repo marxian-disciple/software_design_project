@@ -48,7 +48,13 @@ export function showUserProfile(user) {
     }
 }
 
-document.querySelector(".forgot-password a").addEventListener("click", function(event) {
-    event.preventDefault();
-    alert("Please use Google to reset your password!.");
-});
+export function initForgotPasswordLink() {
+    const forgotLink = document.querySelector(".forgot-password a");
+    if (!forgotLink) return;
+
+    forgotLink.addEventListener("click", function(event) {
+        event.preventDefault();
+        alert("Please use Google to reset your password!.");
+    });
+}
+
