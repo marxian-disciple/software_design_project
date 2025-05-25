@@ -12,8 +12,8 @@ export const filterByPriceRange = (products, priceRange) => {
 
 export const PRICE_RANGES = [
     { id: 'price-all', value: 'all', label: 'All Prices', default: true },
-    { id: 'price-0-100', value: '0-100', label: 'R0 - R100' },
-    { id: 'price-100-500', value: '100-500', label: 'R100 - R500' },
-    { id: 'price-500-1000', value: '500-1000', label: 'R500 - R1000' },
+    { id: 'price-0-99', value: '0-99', label: 'R0 - R99' },
+    { id: 'price-100-499', value: '100-499', label: 'R100 - R499' },
+    { id: 'price-500-999', value: '500-999', label: 'R500 - R999' },
     { id: 'price-1000', value: '1000-999999', label: 'R1000+' }
 ];
