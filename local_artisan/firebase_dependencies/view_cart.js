@@ -127,10 +127,18 @@ function renderPayPalButton(totalZAR, user, items) {
 
   paypalContainer.innerHTML = '';
 
-  fetchExchangeRate().then(exchangeRate => {
+  (async () => {
+    let exchangeRate = null;
+    try {
+      exchangeRate = await fetchExchangeRate();
+    } catch (err) {
+      console.warn("Failed to fetch exchange rate:", err);
+    }
+
     if (!exchangeRate) {
-      alert("Unable to fetch exchange rate. Please try again later.");
-      return;
+      // Fallback rate if API fails
+      exchangeRate = 0.054; // Adjust this to a recent average if needed
+      alert("Using fallback exchange rate due to network error.");
     }
 
     const totalUSD = totalZAR * exchangeRate;
@@ -218,7 +226,7 @@ function renderPayPalButton(totalZAR, user, items) {
         alert("Payment failed.");
       }
     }).render('#paypal-button-container');
-  });
+  })();
 }
 
 onAuthStateChanged(auth, async user => {
