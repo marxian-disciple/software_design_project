@@ -25,6 +25,13 @@ export function initSignupForm(onSubmit) {
             return;
         }
 
+        // Password strength check
+        const strongPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d).{7,}$/;
+        if (!strongPasswordRegex.test(password)) {
+            alert("Password must be more than 6 characters long and contain at least one letter and one number.");
+            return;
+        }
+
         onSubmit(email, password);
     });
 }
@@ -48,3 +55,12 @@ export function showUserProfile(user) {
     }
 }
 
+export function initForgotPasswordLink() {
+    const forgotLink = document.querySelector(".forgot-password a");
+    if (!forgotLink) return;
+
+    forgotLink.addEventListener("click", function(event) {
+        event.preventDefault();
+        alert("Please use Google to reset your password!.");
+    });
+}
