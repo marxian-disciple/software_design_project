@@ -56,13 +56,13 @@ onAuthStateChanged(auth, async (user) => {
       article.innerHTML = `
         <header>
           <h3>Order on ${date}</h3>
-          <p>Status: ${status} | Total: $${total}</p>
+          <p>Status: ${status} | Total: R${total}</p>
         </header>
         <ul>
           ${order.items.map(item => `
             <li>
               <img src="${item.image}" alt="${item.name}" width="80" height="80" />
-              <p><strong>${item.name}</strong> — ${item.quantity} × $${item.price}</p>
+              <p><strong>${item.name}</strong> — ${item.quantity} × R${item.price}</p>
             </li>
           `).join("")}
         </ul>

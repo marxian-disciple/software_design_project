@@ -19,7 +19,11 @@ document.addEventListener('DOMContentLoaded', async() => {
         msg.classList.add('no-products');
         productContainer.appendChild(msg);
         return;
-    }
+        }
+
+        // Sort products by price (lowest to highest)
+        products.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+
         
         products.forEach(product => {
             const card = document.createElement('section');

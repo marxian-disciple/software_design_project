@@ -39,7 +39,7 @@
             <th>Name</th>
             <th>Category</th>
             <th>Description</th>
-            <th>Price ($)</th>
+            <th>Price(R) </th>
             <th>Quantity</th>
             <th>Weight</th>
             <th>Image</th>
@@ -187,7 +187,7 @@ async function loadOrders(userId) {
       const itemPrice = parseFloat(item.price) || 0;
       const itemTotal = itemQty * itemPrice;
       totalAmount += itemTotal;
-      return `${itemName} (x${itemQty}) - $${itemPrice.toFixed(2)}`;
+      return `${itemName} (x${itemQty}) - R${itemPrice.toFixed(2)}`;
     }).join("<br>");
 
     const tr = document.createElement("tr");
@@ -195,7 +195,7 @@ async function loadOrders(userId) {
       <td>${buyerEmail}</td>
       <td>${transactionId}</td>
       <td>${itemDescriptions}</td>
-      <td>$${totalAmount.toFixed(2)}</td>
+      <td>R${totalAmount.toFixed(2)}</td>
       <td>${createdAt?.seconds ? new Date(createdAt.seconds * 1000).toLocaleString() : "N/A"}</td>
       <td>
         <select class="status-select" data-id="${orderId}">

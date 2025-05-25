@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { initSignupForm, initGoogleButton, showUserProfile } from './../local_artisan/scripts/signup.js';
+import { initSignupForm, initGoogleButton, showUserProfile } from '../local_artisan/scripts/signup.js';
 
 describe('signupHandlers (100% coverage)', () => {
   // Polyfill global alert and console.warn
