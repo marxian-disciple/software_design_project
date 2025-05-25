@@ -29,7 +29,10 @@ async function loadProduct() {
     product_image.alt = product.name;
     product_title.textContent = product.name;
     product_description.textContent = product.description;
-    product_price.textContent = `$${parseFloat(product.price).toFixed(2)}`;
+product_price.textContent = new Intl.NumberFormat('en-ZA', {
+  style: 'currency',
+  currency: 'ZAR'
+}).format(product.price);
 
    add_to_cart.addEventListener('click', async () => {
   const user = auth.currentUser;
